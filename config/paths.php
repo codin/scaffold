@@ -1,5 +1,12 @@
 <?php defined('IN_APP') or die('Get out of here');
 
+/**
+ *    Scaffold v0.1
+ *    by the Codin' Co.
+ *
+ *    Set the paths used by all the functions, classes, and everything.
+ */
+
 //  If you rename your "app" folder, change it here.
 define('APP_BASE', BASE . 'app/');
 

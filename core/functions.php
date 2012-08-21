@@ -55,13 +55,23 @@ function load_classes($array, $config, $instantiate = true) {
     $classes = array();
     
     foreach($array as $class) {
-        fetch(CORE_BASE . 'classes/' . $class . '.php', isset($config[$class]) ? $config[$class] : false);
         
+        //  And grab the file
+        fetch(CORE_BASE . 'classes/' . $class . '.php', $config);
+        
+        //  If we need to call the class, might as well do that
         if($instantiate === true) {
             $u = ucfirst($class);
             
             if(class_exists($u)) {
-                $classes[$class] = new $u;
+                
+                //  For static classes
+                if(method_exists($u, 'init')) {
+                    $classes[$class] = $u;
+                    call_user_func($u . '::init', $config);
+                } else {
+                    $classes[$class] = new $u($config);                
+                }
             }
         }
     }

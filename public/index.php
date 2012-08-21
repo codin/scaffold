@@ -12,7 +12,7 @@
 //  Set the base URL
 //  You shouldn't need to change this, unless you change your file paths
 //  If you need to change directory names, see config/paths.php
-define('BASE', dirname($_SERVER['SCRIPT_FILENAME']) . '/');
+define('BASE', dirname(dirname($_SERVER['SCRIPT_FILENAME'])) . '/');
 
 //  Set a constant to stop direct access
 //  To check: defined('IN_APP') or die('Get out of here');

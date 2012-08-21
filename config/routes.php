@@ -28,7 +28,7 @@ $config['routes'] = array(
     //  These two routes are required
     //  You can change them, but don't delete them!
     
-    //  
+    //  The main index controller
     'index' => 'main',
     
     //  Handle errors
