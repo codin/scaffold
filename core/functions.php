@@ -7,23 +7,23 @@
  *    Here's some handy functions we think you'll like.
  */
  
-//  Include a file (optionally, with data)
+//  Get the contents of a file as a string (optionally, with data)
 //  grab('file.php', array('testVar' => 'hello, I am $testVar'));
 function grab($what, $data = array()) {
+    ob_start();
+    fetch($what, $data);
+    return ob_get_clean();
+}
+
+function fetch($what, $data = array()) {
     global $badFiles;
     
     if(file_exists($what)) {
         //  Include the $data array
         if(is_array($data) and !empty($data)) extract($data);
         
-        //  Don't actually output anything
-        ob_start();
-        
         //  Grab the file
         include_once $what;
-        
-        //  Give back the output buffer as a string
-        return ob_get_clean();
     } else {
         $badFiles[] = $what;
     }
@@ -39,6 +39,32 @@ function dump($what) {
     echo '</pre>';
 }
 
+//  Load time
+//  Returns the duration of time taken to compile the app until the function was called
 function load_time() {
     return round(microtime(true) - TIMER_START, 4);
+}
+
+//  Load classes
+function load_classes($array, $config, $instantiate = true) {
+    //  If it's not an array of classes, bail out
+    if(!is_array($array) or empty($array)) {
+        return false;
+    }
+    
+    $classes = array();
+    
+    foreach($array as $class) {
+        fetch(CORE_BASE . 'classes/' . $class . '.php', isset($config[$class]) ? $config[$class] : false);
+        
+        if($instantiate === true) {
+            $u = ucfirst($class);
+            
+            if(class_exists($u)) {
+                $classes[$class] = new $u;
+            }
+        }
+    }
+    
+    return $classes;
 }

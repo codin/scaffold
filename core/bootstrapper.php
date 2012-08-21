@@ -32,4 +32,9 @@ foreach($files as $file) {
 //  Include the functions
 include_once CORE_BASE . 'functions.php';
 
-echo load_time() . 'seconds';
+//  Load our core classes
+load_classes(array(
+    //  Don't ever assume we can load every class in the directory
+    //  That's just asking for trouble
+    'config', 'error', 'response', 'ajax', 'file', 'input', 'routes', 'scaffold', 'url'
+), $config);
