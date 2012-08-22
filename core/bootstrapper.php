@@ -33,8 +33,10 @@ foreach($files as $file) {
 include_once CORE_BASE . 'functions.php';
 
 //  Load our core classes
-load_classes(array(
-    //  Don't ever assume we can load every class in the directory
-    //  That's just asking for trouble
-    'config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes', 'scaffold',
-), $config);
+$classes = array('config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes');
+load_classes(array('scaffold'), array(
+    'classArray' => $classes,
+    'classes' => load_classes($classes, $config, false),
+    
+    'config' => $config
+));

@@ -8,18 +8,28 @@ class Routes {
         //  Set our routes up
         $this->routes = Config::get('routes');
         
-        //  And parse/output
-        $this->parse();
-        
         //  Store the current URL
         $this->url = Url::segment(0, false);
     }
     
     public function parse() {
+        $search = array(':any', ':num', ':alpha');
+        $replace = array('[0-9a-zA-Z~%\.:_\\-]+', '[0-9]+', '[a-zA-Z]+');
+        
+        $error = $this->routes['error'];
+        unset($this->routes['error']);
+        
         //  Loop through our routes
         foreach($this->routes as $route => $controller) {
-            //    preg_replace(', $replacement, $subject[, $limit=-1[, &$count]])
-//            echo $route . ' ' . $controller;
+            $route = str_replace($search, $replace, $route);
+            
+            preg_match('#^' . $route . '#', $this->url, $matches);
+            
+            if($matches[0]) {
+                return $controller;
+            }
         }
+        
+        return $error;
     }
 }

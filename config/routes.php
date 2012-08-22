@@ -31,6 +31,7 @@ $config['routes'] = array(
     //  The main index controller
     'index' => 'main',
     
-    //  Handle errors
+    //  And our error controller
+    //  This not only handles 404s, but 403s and 500s as well.
     'error' => 'error'
 );
