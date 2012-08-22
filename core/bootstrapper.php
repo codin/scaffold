@@ -8,6 +8,13 @@
  *    all of the files up properly. Here goes!
  */
  
+if(get_magic_quotes_gpc()) {
+    $_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
+    $_POST = json_decode(stripslashes(json_encode($_POST, JSON_HEX_APOS)), true);
+    $_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
+    $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
+}
+ 
 //  Load the rest of the config
 $config = array();
 $files = array('environment', 'language', 'routes', 'database');
