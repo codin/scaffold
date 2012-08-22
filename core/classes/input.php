@@ -7,7 +7,7 @@ class Input {
 	    if(!empty($what)) {
             if(is_array($what)) {
                 foreach($what as $field) {
-                    if(!isset($_POST[$field]) and !empty($_POST[$field])) return false;
+                    if(!isset($_POST[$field])) return false;
                 }
                 
                 return true;
