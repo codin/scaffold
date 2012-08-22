@@ -9,3 +9,6 @@
  
 //  The name of the default "index" method. I wouldn't change this.
 $config['default_method'] = 'index';
+
+//  The name of the 404 view.
+$config['404_page'] = '404';

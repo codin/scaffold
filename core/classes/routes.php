@@ -21,7 +21,7 @@ class Routes {
         $search = array(':any', ':num', ':alpha');
         $replace = array('[0-9a-zA-Z~%\.:_\\-]+', '[0-9]+', '[a-zA-Z]+');
         
-        $error = $this->routes['error'];
+        $this->error = $this->routes['error'];
         unset($this->routes['error']);
         
         //  Loop through our routes
@@ -36,6 +36,6 @@ class Routes {
             }
         }
         
-        return $error;
+        return $this->error;
     }
 }

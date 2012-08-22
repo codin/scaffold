@@ -45,7 +45,7 @@ foreach($files as $file) {
 include_once CORE_BASE . 'functions.php';
 
 //  Load our core classes
-$classes = array('config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes', 'helper');
+$classes = array('config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes', 'template', 'helper');
 load_classes(array('scaffold'), load_classes($classes, $config, false));
 
 //  When any errors get thrown, call our error class
