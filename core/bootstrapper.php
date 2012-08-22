@@ -36,5 +36,5 @@ include_once CORE_BASE . 'functions.php';
 load_classes(array(
     //  Don't ever assume we can load every class in the directory
     //  That's just asking for trouble
-    'config', 'error', 'response', 'ajax', 'file', 'input', 'routes', 'scaffold', 'url'
+    'config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes', 'scaffold',
 ), $config);

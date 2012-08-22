@@ -15,3 +15,6 @@ define('CORE_BASE', BASE . 'core/');
 
 //  If your public folder has a different name... You know the drill.
 define('PUBLIC_BASE', BASE . 'public/');
+
+//  And the public path
+define('PUBLIC_PATH', dirname($_SERVER['SCRIPT_NAME']) . '/');

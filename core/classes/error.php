@@ -3,6 +3,17 @@
 class Error {
     public static $errors = array();
     
+    //  Set up our error reporting
+    public static function init() {
+        $errors = Config::get('env.debug');
+        
+        if($errors) {
+            @ini_set('display_errors', false);
+        }
+
+        error_reporting(Config::get('env.error_level', -1));
+    }
+    
     public static function log($what) {
         $now = microtime(true);
         $error = array(

@@ -13,6 +13,7 @@ $config['env'] = array(
     'mode' => 'local'
 );
 
+
 //  You can override a mode's settings here
 //  by commenting any of the following lines out
 
@@ -23,4 +24,4 @@ $config['env'] = array(
 //$config['env']['debug'] = true;
 
 //  Set the error_reporting() level
-//$config['env']['error_level'] = E_ALL ~ E_NOTICE;
+//$config['env']['error_level'] = E_ALL & ~E_NOTICE;
