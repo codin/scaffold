@@ -24,14 +24,14 @@
  
 //  URL regex => controller/view/model to use.
 $config['routes'] = array(
+    //  Our error controller
+    //  This not only handles 404s/403s, but also system errors.
+    'error' => 'error',
     
     //  These two routes are required
     //  You can change them, but don't delete them!
     
     //  The main index controller
     'index' => 'main',
-    
-    //  And our error controller
-    //  This not only handles 404s, but 403s and 500s as well.
-    'error' => 'error'
+    'index/help' => 'main.help'
 );

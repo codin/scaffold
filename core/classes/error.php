@@ -14,6 +14,16 @@ class Error {
         error_reporting(Config::get('env.error_level', -1));
     }
     
+    public static function exception($e) {
+        echo 'Exception: ' . debug_print_backtrace();
+    }
+    public static function native($e) {
+        echo 'Native error: ' . debug_print_backtrace();
+    }
+    public static function shutdown() {
+//        echo 'Shutdown: ' . debug_print_backtrace();
+    }
+    
     public static function log($what) {
         $now = microtime(true);
         $error = array(

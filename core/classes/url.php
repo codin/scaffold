@@ -27,7 +27,7 @@ class Url {
         $segments = explode('/', self::request());
         
         //  Return our segments
-        $seg = (isset($segments[$which]) and !empty($segments[$which])) ? $segments[$which] : 'index';
+        $seg = (isset($segments[$which]) and !empty($segments[$which])) ? $segments[$which] : Config::get('default_method');
         
         //  If we have a segment, and it's not an index page, give it back
         if($seg) {
