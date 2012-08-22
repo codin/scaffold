@@ -73,6 +73,8 @@ function load_classes($array, $config, $instantiate = true) {
                     $classes[$class] = new $u($config);                
                 }
             }
+        } else {
+            $classes[] = $class;
         }
     }
     

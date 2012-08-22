@@ -78,7 +78,6 @@ class Config {
 	}
 	
 	private function _setDefaults($key, $check, $val) {
-//	    if($this->config[$key][0]
         $config = isset($this->config[$key]) ? $this->config[$key] : array();
         
         if(!isset($config[$check])) {

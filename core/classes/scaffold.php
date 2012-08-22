@@ -3,13 +3,15 @@
 class Scaffold {
     
     public function __construct($data) {
-        foreach($data['classArray'] as $class) {
+        global $config;
+                
+        foreach($data as $class) {
             $u = ucfirst($class);
             if(class_exists($u)) {
-                $this->{$class} = new $u($data['config']);
+                $this->{$class} = new $u($config);
             }
         }
 
-        echo $this->routes->parse();
+        $this->helper->load('test');
     }
 }
