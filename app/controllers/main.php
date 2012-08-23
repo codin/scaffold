@@ -1,25 +1,19 @@
 <?php defined('IN_APP') or die('Get out of here');
 
-class Main_controller extends Scaffold_controller {
-    public function __construct() {
-        parent::__construct();
+class Main_controller extends Controller {
+    public function __construct($data) {
+        parent::__construct($data);
         
-        var_dump($this);
-        return;
-        
-        //  THIS SUCKS SO BAD
-        //  Should be $this->template->set(array()), etc.
-        $template = new Template;
-        $template->set(array(
+        //  Set template data
+        $this->template->set(array(
             'language' => Config::get('language'),
             'title' => 'Hiya, world.',
             'test' => 'This is a just a test.'
         ));
 
         //  Oh wait, this is totally an AJAX request
-        $ajax = new Ajax;
-        $ajax->output(array(
-            'content' => $template->load()
+        $this->ajax->output(array(
+            'content' => $this->template->render() . load_time()
         ));
     }
     

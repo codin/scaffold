@@ -2,8 +2,9 @@
 
 class Scaffold {
 
-    public $data;
+    public static $data;
     protected $config;
+    public static $instance;
     
     public function __construct($data = array()) {
         if(!empty($data)) {
@@ -33,8 +34,13 @@ class Scaffold {
     }
     
     public static function instance() {
-        $c = __CLASS__;
-        return new $c;
+        self::$instance =& $this;
+        
+        return self::$instance;
+    }
+    
+    public static function data() {
+        return self::$data;
     }
     
     //  And build our controllers, models, and views
@@ -55,15 +61,6 @@ class Scaffold {
                 
         //  Load the controller
         foreach(array('model', 'controller') as $type) {
-            //  Load the default ones, which always exist (they're in this file)
-            $baseClass = 'Scaffold_' . $type;
-            $this->{'default' . $type} = new $baseClass();
-            
-            var_dump($this->{'default' . $type});
-            
-            if(isset($this->{$baseClass}) and method_exists($this->{$baseClass}, 'store')) {
-                $this->{$baseClass}->store($this->data);
-            }
             
             //  Load our routed classes
             $file = APP_BASE . $type . 's/' . $class[0] . '.php';
@@ -76,8 +73,12 @@ class Scaffold {
                 //  It's a double "u"
                 $w = $u . '_' . $type;
                 if(class_exists($w)) {
+                    //  Load the default ones, which always exist (they're in this file)
+                    $baseClass = ucfirst($type);
+                    $this->{'default' . $type} = new $baseClass($this->data);
+                    
                     //  Set the class
-                    $this->data->{$type . 's'}->{$class[0]} = new $w;
+                    $this->data->{$type . 's'}->{$class[0]} = new $w($this->data);
                     
                     //  Store our new class in a variable, since it's hard to read
                     $newClass = $this->data->{$type . 's'}->{$class[0]};
@@ -97,13 +98,18 @@ class Scaffold {
 }
 
 //  Our default controller
-class Scaffold_controller extends Scaffold {
-    
-    public function __construct() {
-        echo 'fucking work';
+class Controller extends Scaffold {
+    public function __construct($data) {
+        foreach($data as $k => $v) {
+            $this->{$k} = $v;
+        }
     }
 }
 
-class Scaffold_model extends Scaffold {
-
+class Model extends Scaffold {
+    public function __construct($data) {
+        foreach($data as $k => $v) {
+            $this->{$k} = $v;
+        }
+    }
 }

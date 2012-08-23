@@ -9,7 +9,7 @@ class Template {
         $this->_routes = new Routes;
     }
 
-    public function load($what = '') {
+    public function render($what = '') {
         //  Set the view to load
         if(empty($what)) {
             $what = $this->_routes->parse();
