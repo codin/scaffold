@@ -2,15 +2,16 @@
 
 class Scaffold {
 
-    protected $controllers;
-    protected $models;
-    public $helpers;
+    public $data;
+    protected $config;
     
-    public function __construct($data) {
-        $this->_assemble($data);
-        
-        //  Get the right files, and call
-        $this->_build($this->routes->parse());
+    public function __construct($data = array()) {
+        if(!empty($data)) {
+            $this->_assemble($data);
+            
+            //  Get the right files, and call
+            $this->_build($this->data->routes->parse());
+        }
     }
         
     //  Assemble all of the core classes
@@ -24,11 +25,16 @@ class Scaffold {
             
             //  But only if the class doesn't exist
             if(class_exists($u)) {
-                $this->{$class} = new $u($config);
+                $this->data->{$class} = new $u($config);
             } else {
                 Error::log('Class ' . $u . ' does not exist');
             }
         }
+    }
+    
+    public static function instance() {
+        $c = __CLASS__;
+        return new $c;
     }
     
     //  And build our controllers, models, and views
@@ -49,6 +55,17 @@ class Scaffold {
                 
         //  Load the controller
         foreach(array('model', 'controller') as $type) {
+            //  Load the default ones, which always exist (they're in this file)
+            $baseClass = 'Scaffold_' . $type;
+            $this->{'default' . $type} = new $baseClass();
+            
+            var_dump($this->{'default' . $type});
+            
+            if(isset($this->{$baseClass}) and method_exists($this->{$baseClass}, 'store')) {
+                $this->{$baseClass}->store($this->data);
+            }
+            
+            //  Load our routed classes
             $file = APP_BASE . $type . 's/' . $class[0] . '.php';
             
             //  Check the file exists, first
@@ -60,10 +77,10 @@ class Scaffold {
                 $w = $u . '_' . $type;
                 if(class_exists($w)) {
                     //  Set the class
-                    $this->{$type . 's'}->{$class[0]} = new $w;
+                    $this->data->{$type . 's'}->{$class[0]} = new $w;
                     
                     //  Store our new class in a variable, since it's hard to read
-                    $newClass = $this->{$type . 's'}->{$class[0]};
+                    $newClass = $this->data->{$type . 's'}->{$class[0]};
                     
                     //  Check we have something to call
                     if(isset($class[1]) and method_exists($newClass, $class[1])) {
@@ -77,4 +94,16 @@ class Scaffold {
             }
         }
     }
+}
+
+//  Our default controller
+class Scaffold_controller extends Scaffold {
+    
+    public function __construct() {
+        echo 'fucking work';
+    }
+}
+
+class Scaffold_model extends Scaffold {
+
 }

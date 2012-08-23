@@ -1,7 +1,12 @@
 <?php defined('IN_APP') or die('Get out of here');
 
-class Main_controller {
+class Main_controller extends Scaffold_controller {
     public function __construct() {
+        parent::__construct();
+        
+        var_dump($this);
+        return;
+        
         //  THIS SUCKS SO BAD
         //  Should be $this->template->set(array()), etc.
         $template = new Template;
