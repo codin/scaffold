@@ -1,4 +1,4 @@
-<?php !defined('IN_APP') && header('location: /');
+<?php !defined('IN_APP') and header('location: /');
 
 class Helper {
     

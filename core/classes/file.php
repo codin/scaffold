@@ -1,4 +1,4 @@
-<?php !defined('IN_APP') && header('location: /');
+<?php !defined('IN_APP') and header('location: /');
 
 class File {
 	
@@ -18,7 +18,7 @@ class File {
 		if(!$char_limit) $char_limit = filesize($path);
 		
 		// If the file exists
-		if(file_exists($path) && is_readable($path)) {
+		if(file_exists($path) and is_readable($path)) {
 			// Open the file
 			$h = fopen($path, 'r');
 						
@@ -34,7 +34,6 @@ class File {
 			fclose($h);
 			
 			return $data;
-			
 		}
 		
 		// Give an error.
@@ -59,7 +58,7 @@ class File {
 		}
 		
 		// if its a file
-		if(is_file($path) && file_exists($path)) {
+		if(is_file($path) and file_exists($path)) {
 			return unlink($path);
 		}
 		
@@ -77,7 +76,7 @@ class File {
 		$oldpath = self::_make_path($url, $name);
 		$newpath = self::_make_path($url, $new);
 		
-		if(file_exists($oldpath) && !file_exists($path)) {
+		if(file_exists($oldpath) and !file_exists($path)) {
 			return rename($oldpath, $newpath);
 		}
 		
@@ -97,7 +96,7 @@ class File {
 		// Sort our urls and paths out.
 		$path = self::_make_path($url, $name);
 		
-		if(file_exists($path) && is_writable($path)) {
+		if(self::writable($path)) {
 			
 			// Open the file stream
 			$h = fopen($path, ($append == false ? 'w' : 'a'));
@@ -124,7 +123,7 @@ class File {
 	 *  @return Boolean
 	 */
 	static function exists($filename) {
-		return is_file($filename) && file_exists($filename);
+		return file_exists($filename);
 	}
 	
 	/**
@@ -133,7 +132,7 @@ class File {
 	 *  @return Boolean
 	 */
 	static function writable($filename) {
-		return is_writable($filename);
+		return file_exists($filename) and is_writable($filename);
 	}
 	
 	/**
@@ -142,7 +141,7 @@ class File {
 	 *  @return Boolean
 	 */
 	static function readable($filename) {
-		return is_readable($filename);
+		return file_exists($filename) and is_readable($filename);
 	}
 	
 	/**
