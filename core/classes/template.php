@@ -43,7 +43,15 @@ class Template {
         return $template;
     }
     
-    public function set($key, $val) {
+    public function set($key, $val = '') {
+        if(is_array($key)) {
+            foreach($key as $k => $v) {
+                $this->set($k, $v);
+            }
+            
+            return;
+        }
+        
         self::$vars[$key] = $val;
     }
     

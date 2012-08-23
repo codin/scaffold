@@ -3,11 +3,18 @@
 class Main_controller {
     public function __construct() {
         //  THIS SUCKS SO BAD
+        //  Should be $this->template->set(array()), etc.
         $template = new Template;
-        $template->set('language', Config::get('language'));
-        $template->set('title', 'Hello, World!');
-        $template->set('test', 'Testing the Template class');
+        $template->set(array(
+            'language' => Config::get('language'),
+            'title' => 'Hiya, world.',
+            'test' => 'This is a just a test.'
+        ));
 
-        echo $template->load('main');
+        //  Oh wait, this is totally an AJAX request
+        $ajax = new Ajax;
+        $ajax->output(array(
+            'content' => $template->load()
+        ));
     }
 }
