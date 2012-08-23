@@ -32,7 +32,7 @@ class Error {
             'stack_trace' => debug_backtrace(true)
         );
         
-        $errors[] = $error;
+        self::$errors[] = $error;
         
         return (object) $error;
     }
