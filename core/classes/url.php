@@ -1,7 +1,8 @@
 <?php !defined('IN_APP') && header('location: /');
 
 class Url {
-    public static function request($stripBase = true) {
+
+    public static function current($stripBase = true) {
         //  ALL IN UPPERCASE
         $current = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
         
@@ -20,6 +21,10 @@ class Url {
         }
         
         return $current;
+    }
+    
+    public function request($stripBase = true) {
+        return preg_replace('/(\?.*)/', '', self::current($stripBase));
     }
     
     public static function segment($which, $fallback = '') {

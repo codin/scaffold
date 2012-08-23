@@ -9,7 +9,7 @@ class Routes {
         $this->routes = Config::get('routes');
         
         //  Store the current URL
-        $this->url = substr(Url::request(), 1);
+        $this->url = Url::request();
         
         //  Set a fallback
         if(!$this->url) {

@@ -17,4 +17,8 @@ class Main_controller {
             'content' => $template->load()
         ));
     }
+    
+    public function index() {
+        //echo 'index';
+    }
 }
