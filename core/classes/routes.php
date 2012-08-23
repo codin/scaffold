@@ -9,27 +9,33 @@ class Routes {
         $this->routes = Config::get('routes');
         
         //  Store the current URL
-        $this->url = Url::segment(0, false);
+        $this->url = substr(Url::request(), 1);
+        
+        //  Set a fallback
+        if(!$this->url) {
+            $this->url = Config::get('default_method');
+        }
     }
     
     public function parse() {
         $search = array(':any', ':num', ':alpha');
         $replace = array('[0-9a-zA-Z~%\.:_\\-]+', '[0-9]+', '[a-zA-Z]+');
         
-        $error = $this->routes['error'];
+        $this->error = $this->routes['error'];
         unset($this->routes['error']);
         
         //  Loop through our routes
-        foreach($this->routes as $route => $controller) {
+        foreach(array_reverse($this->routes) as $route => $controller) {
             $route = str_replace($search, $replace, $route);
             
-            preg_match('#^' . $route . '#', $this->url, $matches);
+            //  Match the route against the URL 
+            preg_match('#^' . $route . '$#', $this->url, $matches);
             
-            if($matches[0]) {
+            if(isset($matches[0])) {
                 return $controller;
             }
         }
         
-        return $error;
+        return $this->error;
     }
 }
