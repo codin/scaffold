@@ -9,5 +9,7 @@ class Main_controller {
         $template->set('test', 'Testing the Template class');
 
         echo $template->load('main');
+        
+        dump(File::get('test.txt'));
     }
 }
