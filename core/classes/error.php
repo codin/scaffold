@@ -7,7 +7,7 @@ class Error {
     public static function init() {
         $errors = Config::get('env.debug');
         
-        if($errors) {
+        if(!$errors) {
             @ini_set('display_errors', false);
         }
 

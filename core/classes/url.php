@@ -23,7 +23,7 @@ class Url {
         return $current;
     }
     
-    public function request($stripBase = true) {
+    public static function request($stripBase = true) {
         return preg_replace('/(\?.*)/', '', self::current($stripBase));
     }
     

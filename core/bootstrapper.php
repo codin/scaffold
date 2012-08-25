@@ -49,6 +49,9 @@ $classes = array(
     //  No dependencies, vital for page load
     'config', 'error',
     
+    //  Database class. Everything uses this.
+    'database',
+    
     //  No depencies, optional classes
     //  May be depended on
     'response', 'ajax',
@@ -66,9 +69,23 @@ $classes = array(
 );
 
 //  Just load our class and we'll do the rest
-load_classes(array('scaffold'));
+$scaffoldPath = CORE_BASE . 'classes/scaffold.php';
+$defaults = array();
+if(file_exists($scaffoldPath)) {
+    include_once $scaffoldPath;
+    $scaffold = new Scaffold($config, $classes);
+    
+    foreach(array('controller', 'model') as $type) {
+        include_once CORE_BASE . 'defaults/' . strtolower($type) . '.php';
+        $defaults[$type] = new $type;
+    }
+} else {
+    $badFiles[] = $scaffoldPath;
+    Error::log('Scaffold class not loaded. Sky is falling.');
+    exit;
+}
 
 //  When any errors get thrown, call our error class
-set_exception_handler(array('Error', 'exception'));
-set_error_handler(array('Error', 'native'));
-register_shutdown_function(array('Error', 'shutdown'));
+//set_exception_handler(array('Error', 'exception'));
+//set_error_handler(array('Error', 'native'));
+//register_shutdown_function(array('Error', 'shutdown'));

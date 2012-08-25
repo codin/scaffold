@@ -4,8 +4,6 @@ class Main_controller extends Controller {
     public function __construct() {
         parent::__construct();
         
-        var_dump($this);
-        
         //  Set template data
         $this->template->set(array(
             'language' => Config::get('language'),

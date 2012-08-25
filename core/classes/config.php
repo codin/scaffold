@@ -81,7 +81,8 @@ class Config {
         $config = isset($this->config[$key]) ? $this->config[$key] : array();
         
         if(!isset($config[$check])) {
-            return Error::log('Could not set default: ' . $key . '.' . $check);
+            // return Error::log('Could not set default: ' . $key . '.' . $check);
+            return false;
         }
         
         //  Loop through the config keys and add
