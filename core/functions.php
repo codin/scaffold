@@ -47,7 +47,7 @@ function load_time() {
 
 //  Load core classes with optional config
 //  Not really a public function
-function load_classes($array, $config, $instantiate = true) {
+function load_classes($array, $config = array(), $instantiate = true) {
     //  If it's not an array of classes, bail out
     if(!is_array($array) or empty($array)) {
         return false;

@@ -45,10 +45,30 @@ foreach($files as $file) {
 include_once CORE_BASE . 'functions.php';
 
 //  Load our core classes
-$classes = array('config', 'error', 'response', 'ajax', 'file', 'input', 'url', 'routes', 'template', 'helper');
-load_classes(array('scaffold'), load_classes($classes, $config, false));
+$classes = array(
+    //  No dependencies, vital for page load
+    'config', 'error',
+    
+    //  No depencies, optional classes
+    //  May be depended on
+    'response', 'ajax',
+    
+    //  Requires the config class
+    //  May be depended on
+    'file', 'image', 'input',
+    
+    //  Requires the URL and Input classes
+    'url', 'routes', 'template',
+    
+    //  No dependencies, but helper classes may have dependencies
+    //  on any/all of the above classes. We don't know.
+    'helper'
+);
+
+//  Just load our class and we'll do the rest
+load_classes(array('scaffold'));
 
 //  When any errors get thrown, call our error class
-//set_exception_handler(array('Error', 'exception'));
-//set_error_handler(array('Error', 'native'));
-//register_shutdown_function(array('Error', 'shutdown'));
+set_exception_handler(array('Error', 'exception'));
+set_error_handler(array('Error', 'native'));
+register_shutdown_function(array('Error', 'shutdown'));

@@ -9,7 +9,7 @@ class File {
 	 *	@param Path/URL
 	 *  @return (object) Array 
 	 */
-	static function get($name, $char_limit = false, $url = false) {
+	public static function get($name, $char_limit = false, $url = false) {
 		
 		// Sort our urls and paths out.
 		$path = self::_make_path($url, $name);
@@ -49,7 +49,7 @@ class File {
 	 *  @param Path
 	 *  @return Boolean 
 	 */
-	static function delete($name, $url = false) {
+	public static function delete($name, $url = false) {
 		$path = self::_make_path($url, $name);
 		
 		// if its a directory
@@ -72,11 +72,11 @@ class File {
 	 *  @param Url
 	 *  @return Boolean 
 	 */
-	static function rename($name, $new, $url = false) {
+	public static function rename($name, $new, $url = false) {
 		$oldpath = self::_make_path($url, $name);
 		$newpath = self::_make_path($url, $new);
 		
-		if(file_exists($oldpath) and !file_exists($path)) {
+		if(self::exists($oldpath) and !self::exists($path)) {
 			return rename($oldpath, $newpath);
 		}
 		
@@ -91,7 +91,7 @@ class File {
 	 *  @param Url
 	 *  @return Boolean 
 	 */
-	static function write($name, $content = '', $append = false, $url = false) {
+	public static function write($name, $content = '', $append = false, $url = false) {
 		
 		// Sort our urls and paths out.
 		$path = self::_make_path($url, $name);
@@ -118,21 +118,12 @@ class File {
 	}
 	
 	/**
-	 *	@desc Check if file exists
-	 *	@param Filename
-	 *  @return Boolean
-	 */
-	static function exists($filename) {
-		return file_exists($filename);
-	}
-	
-	/**
 	 *	@desc Check if file is writable
 	 *	@param Filename
 	 *  @return Boolean
 	 */
-	static function writable($filename) {
-		return file_exists($filename) and is_writable($filename);
+	public static function writable($filename) {
+		return self::exists($filename) and is_writable($filename);
 	}
 	
 	/**
@@ -140,18 +131,26 @@ class File {
 	 *	@param Filename
 	 *  @return Boolean
 	 */
-	static function readable($filename) {
-		return file_exists($filename) and is_readable($filename);
+	public static function readable($filename) {
+		return self::exists($filename) and is_readable($filename);
 	}
 	
 	/**
-	 *	@desc Upload a file
-	 *  @param Temp Location
-	 *  @param Destination
-	 *  @return Boolean 
+	 *	@desc Check if file exists
+	 *	@param Filename
+	 *  @return Boolean
 	 */
-	static function upload() {
-		// TODO Make this function upload a file to a folder from tmp
+	public static function exists($filename) {
+		return file_exists($filename);
+	}
+	
+	/**
+	 *	@desc What type is a file?
+	 *  @param File location
+	 *  @return String
+	 */
+	public static function type($filename) {
+		return filetype($filename);
 	}
 	
 	/**

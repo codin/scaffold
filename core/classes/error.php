@@ -21,7 +21,7 @@ class Error {
         echo 'Native error: ' . debug_print_backtrace();
     }
     public static function shutdown() {
-//        echo 'Shutdown: ' . debug_print_backtrace();
+        echo 'Shutdown: ' . debug_print_backtrace();
     }
     
     public static function log($what) {

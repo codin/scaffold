@@ -2,23 +2,27 @@
 
 class Scaffold {
 
-    public static $data;
+    protected $data;
     protected $config;
-    public static $instance;
     
-    public function __construct($data = array()) {
-        if(!empty($data)) {
+    public function __construct() {
+        global $config;
+        global $classes;
+        
+        $this->config = $config;
+        
+        //  Don't cause an infinite loop on extending
+        if(__CLASS__ === get_called_class()) {
+            $data =& load_classes($classes, $config, false);
             $this->_assemble($data);
             
             //  Get the right files, and call
-            $this->_build($this->data->routes->parse());
+            $this->_build($this->routes->parse());
         }
     }
         
     //  Assemble all of the core classes
     private function _assemble($data) {
-        global $config;
-        
         //  Loop our classes
         foreach($data as $class) {
             //  And instantiate
@@ -26,11 +30,13 @@ class Scaffold {
             
             //  But only if the class doesn't exist
             if(class_exists($u)) {
-                $this->data->{$class} = new $u($config);
+                $this->{$class} = new $u($this->config);
             } else {
                 Error::log('Class ' . $u . ' does not exist');
             }
         }
+        
+        $this->test = 'true';
     }
     
     public static function instance() {
@@ -75,10 +81,10 @@ class Scaffold {
                 if(class_exists($w)) {
                     //  Load the default ones, which always exist (they're in this file)
                     $baseClass = ucfirst($type);
-                    $this->{'default' . $type} = new $baseClass($this->data);
+                    $this->{'default' . $type} = new $baseClass();
                     
                     //  Set the class
-                    $this->data->{$type . 's'}->{$class[0]} = new $w($this->data);
+                    $this->data->{$type . 's'}->{$class[0]} = new $w();
                     
                     //  Store our new class in a variable, since it's hard to read
                     $newClass = $this->data->{$type . 's'}->{$class[0]};
@@ -99,17 +105,12 @@ class Scaffold {
 
 //  Our default controller
 class Controller extends Scaffold {
-    public function __construct($data) {
-        foreach($data as $k => $v) {
-            $this->{$k} = $v;
-        }
+    public function __construct() {
+        parent::__construct();
     }
 }
 
 class Model extends Scaffold {
-    public function __construct($data) {
-        foreach($data as $k => $v) {
-            $this->{$k} = $v;
-        }
+    public function __construct() {
     }
 }

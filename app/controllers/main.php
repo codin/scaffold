@@ -1,8 +1,10 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 class Main_controller extends Controller {
-    public function __construct($data) {
-        parent::__construct($data);
+    public function __construct() {
+        parent::__construct();
+        
+        var_dump($this);
         
         //  Set template data
         $this->template->set(array(
