@@ -49,8 +49,14 @@ $classes = array(
     //  No dependencies, vital for page load
     'config', 'error',
     
-    //  Database class. Everything uses this.
+    // Crypting stuff
+    'crypt',
+    
+    //  Database class. Everything uses this. Apart from config and error.
     'database',
+    
+    // Session Class.
+    'session',
     
     //  No depencies, optional classes
     //  May be depended on
