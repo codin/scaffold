@@ -96,6 +96,6 @@ if(file_exists($scaffoldPath)) {
 }
 
 //  When any errors get thrown, call our error class
-//set_exception_handler(array('Error', 'exception'));
-//set_error_handler(array('Error', 'native'));
-//register_shutdown_function(array('Error', 'shutdown'));
+set_exception_handler(array('Error', 'exception'));
+set_error_handler(array('Error', 'native'));
+register_shutdown_function(array('Error', 'shutdown'));

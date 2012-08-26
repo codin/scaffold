@@ -11,17 +11,23 @@ class Error {
             @ini_set('display_errors', false);
         }
 
-        error_reporting(Config::get('env.error_level', -1));
+        //error_reporting(Config::get('env.error_level', -1));
+        error_reporting(0);
     }
     
     public static function exception($e) {
-        echo 'Exception: ' . debug_print_backtrace();
+        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        include_once CORE_BASE . 'defaults/error.php';
     }
     public static function native($e) {
-        echo 'Native error: ' . debug_print_backtrace();
+        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        include_once CORE_BASE . 'defaults/error.php';
     }
-    public static function shutdown() {
-        echo 'Shutdown: ' . debug_print_backtrace();
+    public static function shutdown($e = '') {
+		$trace = debug_backtrace();
+//		$contexts = static::context($file, $e->getLine());
+		
+        include_once CORE_BASE . 'defaults/error.php';
     }
     
     public static function log($what) {
