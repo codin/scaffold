@@ -84,6 +84,10 @@ if(file_exists($scaffoldPath)) {
     foreach(array('controller', 'model') as $type) {
         include_once CORE_BASE . 'defaults/' . strtolower($type) . '.php';
         $defaults[$type] = new $type;
+        
+        if(method_exists($defaults[$type], 'init')) {
+            call_user_func($defaults[$type] . '::init');
+        }
     }
 } else {
     $badFiles[] = $scaffoldPath;
