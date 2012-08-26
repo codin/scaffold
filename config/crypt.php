@@ -11,7 +11,7 @@
 $config['crypt'] = array(
 	
 	// Encyrption method
-	'encrypt_method' = 'sha512',
+	'encrypt_method' => 'sha512',
 	
 	// Method of encoding
 	'encode_method' => 'base64',

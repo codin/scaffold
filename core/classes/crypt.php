@@ -2,12 +2,10 @@
 
 class Crypt {
 	
-	private static $encode_method = 'base64';
+	private static $encode_method, $salt;
 	
 	public function init() {
-		$conf = Config::get('crypt');
-		self::$encode_method = $conf['encode_method'];
-		self::$salt = $conf['salt'];
+
 	}
 	
 	/** 
@@ -17,15 +15,13 @@ class Crypt {
 	 */
 	public static function encode($data) {
 		
-		if(empty($data)) return false;
+		var_dump(Config::get('crypt'));
 		
-		switch(self::$encode_method) {
-			default:
-				$data = $this->_base64($data, 'encode');
-			break;
+		if(method_exists(__CLASS__, '_' . Config::get('crypt.encode_method'))) {
+			return call_user_func_array(__CLASS__ . '::_' . Config::get('crypt.encode_method'), array($data, 'encode'));
 		}
 		
-		return $data;	
+		return false;	
 	}
 	
 	/** 
@@ -34,16 +30,13 @@ class Crypt {
 	 *  @return Boolean / Data (decoded)
 	 */
 	public static function decode($data) {
-		
-		if(empty($data)) return false;
-		
-		switch(self::$encode_method) {
-			default:
-				$data = $this->_base64($data, 'decode');
-			break;
+
+		if(method_exists(__CLASS__, '_' . Config::get('crypt.encode_method'))) {
+			return call_user_func_array(__CLASS__ . '::_' . Config::get('crypt.encode_method'), array($data, 'decode'));
 		}
 		
-		return $data;
+		return false;
+		
 	}
 	
 	/** 
@@ -57,9 +50,9 @@ class Crypt {
 		if(empty($data)) return false;
 		
 		if($type == 'encode') {
-			$data = base64_encode($data . self::$salt);
+			$data = base64_encode($data . Config::get('crypt.salt'));
 		} else if($type == 'decode') {
-			$data = base64_decode($data);
+			$data = str_replace(Config::get('crypt.salt'), '', base64_decode($data));
 		}
 		
 		return $data;

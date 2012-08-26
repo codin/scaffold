@@ -35,7 +35,7 @@ function fetch($what, $data = array()) {
 //  dump($_SERVER);
 function dump($what) {
     echo '<pre>';
-        print_r($what);
+        var_dump($what);
     echo '</pre>';
 }
 
