@@ -11,6 +11,7 @@ class Main_controller extends Controller {
             'test' => 'This is a just a test.'
         ));
 		
+		
         //  Oh wait, this is totally an AJAX request
         $this->ajax->output(array(
             'content' => $this->template->render() . load_time()

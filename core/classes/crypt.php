@@ -15,8 +15,6 @@ class Crypt {
 	 */
 	public static function encode($data) {
 		
-		var_dump(Config::get('crypt'));
-		
 		if(method_exists(__CLASS__, '_' . Config::get('crypt.encode_method'))) {
 			return call_user_func_array(__CLASS__ . '::_' . Config::get('crypt.encode_method'), array($data, 'encode'));
 		}
@@ -56,5 +54,17 @@ class Crypt {
 		}
 		
 		return $data;
+	}
+	
+	/** 
+	 *	@desc Rot13 (LOL)
+	 *  @param Data
+	 *  @param Type
+	 *  @return Boolean / String
+	 */
+	private function _rot13($data, $type = '') {
+		if(empty($data)) return false;
+
+		return str_rot13($data);
 	}
 }	
