@@ -15,18 +15,20 @@ class Error {
         error_reporting(0);
     }
     
-    public static function exception($e) {
+    public static function exception($err, $message, $file, $line) {
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
         include_once CORE_BASE . 'defaults/error.php';
     }
-    public static function native($e) {
+    
+    public static function native($err, $message, $file, $line) {                
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        
         include_once CORE_BASE . 'defaults/error.php';
     }
-    public static function shutdown($e = '') {
+    
+    public static function shutdown() {
 		$trace = debug_backtrace();
-//		$contexts = static::context($file, $e->getLine());
-		
+		dump($trace);
         include_once CORE_BASE . 'defaults/error.php';
     }
     
