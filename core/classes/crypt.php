@@ -2,8 +2,6 @@
 
 class Crypt {
 	
-	private static $encode_method, $salt;
-	
 	public function init() {
 
 	}
@@ -14,12 +12,7 @@ class Crypt {
 	 *  @return Boolean / Data (encoded)
 	 */
 	public static function encode($data) {
-		
-		if(method_exists(__CLASS__, '_' . Config::get('crypt.encode_method'))) {
-			return call_user_func_array(__CLASS__ . '::_' . Config::get('crypt.encode_method'), array($data, 'encode'));
-		}
-		
-		return false;	
+	    return self::doMethod(Config::get('crypt.encode_method') . '-encode', 'encode', $data . Config::get('crypt.salt'));	
 	}
 	
 	/** 
@@ -28,43 +21,52 @@ class Crypt {
 	 *  @return Boolean / Data (decoded)
 	 */
 	public static function decode($data) {
-
-		if(method_exists(__CLASS__, '_' . Config::get('crypt.encode_method'))) {
-			return call_user_func_array(__CLASS__ . '::_' . Config::get('crypt.encode_method'), array($data, 'decode'));
-		}
-		
-		return false;
-		
+		return str_replace(Config::get('crypt.salt'), '', self::doMethod(Config::get('crypt.encode_method') . '-decode', 'decode', $data));
 	}
 	
 	/** 
-	 *	@desc Base 64 encoding/decoding
+	 *	@desc Encode some data
 	 *  @param Data
-	 *  @param Type
-	 *  @return Boolean / String
+	 *  @return Boolean / Data (encoded)
 	 */
-	private function _base64($data, $type = 'encode') {
-		
-		if(empty($data)) return false;
-		
-		if($type == 'encode') {
-			$data = base64_encode($data . Config::get('crypt.salt'));
-		} else if($type == 'decode') {
-			$data = str_replace(Config::get('crypt.salt'), '', base64_decode($data));
-		}
-		
-		return $data;
+	public static function encrypt($data) {
+	    return self::doMethod(Config::get('crypt.encrypt_method'), 'encrypt', $data . Config::get('crypt.salt'));	
 	}
 	
 	/** 
-	 *	@desc Rot13 (LOL)
-	 *  @param Data
-	 *  @param Type
+	 *	@desc Encoding Decoding methods
+	 *  @param Method name
+	 *  @param Parameter
 	 *  @return Boolean / String
 	 */
-	private function _rot13($data, $type = '') {
-		if(empty($data)) return false;
+	private static function doMethod($name, $type, $param) {
+		
+		$methods = array(
+			'encode' => array(
+				'base64-encode' => create_function('$stuff', 'return base64_encode($stuff);'),
+				'rot13-encode' => create_function('$stuff', 'return str_rot13($stuff);')
+			),
+			
+			'decode' => array(
+				'base64-decode' => create_function('$stuff', 'return base64_decode($stuff);'),
+				'rot13-decode' => create_function('$stuff', 'return str_rot13($stuff);'),
+			),
+			
+			'encrypt' => array(
+				'des' => create_function('$stuff', 'return crypt($stuff);'),
+				'md5' => create_function('$stuff', 'return md5($stuff);'),
+				'sha1' => create_function('$stuff', 'return sha1($stuff);'),
+				'sha256' => create_function('$stuff', 'return hash("sha256", $stuff);'),
+				'sha512' => create_function('$stuff', 'return hash("sha512", $stuff);'),
+				'blowfish ' => create_function('$stuff', 'return hash("blowfish", $stuff);'),
+				'whirlpool' => create_function('$stuff', 'return hash("whirlpool", $stuff);')
+			)
+		);
+		
 
-		return str_rot13($data);
+		$func = $methods[strtolower($type)][strtolower($name)];
+		
+		return $func($param);
+		
 	}
 }	

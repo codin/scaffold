@@ -154,6 +154,14 @@ class File {
 	}
 	
 	/**
+	 *	@desc Upload a file
+	 *  @return Boolean 
+	 */
+	public static function upload() {
+
+	}
+	
+	/**
 	 *	@desc Move a file from temp location
 	 *  @param Temp location
 	 *  @param Destination
