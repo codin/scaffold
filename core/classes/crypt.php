@@ -12,7 +12,7 @@ class Crypt {
 	 *  @return Boolean / Data (encoded)
 	 */
 	public static function encode($data) {
-	    return self::doMethod(Config::get('crypt.encode_method') . '-encode', 'encode', $data . Config::get('crypt.salt'));	
+	    return self::doMethod(Config::get('crypt.encode_method'), 'encode', $data . Config::get('crypt.salt'));	
 	}
 	
 	/** 
@@ -21,7 +21,7 @@ class Crypt {
 	 *  @return Boolean / Data (decoded)
 	 */
 	public static function decode($data) {
-		return str_replace(Config::get('crypt.salt'), '', self::doMethod(Config::get('crypt.encode_method') . '-decode', 'decode', $data));
+		return str_replace(Config::get('crypt.salt'), '', self::doMethod(Config::get('crypt.encode_method'), 'decode', $data));
 	}
 	
 	/** 
@@ -34,22 +34,23 @@ class Crypt {
 	}
 	
 	/** 
-	 *	@desc Encoding Decoding methods
+	 *	@desc Encoding, Decoding and Encryption methods
 	 *  @param Method name
+	 *  @param Type of method
 	 *  @param Parameter
-	 *  @return Boolean / String
+	 *  @return String
 	 */
 	private static function doMethod($name, $type, $param) {
 		
 		$methods = array(
 			'encode' => array(
-				'base64-encode' => create_function('$stuff', 'return base64_encode($stuff);'),
-				'rot13-encode' => create_function('$stuff', 'return str_rot13($stuff);')
+				'base64' => create_function('$stuff', 'return base64_encode($stuff);'),
+				'rot13' => create_function('$stuff', 'return str_rot13($stuff);')
 			),
 			
 			'decode' => array(
-				'base64-decode' => create_function('$stuff', 'return base64_decode($stuff);'),
-				'rot13-decode' => create_function('$stuff', 'return str_rot13($stuff);'),
+				'base64' => create_function('$stuff', 'return base64_decode($stuff);'),
+				'rot13' => create_function('$stuff', 'return str_rot13($stuff);'),
 			),
 			
 			'encrypt' => array(

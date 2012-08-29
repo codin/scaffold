@@ -155,10 +155,26 @@ class File {
 	
 	/**
 	 *	@desc Upload a file
+	 *  @param Destination
 	 *  @return Boolean 
 	 */
-	public static function upload() {
-
+	public static function upload($dest = '') {
+		// Store it in another variable to make it look nicer
+		$file = $_FILES['file'];
+		$file['ext'] = end(explode(".", $file["name"]));
+		
+		// If an error return false
+		if($file['error'] > 0) return false;
+		
+		// Use default if its empty
+		if(empty($dest)) $dest = Config::get('file.default_store');
+		
+		// If everything is ok, upload it
+		if($file['size'] < Config::get('file.max_upload') and in_array($file['ext'], Config::get('file.allowed_types'))) {
+			return self::_move_from_tmp($file['tmp_name'], $dest . $file['name']);
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -167,8 +183,8 @@ class File {
 	 *  @param Destination
 	 *  @return Boolean 
 	 */
-	private static function _move_from_tmp() {
-		// TODO Move file from temp as part of upload
+	private static function _move_from_tmp($temp, $dest) {
+		return move_uploaded_file($temp, $dest);
 	}
 	
 	/**

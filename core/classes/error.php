@@ -22,13 +22,12 @@ class Error {
     
     public static function native($err, $message, $file, $line) {                
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
-        
         include_once CORE_BASE . 'defaults/error.php';
     }
     
     public static function shutdown() {
-		$trace = debug_backtrace();
-		dump($trace);
+		$trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+		if(empty($trace['args'])) return false;
         include_once CORE_BASE . 'defaults/error.php';
     }
     

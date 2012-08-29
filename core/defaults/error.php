@@ -58,8 +58,7 @@
             </h1>
             <p>Unfortunately, 
             
-            <?php var_dump($trace); ?>
-            <?php var_dump(error_get_last()); ?>
+            <?php dump($trace); ?>
         </div>
     </body>
 </html>

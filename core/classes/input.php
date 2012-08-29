@@ -30,7 +30,7 @@ class Input {
 	//  Input::hash('password', 'post');
 	public static function hash($data, $method = 'post') {
 		if(method_exists(__CLASS__, $method)) {
-			return sha1(self::$method($data));
+			return Config::encrypt(self::$method($data));
 		}
 	}
 	

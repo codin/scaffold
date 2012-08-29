@@ -13,9 +13,13 @@ class Main_controller extends Controller {
 		
 		
         //  Oh wait, this is totally an AJAX request
-        $this->ajax->output(array(
-            'content' => $this->template->render() . load_time()
+        $page = $this->ajax->output(array(
+          'content' => $this->template->render(),
+          'load_time' => load_time()
         ));
+        
+        // Render the html properly
+        echo json_decode($page)->content;
     }
     
     public function index() {

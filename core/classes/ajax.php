@@ -15,7 +15,7 @@ class Ajax {
 	    }
 	
 	    //  I do love a bit of json
-	    Response::set('json');
+	    Response::set(200);
 	    
 	    //  Store our encoded data as a variable
 	    $json = json_encode($data);
@@ -35,7 +35,7 @@ class Ajax {
         }
         
         //  Give 'em what they wanted
-        echo $json;
+        return $json;
 	}
 	
 	public static function validOrigin() {
