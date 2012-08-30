@@ -25,14 +25,16 @@ class Scaffold {
                 include_once $path;
                 
                 $u = ucfirst($class);
-                if(class_exists($u)) {
-                    //  Handle static instances
-                    //  We label them by using the method "init"
-                    if(method_exists($u, 'init')) {
-                        $this->data->{$class} = call_user_func_array($u . '::init', $this->config);
-                    }
+                if(class_exists($u)) {                
                 
+	                //  Handle static instances
+	                //  We label them by using the method "init"
+	                if(method_exists($u, 'init')) {
+	                    $this->data->{$class} = call_user_func_array($u . '::init', array($this));
+	                }
+	                
                     $this->data->{$class} = new $u($this->config);
+                    $this->instantiated[$u] = $this->data->{$class};
                 }
             }
         }

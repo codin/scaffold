@@ -21,8 +21,8 @@ class Routes {
         $search = array(':any', ':num', ':alpha');
         $replace = array('[0-9a-zA-Z~%\.:_\\-]+', '[0-9]+', '[a-zA-Z]+');
         
-        $this->error = $this->routes['error'];
-        unset($this->routes['error']);
+        $this->error = Config::get('routes.error');
+        Config::set('routes.error', '');
         
         //  Loop through our routes
         foreach(array_reverse($this->routes) as $route => $controller) {

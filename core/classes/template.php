@@ -2,11 +2,10 @@
 
 class Template {
 
-    private $_routes;
+    private static $_routes;
     public static $vars = array();
 
     public function __construct() {
-        $this->_routes = new Routes;
         
         //  Set some default variables to use in the template
         $this->set(array(
@@ -16,11 +15,15 @@ class Template {
             'scaffold_version' => scaffold_version()
         ));
     }
+    
+    public static function init($scaffold) { 
+		self::$_routes = $scaffold->instantiated['Routes'];
+    }
 
     public function render($what = '') {
         //  Set the view to load
         if(empty($what)) {
-            $what = $this->_routes->parse();
+            $what = self::$_routes->parse();
         }
         
         //  Set the view variable
