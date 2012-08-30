@@ -17,7 +17,7 @@ class Template {
     }
     
     public static function init($scaffold) { 
-		self::$_routes = $scaffold->instantiated['Routes'];
+		self::$_routes = $scaffold->instantiated['routes'];
     }
 
     public function render($what = '') {
