@@ -91,6 +91,5 @@ class Template {
 }
 
 function load_vars() {
-    $template = new Template;
-    return $template->vars();
+    return Template::vars();
 }
