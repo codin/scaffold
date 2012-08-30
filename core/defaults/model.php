@@ -6,11 +6,11 @@ class Model {
         $classes = $scaffold->classes();
         
         //  Sanity check
-        if(isset($classes['database'])) {
+        if(isset($classes->database)) {
             return;
         }
         
-        $this->db = $classes['database'];
+        $this->db = $classes->database;
         
         if(get_called_class() === __CLASS__) {
             $this->_loadModel();

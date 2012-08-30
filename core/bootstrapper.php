@@ -35,6 +35,7 @@ foreach($files as $file) {
     $filename = BASE . 'config/' . $file . '.php';
     
     if(file_exists($filename)) {
+        $config[] = $file;
         include $filename;
     } else {
         $badFiles[] = $filename;
@@ -77,10 +78,13 @@ $classes = array(
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
 $defaults = array();
+
+//  Load Scaffold
 if(file_exists($scaffoldPath)) {
     include_once $scaffoldPath;
     $scaffold = new Scaffold($config, $classes);
     
+    //  Load the default controller/model
     foreach(array('controller', 'model') as $type) {
         include_once CORE_BASE . 'defaults/' . strtolower($type) . '.php';
         $defaults[$type] = new $type;

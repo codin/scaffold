@@ -43,51 +43,6 @@ function load_time() {
     return round(microtime(true) - TIMER_START, 4);
 }
 
-//  Load core classes with optional config
-//  Not really a public function
-$loadedClasses = array();
-function load_classes($array, $config = array(), $instantiate = true) {
-    global $loadedClasses;
-    
-    //  If it's not an array of classes, bail out
-    if(!is_array($array) or empty($array)) {
-        return false;
-    }
-    
-    $classes = array();
-    
-    foreach($array as $class) {
-        //  Set a path
-        $loadedClasses[] = $path = CORE_BASE . 'classes/' . $class . '.php';
-        
-        //  And grab the file
-        fetch($path, $config);
-        
-        //  If we need to call the class, might as well do that
-        if($instantiate === true) {
-            $u = ucfirst($class);
-            
-            if(class_exists($u)) {
-                
-                //  For static classes
-                if(method_exists($u, 'init')) {
-                    $classes[$class] = $u;
-                    call_user_func($u . '::init', $config);
-                } else {
-                    $classes[$class] = new $u($config);                
-                }
-            }
-        } else {
-            $classes[] = $class;
-        }
-    }
-    
-    return $classes;
-}
-
-//  List all loaded classes
-var_dump($loadedClasses);
-
 //  Return the first element in an array
 function first($array) {
     if(is_array($array) and !empty($array)) {

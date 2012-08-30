@@ -17,10 +17,10 @@ class Main_controller extends Controller {
     }
     
     public function index() {
-        echo 'index';
+        //echo 'index';
     }
     
     public function help() {
-        echo 'test';
+        //echo 'test';
     }
 }
