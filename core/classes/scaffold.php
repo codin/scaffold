@@ -34,7 +34,7 @@ class Scaffold {
 	                }
 	                
                     $this->data->{$class} = new $u($this->config);
-                    $this->instantiated[strtolower($u)] = $this->data->{$class};
+                    $this->objects[strtolower($u)] = $this->data->{$class};
                 }
             }
         }
