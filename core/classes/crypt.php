@@ -2,7 +2,7 @@
 
 class Crypt {
 	
-	public function init() {
+	public static function init() {
 
 	}
 	
