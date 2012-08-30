@@ -31,11 +31,11 @@ class Crypt {
 	}
 	
 	/** 
-	 *	@desc Encode some data
+	 *	@desc Encrypt some data
 	 *  @param Data
 	 *  @return Boolean / Data (encoded)
 	 */
-	public static function decode($data, $salt = '', $type = '') {
+	public static function encrypt($data, $salt = '', $type = '') {
 	    if(empty($type)) $type = Config::get('crypt.encrypt_method');
 	   	if(empty($salt)) $salt = Config::get('crypt.salt');
 	   	
