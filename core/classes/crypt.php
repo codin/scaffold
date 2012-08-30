@@ -11,8 +11,11 @@ class Crypt {
 	 *  @param Data
 	 *  @return Boolean / Data (encoded)
 	 */
-	public static function encode($data) {
-	    return self::doMethod(Config::get('crypt.encode_method'), 'encode', $data . Config::get('crypt.salt'));	
+	public static function encode($data, $salt = '', $type = '') {
+	    if(empty($type)) $type = Config::get('crypt.encode_method');
+	   	if(empty($salt)) $salt = Config::get('crypt.salt');
+	   	
+	    return self::doMethod($type, 'encode', $data . $salt);	
 	}
 	
 	/** 
@@ -20,8 +23,11 @@ class Crypt {
 	 *  @param Data (encoded)
 	 *  @return Boolean / Data (decoded)
 	 */
-	public static function decode($data) {
-		return str_replace(Config::get('crypt.salt'), '', self::doMethod(Config::get('crypt.encode_method'), 'decode', $data));
+	public static function decode($data, $salt = '', $type = '') {
+	    if(empty($type)) $type = Config::get('crypt.encode_method');
+	   	if(empty($salt)) $salt = Config::get('crypt.salt');
+	   	
+	    return self::doMethod($type, 'decode', $data . $salt);	
 	}
 	
 	/** 
@@ -29,8 +35,11 @@ class Crypt {
 	 *  @param Data
 	 *  @return Boolean / Data (encoded)
 	 */
-	public static function encrypt($data) {
-	    return self::doMethod(Config::get('crypt.encrypt_method'), 'encrypt', $data . Config::get('crypt.salt'));	
+	public static function decode($data, $salt = '', $type = '') {
+	    if(empty($type)) $type = Config::get('crypt.encrypt_method');
+	   	if(empty($salt)) $salt = Config::get('crypt.salt');
+	   	
+	    return self::doMethod($type, 'encrypt', $data . $salt);	
 	}
 	
 	/** 
