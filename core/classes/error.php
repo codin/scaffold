@@ -11,8 +11,9 @@ class Error {
             @ini_set('display_errors', false);
         }
 
-        //error_reporting(Config::get('env.error_level', -1));
-        error_reporting(0);
+        error_reporting(E_ALL);
+//        error_reporting(Config::get('env.error_level', -1));
+//        error_reporting(0);
     }
     
     public static function exception($err, $message, $file, $line) {

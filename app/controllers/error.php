@@ -1,26 +1,21 @@
 <?php defined('IN_APP') or die('Get out of here');
 
-class Main_controller extends Controller {
+class Error_controller extends Controller {
     public function __construct() {
         parent::__construct();
         
         //  Set template data
         $this->template->set(array(
             'language' => Config::get('language'),
-            'title' => 'Hiya, world.',
-            'heading' => 'Howdy, world!',
+            'title' => 'Where&rsquo;s my page gone?',
+            'heading' => 'Page not found.',
             'route' => $this->routes
         ));
 		
-		
-        echo $this->template->render();
+        echo $this->template->render(404);
     }
     
-    public function index() {
-        echo 'index';
-    }
-    
-    public function help() {
-        echo 'test';
+    public function error_404() {
+        echo '404';
     }
 }

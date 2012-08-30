@@ -57,8 +57,9 @@
                 <span><?php echo $file; ?>, line <b><?php echo $line; ?></b></span>
             </h1>
             <p>Unfortunately, 
-            
-            <?php dump($trace); ?>
+
+            <?php var_dump($trace, __FUNCTION__); ?>
+            <?php var_dump(error_get_last()); ?>
         </div>
     </body>
 </html>

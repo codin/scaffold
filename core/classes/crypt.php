@@ -2,7 +2,9 @@
 
 class Crypt {
 	
-	public function init() {
+	private static $encode_method, $salt;
+	
+	public static function init() {
 
 	}
 	
@@ -12,7 +14,7 @@ class Crypt {
 	 *  @return Boolean / Data (encoded)
 	 */
 	public static function encode($data) {
-	    return self::doMethod(Config::get('crypt.encode_method'), 'encode', $data . Config::get('crypt.salt'));	
+	    return self::do(Config::get('crypt.encode_method'), 'encode', $data . Config::get('crypt.salt'));	
 	}
 	
 	/** 
@@ -21,7 +23,7 @@ class Crypt {
 	 *  @return Boolean / Data (decoded)
 	 */
 	public static function decode($data) {
-		return str_replace(Config::get('crypt.salt'), '', self::doMethod(Config::get('crypt.encode_method'), 'decode', $data));
+		return str_replace(Config::get('crypt.salt'), '', self::do(Config::get('crypt.encode_method'), 'decode', $data));
 	}
 	
 	/** 
@@ -30,7 +32,7 @@ class Crypt {
 	 *  @return Boolean / Data (encoded)
 	 */
 	public static function encrypt($data) {
-	    return self::doMethod(Config::get('crypt.encrypt_method'), 'encrypt', $data . Config::get('crypt.salt'));	
+	    return self::do(Config::get('crypt.encrypt_method'), 'encrypt', $data . Config::get('crypt.salt'));	
 	}
 	
 	/** 
@@ -40,7 +42,7 @@ class Crypt {
 	 *  @param Parameter
 	 *  @return String
 	 */
-	private static function doMethod($name, $type, $param) {
+	private static function do($name, $type, $param) {
 		
 		$methods = array(
 			'encode' => array(

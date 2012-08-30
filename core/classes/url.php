@@ -8,7 +8,7 @@ class Url {
         
         //  Strip the base path out
         if($stripBase === true) {
-            $current = str_replace(PUBLIC_PATH, '', $current);
+            $current = preg_replace('#' . PUBLIC_PATH . '#', '', $current, 1);
         }
         
         //  Stop any stupid amount of slashes

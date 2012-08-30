@@ -7,6 +7,14 @@ class Template {
 
     public function __construct() {
         $this->_routes = new Routes;
+        
+        //  Set some default variables to use in the template
+        $this->set(array(
+            'load_time' => load_time(),
+            'base' => PUBLIC_PATH,
+            
+            'scaffold_version' => scaffold_version()
+        ));
     }
 
     public function render($what = '') {
@@ -24,20 +32,34 @@ class Template {
         }
         
         //  And load the main template
-        $template = grab(TEMPLATE_PATH);
+        $template = grab(TEMPLATE_PATH, load_vars());
                 
         return $this->parse($template);
     }
     
     public function parse($template) {
         //  Parse the template
-        $template = preg_replace_callback('/{{(.*)}}/', function($matches) {
+        $template = preg_replace_callback('/{{([a-zA-Z0-9_]+)(\/[a-zA-Z0-9 \.,+\-_\/!\?]+)?}}/', function($matches) {
             //  Load all the available template variables
             $vars = load_vars();
             
-            if(isset($matches[1]) and isset($vars[$matches[1]])) {
-                return $vars[$matches[1]];
+            //  Discard the first match, and check for fallbacks
+            $matches = explode('/', last($matches));
+            
+            //  There will always be a first key
+            $match = first($matches);
+            
+            //  Set the fallback value, if it exists
+            $fallback = isset($matches[1]) ? $matches[1] : '';
+            
+            //  Return matching variables, if they exist
+            //  AND are not null or empty-ish
+            if(isset($vars[$match]) and $vars[$match]) {
+                return $vars[$match];
             }
+            
+            //  Try a fallback
+            return $fallback;
         }, $template);
         
         return $template;

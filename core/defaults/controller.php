@@ -15,6 +15,8 @@ class Controller {
     
     private function _loadController() {
         $controller = $this->routes->parse();
+        
+        var_dump($this->routes);
         $u = ucfirst($controller) . '_controller';
         
         $path = APP_BASE . 'controllers/' . $controller . '.php';
@@ -24,6 +26,12 @@ class Controller {
             
             if(class_exists($u)) {
                 $controller = new $u;
+                
+                //  Call the methods
+                $method = Config::get('default_method', 'index');
+                if(method_exists($controller, $method)) {
+                    $u->{$method}();
+                }
             }
         }
         

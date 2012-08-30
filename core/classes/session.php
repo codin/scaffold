@@ -2,7 +2,7 @@
 
 class Session {
 	
-	public function init() {
+	public static function init() {
 			
 	}
 	

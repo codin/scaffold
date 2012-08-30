@@ -11,6 +11,7 @@ class Scaffold {
         
         //  Core classes
         $this->data = load_classes($classes, array('config' => $config));
+        var_dump($this->data);
     }
     
     public function classes() {

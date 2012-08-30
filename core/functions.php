@@ -21,8 +21,6 @@ function fetch($what, $data = array()) {
     if(file_exists($what)) {
         //  Include the $data array
         if(is_array($data) and !empty($data)) extract($data);
-        
-        //  Grab the file
         include_once $what;
     } else {
         $badFiles[] = $what;
@@ -47,7 +45,10 @@ function load_time() {
 
 //  Load core classes with optional config
 //  Not really a public function
+$loadedClasses = array();
 function load_classes($array, $config = array(), $instantiate = true) {
+    global $loadedClasses;
+    
     //  If it's not an array of classes, bail out
     if(!is_array($array) or empty($array)) {
         return false;
@@ -56,9 +57,11 @@ function load_classes($array, $config = array(), $instantiate = true) {
     $classes = array();
     
     foreach($array as $class) {
+        //  Set a path
+        $loadedClasses[] = $path = CORE_BASE . 'classes/' . $class . '.php';
         
         //  And grab the file
-        fetch(CORE_BASE . 'classes/' . $class . '.php', $config);
+        fetch($path, $config);
         
         //  If we need to call the class, might as well do that
         if($instantiate === true) {
@@ -81,6 +84,9 @@ function load_classes($array, $config = array(), $instantiate = true) {
     
     return $classes;
 }
+
+//  List all loaded classes
+var_dump($loadedClasses);
 
 //  Return the first element in an array
 function first($array) {
@@ -148,4 +154,9 @@ function relative_time($date) {
 			return $rounded . ' ' . pluralise($rounded, $title) . ' ago';
 		}
 	}
+}
+
+//  Some neat little Scaffold internal functions
+function scaffold_version() {
+    return SCAFFOLD_VERSION;
 }

@@ -11,7 +11,7 @@ $config['email'] = array(
     //  Set the type of email you want to use
     //  "standard", "postmark", or "mandrill"
     //
-    //  "standard" is not recommended as it's unreliable.
+    //  NOTE: "standard" is not recommended as it's unreliable.
     'type' => 'postmark',
     
     //  Where to send application emails from

@@ -11,4 +11,4 @@
 $config['default_method'] = 'index';
 
 //  The name of the 404 view.
-$config['404_page'] = '404';
+$config['404_page'] = 'error_404';

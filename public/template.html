@@ -1,11 +1,16 @@
 <!doctype html>
 <html lang="{{language}}">
     <head>
-        <title>{{title}}</title>
+        <meta charset="utf-8">
+        <title>{{title/Welcome to Scaffold!}}</title>
+        
+        <link rel="stylesheet" href="{{base}}assets/css/style.css">
     </head>
     <body>
-        <h1>{{test}}</h1>
+        <h1>{{heading}}</h1>
         
         {{view}}
+        
+        <small>Rendered in {{load_time}} seconds, powered by Scaffold version {{scaffold_version}}.</small>
     </body>
 </html>
