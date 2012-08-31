@@ -11,12 +11,11 @@ class Main_controller extends Controller {
             'heading' => 'Howdy, world!',
             'route' => $this->routes
         ));
-		
-        echo $this->template->render();
     }
     
     public function index() {
-        //echo 'index';
+        $db = $this->model->allUsers();
+        echo $this->template->render('main');
     }
     
     public function help() {

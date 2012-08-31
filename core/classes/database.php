@@ -55,18 +55,18 @@ class Database {
     
     public function fetch() {
         //  Default structures to query the DB
+        $q = $this->_buildQuery();
         
-        
-        $query = '';
-        foreach($this->query as $key => $val) {
-            $query .= $key . ' ' . $val . ' ';
-        }
+        var_dump($q);
         
         return $this->query($query);
     }
     
     public function query($what) {
+        return $this->_db->query($what);
+    }
     
+    private function _buildQuery() {
         $structures = array(
             'select' => array('from', 'where', 'order', 'limit'),
             'insert' => array('into', 'where'),
@@ -74,6 +74,12 @@ class Database {
             'delete' => array('from', 'where')
         );
         
-        return $this->_db->query($what);
+        foreach($structures as $structure => $val) {
+            if(isset($this->query[$structure])) {
+                return $val;
+            }
+        }
+        
+        return false;
     }
 }
