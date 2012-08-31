@@ -23,6 +23,8 @@ class Controller {
     
     private function _load($what) {
         $routes = $this->routes->parse();
+
+        $class = false;
         $u = ucfirst($routes[0]) . '_' . $what;
         
         $path = APP_BASE . $what . 's/' . $routes[0] . '.php';

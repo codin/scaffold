@@ -1,3 +1,1 @@
-404, innit
-
-<?php var_dump($data); ?>
+Page <b><?php echo Url::request(); ?></b> not found. Your IP is <?php echo ip_address(); ?>, and here is a random string: <?php echo random_string(); ?>.

@@ -115,3 +115,31 @@ function relative_time($date) {
 function scaffold_version() {
     return SCAFFOLD_VERSION;
 }
+
+//  Reliably get an IP address
+function ip_address() {
+    $s = $_SERVER;
+    $methods = array('http_client_ip', 'http_pragma', 'http_x_forwarded_for', 'http_forwarded', 'remote_addr');
+    
+    foreach($methods as $method) {
+        $method = strtoupper($method);
+        if(isset($s[$method]) and !empty($s[$method])) {
+            //  Be 100% aure we're returning an IP
+            return preg_replace('/[^0-9\.:]+/', '', 'test' .$s[$method]);
+        }
+    }
+    
+    return '127.0.0.1';
+}
+
+//  Get a random string of optional length
+function random_string($length = 10, $range = 'abcdefghijklmnopqrstuvxwxyz1234567890') {
+    $return = '';
+    $strlen = strlen($range);
+    
+    for($i = 0; $i < $length; $i++) {
+        $return .= $range[rand(0, $strlen - 1)];
+    }
+    
+    return $return;
+}

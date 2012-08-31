@@ -53,6 +53,6 @@ class Routes {
             }
         }
         
-        return $this->error;
+        return array($this->error, Config::get('404_page'));
     }
 }
