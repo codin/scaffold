@@ -59,6 +59,9 @@ $classes = array(
     // Session Class.
     'session',
     
+    //csrf
+    'csrf', 
+    
     //  No depencies, optional classes
     //  May be depended on
     'response', 'ajax',
@@ -69,6 +72,9 @@ $classes = array(
     
     //  Requires the URL and Input classes
     'url', 'routes', 'template',
+    
+    //request
+    'request',
     
     //  No dependencies, but helper classes may have dependencies
     //  on any/all of the above classes. We don't know.
