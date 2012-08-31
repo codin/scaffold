@@ -1,4 +1,4 @@
-	<?php defined('IN_APP') or die('Get out of here');
+<?php defined('IN_APP') or die('Get out of here');
 
 class Main_controller extends Controller {
     public function __construct() {
@@ -15,6 +15,8 @@ class Main_controller extends Controller {
     
     public function index() {
         $db = $this->model->allUsers();
+        $this->template->set('db', $db);
+        
         echo $this->template->render('main');
     }
     

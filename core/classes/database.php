@@ -24,6 +24,10 @@ class Database {
     
     //  Start building our queries up
     public function select($what) {
+        if($what !== '*') {
+            $what = '\'' . $what . '\'';
+        }
+        
         return $this->set('select', $what);
     }
     
@@ -65,13 +69,20 @@ class Database {
     public function fetch() {
         //  Default structures to query the DB
         $query = $this->_buildQuery();
+
+        if(($result = $this->query($query))) {
+            return $result->fetchAll(PDO::FETCH_OBJ);
+        }
         
-        return $this->query($query);
+        return false;
     }
     
     public function query($what) {
-        var_dump($what);
-//        return $this->_db->query($what);
+        if($what) {
+            return $this->_db->query($what);
+        }
+        
+        return false;
     }
     
     private function _buildQuery() {
@@ -84,7 +95,7 @@ class Database {
         
         foreach($structures as $structure => $val) {
             if(isset($this->query[$structure])) {
-                $query = $structure . ' \'' . $this->query[$structure] . '\' ';
+                $query = $structure . ' ' . $this->query[$structure] . ' ';
                 
                 foreach($val as $step) {
                     if(isset($this->query[$step])) {
@@ -92,7 +103,7 @@ class Database {
                     }
                 }
                 
-                return $query;
+                return trim($query);
             }
         }
         
