@@ -14,6 +14,14 @@ class Main_controller extends Controller {
 		
 		
         echo $this->template->render();
+        
+        echo Request::post('https://chart.googleapis.com/chart', array(
+        	'cht' => 'lc',
+        	'chtt' => 'This is a test',
+        	'chs' => '200x300',
+        	'chxt' => 'x,y',
+        	'chd' => 't:40,20,30,20,100'
+        ));
     }
     
     public function index() {
