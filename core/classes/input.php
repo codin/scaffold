@@ -27,6 +27,10 @@ class Input {
 		return self::_receive($_POST, $var, $fallback);
 	}
 	
+	public static function escape($str) {
+	    return filter_var($str, FILTER_SANITIZE_STRING);
+	}
+	
 	//  Input::hash('password', 'post');
 	public static function hash($data, $method = 'post') {
 		if(method_exists(__CLASS__, $method)) {

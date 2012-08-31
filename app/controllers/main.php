@@ -1,4 +1,4 @@
-<?php defined('IN_APP') or die('Get out of here');
+	<?php defined('IN_APP') or die('Get out of here');
 
 class Main_controller extends Controller {
     public function __construct() {
@@ -12,16 +12,7 @@ class Main_controller extends Controller {
             'route' => $this->routes
         ));
 		
-		
         echo $this->template->render();
-        
-        echo Request::post('https://chart.googleapis.com/chart', array(
-        	'cht' => 'lc',
-        	'chtt' => 'This is a test',
-        	'chs' => '200x300',
-        	'chxt' => 'x,y',
-        	'chd' => 't:40,20,30,20,100'
-        ));
     }
     
     public function index() {
@@ -29,6 +20,6 @@ class Main_controller extends Controller {
     }
     
     public function help() {
-        //echo 'test';
+        echo 'test';
     }
 }

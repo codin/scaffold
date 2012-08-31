@@ -4,6 +4,7 @@ class Database {
     private $_config;
     private $_driver;
     private $_db;
+    private $_queryCount;
     
     public $query;
     
@@ -18,11 +19,7 @@ class Database {
         }
         
         //  And set PDO
-        try {
-            $this->_db = new PDO('mysql:host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'], $this->_config['user'], $this->_config['pass']);
-        } catch(Exception $e) {
-            Error::log('PDO could not be set');
-        }
+        $this->_db = new PDO('mysql:host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'], $this->_config['user'], $this->_config['pass']);
     }
     
     //  Start building our queries up
@@ -30,8 +27,21 @@ class Database {
         return $this->set('select', $what);
     }
     
-    public function where($a) {
-        return $this->set('where', $a);
+    public function from($where) {
+        return $this->set('from', $where);
+    }
+    
+    public function where($condition) {
+        return $this->set('where', $condition);
+    }
+    
+    public function limit($from, $to = -1) {
+        $limit = $to > 0 ? $from . ', ' . $to : $from;
+        return $this->set('limit', $limit);
+    }
+    
+    public function drop($table) {
+        return $this->query('drop tables `' . Input::escape($table) . '`');
     }
     
     //  Add a key to the query string
@@ -44,6 +54,26 @@ class Database {
     }
     
     public function fetch() {
-        echo join(' ', $this->query);
+        //  Default structures to query the DB
+        
+        
+        $query = '';
+        foreach($this->query as $key => $val) {
+            $query .= $key . ' ' . $val . ' ';
+        }
+        
+        return $this->query($query);
+    }
+    
+    public function query($what) {
+    
+        $structures = array(
+            'select' => array('from', 'where', 'order', 'limit'),
+            'insert' => array('into', 'where'),
+            'update' => array('set', 'where'),
+            'delete' => array('from', 'where')
+        );
+        
+        return $this->_db->query($what);
     }
 }

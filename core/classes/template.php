@@ -30,8 +30,11 @@ class Template {
         if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
             self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php');
         } else {
+            //  Set a 404
+            Response::set(404);
+            
             //  If it doesn't exist, show the error view
-            self::$vars['view'] = Config::get('404_page');
+            self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php');
         }
         
         //  And load the main template

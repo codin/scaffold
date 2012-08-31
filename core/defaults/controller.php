@@ -14,11 +14,10 @@ class Controller {
     }
     
     private function _loadController() {
-        $controller = $this->routes->parse();
+        $routes = $this->routes->parse();
+        $u = ucfirst($routes[0]) . '_controller';
         
-        $u = ucfirst($controller) . '_controller';
-        
-        $path = APP_BASE . 'controllers/' . $controller . '.php';
+        $path = APP_BASE . 'controllers/' . $routes[0] . '.php';
         
         if(file_exists($path)) {
             include_once $path;
@@ -27,7 +26,7 @@ class Controller {
                 $controller = new $u;
                 
                 //  Call the methods
-                $method = Config::get('default_method', false);
+                $method = isset($routes[1]) ? $routes[1] : Config::get('default_method', false);
                 if($method && method_exists($controller, $method)) {
                     $controller->{$method}();
                 }

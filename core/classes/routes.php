@@ -3,6 +3,7 @@
 class Routes {
     private $routes = array();
     private $url = false;
+    private $match;
     
     public function __construct() {
         //  Set our routes up
@@ -18,6 +19,14 @@ class Routes {
     }
     
     public function parse() {
+        if(!$this->match) {
+            $this->match = $this->_build();
+        }
+        
+        return $this->match;
+    }
+     
+    private function _build() {   
         $search = array(':any', ':num', ':alpha');
         $replace = array('[0-9a-zA-Z~%\.:_\\-]+', '[0-9]+', '[a-zA-Z]+');
         
@@ -32,6 +41,14 @@ class Routes {
             preg_match('#^' . $route . '$#', $this->url, $matches);
             
             if(isset($matches[0])) {
+                //  Handle methods
+                if(strpos($controller, '.') !== false) {
+                    $controller = explode('.', $controller);
+                    $controller = array($controller[0], $controller[1]);
+                } else {
+                    $controller = array($controller);
+                }
+
                 return $controller;
             }
         }
