@@ -2,5 +2,7 @@
 
 class Main_model {
     public function __construct() {
+        echo 'test';
+        echo $this->database->select('everything')->from('google')->fetch();
     }
 }

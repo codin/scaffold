@@ -91,7 +91,7 @@ if(file_exists($scaffoldPath)) {
     $scaffold = new Scaffold($config, $classes);
     
     //  Load the default controller/model
-    foreach(array('controller', 'model') as $type) {
+    foreach(array('model', 'controller') as $type) {
         include_once CORE_BASE . 'defaults/' . strtolower($type) . '.php';
         $defaults[$type] = new $type;
         

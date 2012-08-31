@@ -21,5 +21,10 @@ $config['database'] = array(
     'name' => 'scaffold',
     
     //  And the port (usually 3306)
-    'port' => 3306
+    'port' => 3306,
+    
+    //  Database driver (defaults to MySQL)
+    //  Since Scaffold uses PDO, you can choose from any of these:
+    //  http://php.net/manual/en/pdo.drivers.php
+    'driver' => 'mysql'
 );

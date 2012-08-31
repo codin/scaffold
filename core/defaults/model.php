@@ -10,7 +10,7 @@ class Model {
         $this->routes = $scaffold->objects['routes'];
         
         //  Sanity check
-        if(isset($classes->database)) {
+        if(!isset($classes->database)) {
             return;
         }
         
@@ -23,7 +23,7 @@ class Model {
     
     private function _loadModel() {
         $model = $this->routes->parse();
-        $u = ucfirst($model) . '_Model';
+        $u = ucfirst($model) . '_model';
         
         $path = APP_BASE . 'models/' . $model . '.php';
         
