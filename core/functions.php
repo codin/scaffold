@@ -134,12 +134,22 @@ function ip_address() {
 
 //  Get a random string of optional length
 function random_string($length = 10, $range = 'abcdefghijklmnopqrstuvxwxyz1234567890') {
-    $return = '';
+    $return = array();
     $strlen = strlen($range);
     
     for($i = 0; $i < $length; $i++) {
-        $return .= $range[rand(0, $strlen - 1)];
+        $output = $range[rand(0, $strlen - 1)];
+        if($i > 1 and $return[$i - 1] === $output) {
+            $output = $range[rand(0, $strlen - 1)];
+        }
+        
+        $return[$i] = $output;
     }
     
-    return $return;
+    return join('', $return);
+}
+
+//  Using HTTPS?
+function is_https() {
+    return $_SERVER['HTTPS'] === 'on';
 }
