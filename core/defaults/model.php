@@ -1,9 +1,13 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 class Model {
+	public $routes;
+	
     public function __construct() {
         global $scaffold;
         $classes = $scaffold->classes();
+        
+        $this->routes = $scaffold->objects['routes'];
         
         //  Sanity check
         if(isset($classes->database)) {
