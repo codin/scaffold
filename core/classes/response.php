@@ -41,7 +41,12 @@ class Response {
 			
 			//  XML/RSS headers
 			'xml' => 'content-type: text/xml',
-			'rss' => 'content-type: text/xml'
+			'rss' => 'content-type: text/xml',
+			
+			//  Images
+			'png' => 'content-type: image/png',
+			'jpg' => 'content-type: image/jpg; content-type: image/jpeg',
+			'gif' => 'content-type: image/gif'
 		);
 		
 		if(isset($codes[$code])) {

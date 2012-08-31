@@ -30,6 +30,10 @@ class Database {
         return $this->set('select', $what);
     }
     
+    public function where($a) {
+        return $this->set('where', $a);
+    }
+    
     //  Add a key to the query string
     public function set($key, $val) {
         //  Set it

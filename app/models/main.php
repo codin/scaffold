@@ -1,8 +1,8 @@
 <?php defined('IN_APP') or die('Get out of here');
 
-class Main_model {
+class Main_model extends Model {
     public function __construct() {
-        echo 'test';
-        echo $this->database->select('everything')->from('google')->fetch();
+        parent::__construct();
+        echo $this->db->select('everything')->where('google')->fetch();
     }
 }
