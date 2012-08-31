@@ -83,22 +83,15 @@ $classes = array(
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
-$defaults = array();
 
 //  Load Scaffold
 if(file_exists($scaffoldPath)) {
     include_once $scaffoldPath;
     $scaffold = new Scaffold($config, $classes);
     
-    //  Load the default controller/model
-    foreach(array('model', 'controller') as $type) {
-        include_once CORE_BASE . 'defaults/' . strtolower($type) . '.php';
-        $defaults[$type] = new $type;
-        
-        if(method_exists($defaults[$type], 'init')) {
-            call_user_func($defaults[$type] . '::init');
-        }
-    }
+    //  Load the default controller
+    include_once CORE_BASE . 'defaults/controller.php';
+    $controller = new Controller;
 } else {
     $badFiles[] = $scaffoldPath;
     Error::log('Scaffold class not loaded. Sky is falling.');

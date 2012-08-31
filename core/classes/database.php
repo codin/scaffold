@@ -28,10 +28,19 @@ class Database {
     }
     
     public function from($where) {
-        return $this->set('from', $where);
+        return $this->set('from', '`' . Input::escape($where) . '`');
     }
     
     public function where($condition) {
+        if(is_array($condition)) {
+            $return = '';
+            foreach($condition as $key => $value) {
+                $return .= '`' . $key . '` = \'' . $value . '\' and ';
+            }
+            
+            $condition = substr($return, 0, -5);
+        }
+        
         return $this->set('where', $condition);
     }
     
@@ -55,15 +64,14 @@ class Database {
     
     public function fetch() {
         //  Default structures to query the DB
-        $q = $this->_buildQuery();
-        
-        var_dump($q);
+        $query = $this->_buildQuery();
         
         return $this->query($query);
     }
     
     public function query($what) {
-        return $this->_db->query($what);
+        var_dump($what);
+//        return $this->_db->query($what);
     }
     
     private function _buildQuery() {
@@ -76,7 +84,15 @@ class Database {
         
         foreach($structures as $structure => $val) {
             if(isset($this->query[$structure])) {
-                return $val;
+                $query = $structure . ' \'' . $this->query[$structure] . '\' ';
+                
+                foreach($val as $step) {
+                    if(isset($this->query[$step])) {
+                        $query .= $step . ' ' . $this->query[$step] . ' ';
+                    }
+                }
+                
+                return $query;
             }
         }
         

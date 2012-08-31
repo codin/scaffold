@@ -9,30 +9,38 @@ class Controller {
         }
         
         if(get_called_class() === __CLASS__) {
-            $this->_loadController();
+            //  Grab the default model
+            include_once CORE_BASE . 'defaults/model.php';
+            
+            //  Load the controller
+            $this->_load('controller');
         }
+
+        //  And call the model
+        $this->defaultModel = new Model;
+        $this->model = $this->_load('model');
     }
     
-    private function _loadController() {
+    private function _load($what) {
         $routes = $this->routes->parse();
-        $u = ucfirst($routes[0]) . '_controller';
+        $u = ucfirst($routes[0]) . '_' . $what;
         
-        $path = APP_BASE . 'controllers/' . $routes[0] . '.php';
+        $path = APP_BASE . $what . 's/' . $routes[0] . '.php';
         
         if(file_exists($path)) {
             include_once $path;
             
             if(class_exists($u)) {
-                $controller = new $u;
+                $class = new $u;
                 
                 //  Call the methods
                 $method = isset($routes[1]) ? $routes[1] : Config::get('default_method', false);
-                if($method && method_exists($controller, $method)) {
-                    $controller->{$method}();
+                if($method && method_exists($class, $method)) {
+                    $class->{$method}();
                 }
             }
         }
         
-        return $controller;
+        return $class;
     }
 }
