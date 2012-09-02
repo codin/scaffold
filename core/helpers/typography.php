@@ -1,24 +1,34 @@
 <?php !defined('IN_APP') and header('location: /');
 
 class Typography {
+    //  Dashes
+    private static $dumbDashes = array('---', '--');
+    private static $smartDashes = array('&mdash;', '&ndash;');
+    
+    //  Ellipses
+    private static $dumbEllipses = array('...', '***');
+    private static $smartEllipses = array('&hellip;', '&#8943;');
+    
+    //  Ignore tags
+    private static $ignoreTags = 'code|pre|kbd|samp|tt|style|script';
+
     //  Run through all the filters 'n' stuff
     public static function enhance($str) {
-        //  TODO: make it not run in these tags
-        $tags = 'code|pre|kbd|samp|tt|style|script';
-        
         $str = self::smartQuote($str);
         $str = self::smartDash($str);
         $str = self::autoEllipsis($str);
+        
+        //  Undo anything within code tags
+        $str = preg_replace_callback('/<(' . self::$ignoreTags. ')>(.*)<\/(' . self::$ignoreTags . ')>/', function($matches) {
+            return Typography::diminish($matches[0]);
+        }, $str);
         
         return $str;
     }
     
     //  Give our dashes a nice old smart touch
     public static function smartDash($str) {
-        $search = array('---', '--');
-        $replace = array('&mdash;', '&ndash;');
-        
-        return str_replace($search, $replace, $str);
+        return str_replace(self::$dumbDashes, self::$smartDashes, $str);
     }
     
     //  Add some smart quotes
@@ -43,6 +53,17 @@ class Typography {
     
     //  Make our dots proper like
     public static function autoEllipsis($str) {
-        return str_replace('...', '&hellip;', $str);
+        return str_replace(self::$dumbEllipses, self::$smartEllipses, $str);
+    }
+    
+    public static function diminish($str) {
+        //  Quotes
+        $smart = array('&lsquo;', '&rsquo;', '&ldquo;', '&rdquo;');
+        $dumb = array('\'', '\'', '"', '"');
+        
+        return str_replace(
+            array_merge($smart, self::$smartDashes, self::$smartEllipses),
+            array_merge($dumb, self::$dumbDashes, self::$dumbEllipses),
+        $str);
     }
 }

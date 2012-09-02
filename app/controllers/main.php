@@ -11,8 +11,6 @@ class Main_controller extends Controller {
             'heading' => 'Howdy, world!',
             'route' => $this->routes
         ));
-        
-        echo Typography::enhance("Testing <code>var str = '';</code> a b c d e f g... -- --- This \"is\" '' a 'test', you know -- that cool ol' thing?");
     }
     
     public function index() {
