@@ -153,3 +153,12 @@ function random_string($length = 10, $range = 'abcdefghijklmnopqrstuvxwxyz123456
 function is_https() {
     return $_SERVER['HTTPS'] === 'on';
 }
+
+//  Auto-link any URLs
+function linkify($url) {
+    $url = preg_replace('/(https?:\/\/\S+)/', '<a href="\1" title="\1">\1</a>', $url);
+    $url = preg_replace('/(^|\s)@(\w+)/', '<a class="twitter-link" href="http://twitter.com/\2"><span>@</span>\2</a>', $url);
+    $url = preg_replace('/(^|\s)#(\w+)/', '\1<a class="hashtag-link" href="http://search.twitter.com/search?q=%23\2">#\2</a>', $url);
+    
+    return $url;
+}

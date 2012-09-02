@@ -45,41 +45,15 @@ foreach($files as $file) {
 //  Include the functions
 include_once CORE_BASE . 'functions.php';
 
-//  Load our core classes
-$classes = array(
-    //  No dependencies, vital for page load
-    'config', 'error',
-    
-    //  Crypting stuff
-    'crypt',
-    
-    //  Database class. Everything uses this. Apart from config and error.
-    'database',
-    
-    // Session Class.
-    'session',
-    
-    //csrf
-    'csrf', 
-    
-    //  No depencies, optional classes
-    //  May be depended on
-    'response', 'ajax',
-    
-    //  Requires the config class
-    //  May be depended on
-    'file', 'image', 'input',
-    
-    //  Requires the URL and Input classes
-    'url', 'routes', 'template',
-    
-    //request
-    'request',
-    
-    //  No dependencies, but helper classes may have dependencies
-    //  on any/all of the above classes. We don't know.
-    'helper'
-);
+//  Include the helper classes
+$helpers = array('email', 'typography');
+foreach($helpers as $helper) {
+    //  Load, but don't instantiate
+    fetch(CORE_BASE . 'helpers/' . $helper . '.php');
+}
+
+//  Our core classes to load
+$classes = array('config', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'file', 'image', 'input', 'url', 'routes', 'template', 'request', 'helper');
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
