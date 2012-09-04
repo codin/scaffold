@@ -45,22 +45,39 @@ class Database {
 	    return $this->_set('update', $what);
     }
     
+    public function insert() {
+        $this->query['insert'] = '';
+        return $this;
+    }
+    
+    public function delete() {
+    	$this->query['delete'] = '';
+    	return $this;
+    }
+    
+    public function into($table) {
+    	return $this->_set('into', $table);
+    }
+    
+    public function values($values) {
+    	// add the first bracket
+    	$value_string = '(';
+    	
+    	// concatenate
+    	foreach($values as $key => $value) {
+    		$value_string .= '\'' . Input::escape($value) . '\', ';
+    	}
+    	
+    	// remove the last comma
+    	return $this->_set('values', substr($value_string, 0, -2) . ')');
+    }
+    
     public function from($where) {
         return $this->_set('from', '`' . Input::escape($where) . '`');
     }
     
-    public function where($condition) {
-        if(is_array($condition)) {
-            $return = '';
-            foreach($condition as $key => $value) {
-            	$value = (is_numeric($value) ? $value : '\'' . $value . '\'');
-                $return .= '`' . $key . '`=' . $value . ' and ';
-            }
-            
-            $condition = substr($return, 0, -5);
-        }
-        
-        return $this->_set('where', $condition);
+    public function where($condition) { 
+        return $this->_set('where', $this->_buildCondition($condition));
     }
     
     public function limit($from, $to = -1) {
@@ -74,20 +91,31 @@ class Database {
     
     //  Add a key to the query string
     private function _set($key, $val) {
-        //  Set it
-        $this->query[$key] = $val;
+       	if($val) {
+	        //  Set it
+	        $this->query[$key] = $val;
+	    }
         
         //  And chain
         return $this;
     }
     
-    public function set($set = array()) {
-    	$key = key($set);
-    	$cond =  $key . '=' .  '\'' . $set[$key] . '\'';
-    	//dump($cond);
-    	$this->_set('set', $cond);
+    private function _buildCondition($condition) {
+    	if(is_array($condition)) {
+    	    $return = '';
+    	    foreach($condition as $key => $value) {
+    	    	$value = (is_numeric($value) ? $value : '\'' . $value . '\'');
+    	        $return .= '`' . $key . '`=' . Input::escape($value) . ' and ';
+    	    }
+    	    
+    	    return substr($return, 0, -5);
+    	}
     	
-    	return $this;
+    	return false;
+    }
+    
+    public function set($condition) {
+        return $this->_set('set', $this->_buildCondition($condition));
     }
     
     public function fetch() {
@@ -105,7 +133,6 @@ class Database {
         if($what) {
             $this->queryCount++;
             $this->latestQuery = $what;
-            
             // reset the query
             $this->query = '';
             
@@ -123,7 +150,7 @@ class Database {
     private function _buildQuery() {
         $structures = array(
             'select' => array('from', 'where', 'order', 'limit'),
-            'insert' => array('into', 'where'),
+            'insert' => array('into', 'where', 'values'),
             'update' => array('set', 'where'),
             'delete' => array('from', 'where')
         );
