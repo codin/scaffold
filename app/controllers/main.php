@@ -16,12 +16,11 @@ class Main_controller extends Controller {
     }
     
     public function index() {
-        $db = (object) array(
-        	'users' =>	$this->model->allUsers(),
+        $this->template->set('db', array(
+        	'users' => $this->model->allUsers(),
         	'edit' => $this->model->editUser()
-        );
+        ));
         
-        $this->template->set('db', $db);
         echo $this->template->render('main');
     }
     
