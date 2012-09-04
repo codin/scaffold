@@ -9,7 +9,9 @@ class Main_controller extends Controller {
             'language' => Config::get('language'),
             'title' => 'Hiya, world.',
             'heading' => 'Howdy, world!',
-            'route' => $this->routes
+            'route' => $this->routes,
+            
+            'query_count' => $this->database->queryCount()
         ));
     }
     
