@@ -21,7 +21,11 @@ class Database {
         }
         
         //  And set PDO
-        $this->_db = new PDO('mysql:host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'], $this->_config['user'], $this->_config['pass']);
+        try {
+	        $this->_db = new PDO('mysql:host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'], $this->_config['user'], $this->_config['pass']);
+	    } catch(PDOException $e) {
+	    	Error::grab($e);
+	    }
     }
     
     //  Start building our queries up
@@ -30,29 +34,38 @@ class Database {
             $what = '\'' . $what . '\'';
         }
         
-        return $this->set('select', $what);
+        return $this->_set('select', $what);
+    }
+    
+    public function update($what) {
+	    if($what !== '*') {
+	        $what = '`' . $what . '`';
+	    }
+	    
+	    return $this->_set('update', $what);
     }
     
     public function from($where) {
-        return $this->set('from', '`' . Input::escape($where) . '`');
+        return $this->_set('from', '`' . Input::escape($where) . '`');
     }
     
     public function where($condition) {
         if(is_array($condition)) {
             $return = '';
             foreach($condition as $key => $value) {
-                $return .= '`' . $key . '` = \'' . $value . '\' and ';
+            	$value = (is_numeric($value) ? $value : '\'' . $value . '\'');
+                $return .= '`' . $key . '`=' . $value . ' and ';
             }
             
             $condition = substr($return, 0, -5);
         }
         
-        return $this->set('where', $condition);
+        return $this->_set('where', $condition);
     }
     
     public function limit($from, $to = -1) {
         $limit = $to > 0 ? $from . ', ' . $to : $from;
-        return $this->set('limit', $limit);
+        return $this->_set('limit', $limit);
     }
     
     public function drop($table) {
@@ -60,12 +73,21 @@ class Database {
     }
     
     //  Add a key to the query string
-    public function set($key, $val) {
+    private function _set($key, $val) {
         //  Set it
         $this->query[$key] = $val;
         
         //  And chain
         return $this;
+    }
+    
+    public function set($set = array()) {
+    	$key = key($set);
+    	$cond =  $key . '=' .  '\'' . $set[$key] . '\'';
+    	//dump($cond);
+    	$this->_set('set', $cond);
+    	
+    	return $this;
     }
     
     public function fetch() {
@@ -84,10 +106,18 @@ class Database {
             $this->queryCount++;
             $this->latestQuery = $what;
             
+            // reset the query
+            $this->query = '';
+            
             return $this->_db->query($what);
         }
         
         return false;
+    }
+    
+    public function go() {
+    	$query = $this->_buildQuery();
+    	return $this->query($query);
     }
     
     private function _buildQuery() {

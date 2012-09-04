@@ -6,6 +6,10 @@ class Main_model extends Model {
     }
     
     public function allUsers() {
-        return $this->db->select('*')->from('users')->fetch();
+        return $this->db->select('*')->from('test')->fetch();
+    }
+    
+    public function editUser() {
+    	return $this->db->update('test')->set(array('name' => 'hello'))->where(array('id' => 2))->go();
     }
 }

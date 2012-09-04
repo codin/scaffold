@@ -45,6 +45,14 @@ class Error {
         return (object) $error;
     }
     
+    public static function grab($ex) {
+    	$trace = $ex->getTrace();
+    	$message = $ex->getMessage();
+    	$line = $ex->getLine();
+    	$file = $ex->getFile();
+        include_once CORE_BASE . 'defaults/error.php';
+    }
+    
     public static function output() {
         return self::$errors;
     }

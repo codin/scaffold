@@ -56,10 +56,9 @@
                 
                 <span><?php echo $file; ?>, line <b><?php echo $line; ?></b></span>
             </h1>
-            <p>Unfortunately, 
-
-            <?php var_dump($trace, __FUNCTION__); ?>
-            <?php var_dump(error_get_last()); ?>
+            <p>Unfortunately, You have an error on line <code><?php echo $line; ?></code> of <code><?php echo $file; ?></code> in the function <code><?php echo $trace[0]['function']; ?></code>.</p>
+            
+            <p> Here are the arguments:  <code><?php var_dump($trace[0]['args']); ?></code> </p>
         </div>
     </body>
 </html>
