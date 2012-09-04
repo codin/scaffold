@@ -7,6 +7,8 @@ class Database {
     private $_queryCount;
     
     public $query;
+    public $latestQuery;
+    public $queryCount;
     
     //  Set up the Database object
     public function __construct($data) {
@@ -79,6 +81,9 @@ class Database {
     
     public function query($what) {
         if($what) {
+            $this->queryCount++;
+            $this->latestQuery = $what;
+            
             return $this->_db->query($what);
         }
         
@@ -108,5 +113,13 @@ class Database {
         }
         
         return false;
+    }
+    
+    public function latestQuery() {
+        return $this->latestQuery;
+    }
+    
+    public function queryCount() {
+        return $this->queryCount;
     }
 }
