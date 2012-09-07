@@ -5,12 +5,10 @@ class Request {
 	private static $_curl;
 	
 	public static function init() {
-		// Init our curl
 		self::$_curl = curl_init();
 	}
 	
 	public static function post($url, $vars = array()) {
-		// cast it to an array
 		$vars = (array) $vars;
 		
 		// URL fitting

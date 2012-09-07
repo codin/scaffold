@@ -13,6 +13,13 @@ class Main_controller extends Controller {
             
             'query_count' => $this->database->queryCount()
         ));
+        
+        $this->validator->ensure('iam@visualidiot.com')
+                        ->is(':email')
+                        ->lessThan(40)
+                        ->has('a');
+        
+        var_dump($this->validator->hasErrors());
     }
     
     public function index() {

@@ -8,6 +8,10 @@
  *    If you want application code, check out the "app" folder.
  *    Otherwise, see http://scaffold.im for more details.
  */
+ 
+if(version_compare(phpversion(), '5.3.2') < 0) {
+    die("You're running an old version of PHP, which means you can't run Scaffold. Sorry about that!\n");
+}
 
 //  Set the base URL
 //  You shouldn't need to change this, unless you change your file paths
@@ -24,15 +28,11 @@ define('SCAFFOLD_VERSION', 0.1);
 //  Start your clocks, mister!
 define('TIMER_START', microtime(true));
 
-//  Don't load the boostrapper for the command-line.
-//  That's just stupid.
-if(PHP_SAPI !== 'cli') {
-    //  Load our paths, since that's required for the bootstrapper
-    require BASE . 'config/paths.php';
-    
-    //  And load the bootstrapper
-    require CORE_BASE . 'bootstrapper.php';
+//  Load our paths, since that's required for the bootstrapper
+require BASE . 'config/paths.php';
 
-    //  Stop any further interaction from the server
-    exit;
-}
+//  Load the boostrapper
+require CORE_BASE . (PHP_SAPI === 'cli' ? 'cli/' : '') . 'bootstrapper.php';
+
+//  Buh-bye!
+exit;
