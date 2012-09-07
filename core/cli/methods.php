@@ -25,6 +25,18 @@ return array(
         }
     },
     
+    'uninstall' => function($arg) {
+    	$path = APP_BASE . 'helpers/' . $arg . '.php';
+    	
+    	// if its a file
+    	if(is_file($path) and file_exists($path)) {
+    		unlink($path);
+    		echo ucfirst($arg) . ' helper has been uninstalled successfully.';
+    	} else {
+    		echo 'Unable to remove helper: ' . $arg;
+    	}
+    },
+    
     //  Alias these two
     'version' => SCAFFOLD_VERSION,
     '-v' => SCAFFOLD_VERSION,
