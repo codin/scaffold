@@ -24,7 +24,7 @@ class CSRF {
 	 *  @desc Check if its a real token
 	 *  @return Boolean
 	 */
-	public static function is_token($token) {
+	public static function valid($token) {
 		
 		$tokens = Session::get('tokens');
 		
