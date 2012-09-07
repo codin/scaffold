@@ -29,9 +29,8 @@ return array(
     	$path = APP_BASE . 'helpers/' . $arg . '.php';
     	
     	// if its a file
-    	if(is_file($path) and file_exists($path)) {
-    		unlink($path);
-    		echo ucfirst($arg) . ' helper has been uninstalled successfully.';
+    	if(is_file($path) and file_exists($path) and unlink($path)) {
+    		echo '1 helper has been uninstalled successfully.';
     	} else {
     		echo 'Unable to remove helper: "' . $arg . '"';
     	}
