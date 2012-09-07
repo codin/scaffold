@@ -33,11 +33,11 @@ return array(
     		unlink($path);
     		echo ucfirst($arg) . ' helper has been uninstalled successfully.';
     	} else {
-    		echo 'Unable to remove helper: ' . $arg;
+    		echo 'Unable to remove helper: "' . $arg . '"';
     	}
     },
     
-    //  Alias these two
+    //  Alias these 
     'version' => SCAFFOLD_VERSION,
     '-v' => SCAFFOLD_VERSION,
     
