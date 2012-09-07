@@ -24,11 +24,15 @@ define('SCAFFOLD_VERSION', 0.1);
 //  Start your clocks, mister!
 define('TIMER_START', microtime(true));
 
-//  Load our paths, since that's required for the bootstrapper
-require BASE . 'config/paths.php';
+//  Don't load the boostrapper for the command-line.
+//  That's just stupid.
+if(PHP_SAPI !== 'cli') {
+    //  Load our paths, since that's required for the bootstrapper
+    require BASE . 'config/paths.php';
+    
+    //  And load the bootstrapper
+    require CORE_BASE . 'bootstrapper.php';
 
-//  And load the bootstrapper
-require CORE_BASE . 'bootstrapper.php';
-
-//  Stop any further interaction from the server
-exit;
+    //  Stop any further interaction from the server
+    exit;
+}
