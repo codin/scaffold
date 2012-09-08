@@ -5,21 +5,21 @@
 
 error_reporting(0);
 
+include_once 'cli.php';
+
+// put some spacing before
+echo "\n";
+
 //  Load our methods
 if(isset($argv[1])) {
     $methods = include_once 'methods.php';
-
-    //  Handle all the requests here
-    if(isset($methods[$argv[1]])) {
-        $method = $methods[$argv[1]];
-        
-        if(is_callable($method)) {
-            $method(isset($argv[2]) ? $argv[2] : null);
-        } else {
-            echo $method;
-        }
-    }
+   	
+    // create a new Cli object
+    $cli = new Cli($argv, $methods);
+    
+    // parse the inputs
+    $cli->parse();
 }
 
 //  Stupid CLI
-echo "\n";
+echo "\n" . "\n";
