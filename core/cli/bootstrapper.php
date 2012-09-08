@@ -1,25 +1,18 @@
 <?php !defined('IN_APP') and header('location: /');
 
-//  Scaffold v0.1 CLI
-//  SUPERBETA
+/**
+ *  Scaffold CLI v0.1
+ */
+ 
+//  We make the errors, not PHP
+//error_reporting(0);
 
-error_reporting(0);
+//  Include the command-line base
+require_once 'command.php';
 
-include_once 'cli.php';
+//  Set up the Command Center
+$cmd = new Command($argv);
+$cmd->run();
 
-// put some spacing before
-echo "\n";
-
-//  Load our methods
-if(isset($argv[1])) {
-    $methods = include_once 'methods.php';
-   	
-    // create a new Cli object
-    $cli = new Cli($argv, $methods);
-    
-    // parse the inputs
-    $cli->parse();
-}
-
-//  Stupid CLI
-echo "\n" . "\n";
+//  And we're done!
+echo PHP_EOL;

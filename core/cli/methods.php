@@ -1,7 +1,14 @@
 <?php
 
-return array(
+$methods = array(
+    //  Install a helper
     'install' => function($arg) {
+    
+        if(!$arg) {
+            echo 'Wait, what did you want me to install?';
+            return;
+        }
+    
         // $endpoint = 'http://helpers.scaffold.im';
         $endpoint = 'http://localhost:8000/' . $arg;
         $json = json_decode(file_get_contents($endpoint . '/about.json'));
@@ -25,6 +32,7 @@ return array(
         }
     },
     
+    //  Uninstall/remove a helper
     'uninstall' => function($arg) {
     	$path = APP_BASE . 'helpers/' . $arg . '.php';
     	
@@ -36,9 +44,34 @@ return array(
     	}
     },
     
-    //  Alias these 
+    //  Give the current Scaffold version
     'version' => SCAFFOLD_VERSION,
-    '-v' => SCAFFOLD_VERSION,
     
-    'update' => function() {}
+    //  Update to the latest version
+    'update' => function() {},
+    
+    //  What's the date?
+    'now' => function() {
+        echo time();
+    },
+    
+    'url' => function() {
+        `echo 'test' | pbcopy`
+    }
 );
+
+
+function list_methods() {
+    global $methods;
+    return $methods;
+}
+
+//  List methods
+$methods['help'] = $methods['list'] = function() {
+    echo 'You can currently call any of these methods:
+
+';
+    foreach(list_methods() as $key => $val) {
+        echo $key . "\n";
+    }
+};
