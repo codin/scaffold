@@ -32,7 +32,7 @@ define('TIMER_START', microtime(true));
 require BASE . 'config/paths.php';
 
 //  Load the boostrapper
-require CORE_BASE . (PHP_SAPI === 'cli' ? 'cli/' : '') . 'bootstrapper.php';
+require CORE_BASE . 'bootstrapper.php';
 
 //  Buh-bye!
 exit;

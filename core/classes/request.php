@@ -22,6 +22,10 @@ class Request {
 	}
 	
 	private static function doRequest($url) {
+	    if(!self::$_curl) {
+	        self::init();
+	    }
+		
 		self::set(CURLOPT_RETURNTRANSFER, true);
 		self::set(CURLOPT_URL, $url);
 	}
