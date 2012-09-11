@@ -136,7 +136,7 @@ class Database {
             // reset the query
             $this->query = '';
             
-            return $this->_db->query($what);
+            return $this->_db ? $this->_db->query($what) : false;
         }
         
         return false;
