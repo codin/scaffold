@@ -4,27 +4,20 @@ class Email {
     public $to, $subject, $body;
     
     public function to($who) {
-    	if(isset($who)) {
-    		$this->to = $who;
-    	}
-    	
-    	return $this;
+    	return $this->set('to', $who);
     }
     
     public function subject($value) {
-    	if(isset($value)) {
-    		$this->subject = $value;
-    	}
-    	
-    	return $this;
+    	return $this->set('subject', $value);
     }
     
     public function body($value) {
-    	if(isset($value)) {
-    		$this->body = $value;
-    	}
-    	
-    	return $this;
+    	return $this->set('body', $value);
+    }
+    
+    public function set($key, $val) {
+        if($key and $val) $this->{$key} = $val;
+        return $this;
     }
     
     public function send() {
