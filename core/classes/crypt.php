@@ -53,28 +53,27 @@ class Crypt {
 		
 		$methods = array(
 			'encode' => array(
-				'base64' => create_function('$stuff', 'return base64_encode($stuff);'),
-				'rot13' => create_function('$stuff', 'return str_rot13($stuff);')
+				'base64' => 'base64_encode($stuff);',
+				'rot13' => 'str_rot13($stuff);'
 			),
 			
 			'decode' => array(
-				'base64' => create_function('$stuff', 'return base64_decode($stuff);'),
-				'rot13' => create_function('$stuff', 'return str_rot13($stuff);'),
+				'base64' => 'base64_decode($stuff);',
+				'rot13' => 'str_rot13($stuff);'
 			),
 			
 			'encrypt' => array(
-				'des' => create_function('$stuff', 'return crypt($stuff);'),
-				'md5' => create_function('$stuff', 'return md5($stuff);'),
-				'sha1' => create_function('$stuff', 'return sha1($stuff);'),
-				'sha256' => create_function('$stuff', 'return hash("sha256", $stuff);'),
-				'sha512' => create_function('$stuff', 'return hash("sha512", $stuff);'),
-				'blowfish ' => create_function('$stuff', 'return hash("blowfish", $stuff);'),
-				'whirlpool' => create_function('$stuff', 'return hash("whirlpool", $stuff);')
+				'des' => 'crypt($stuff);',
+				'md5' => 'md5($stuff);',
+				'sha1' => 'sha1($stuff);',
+				'sha256' => 'hash("sha256", $stuff);',
+				'sha512' => 'hash("sha512", $stuff);',
+				'blowfish ' => 'hash("blowfish", $stuff);',
+				'whirlpool' => 'hash("whirlpool", $stuff);'
 			)
 		);
 		
-
-		$func = $methods[strtolower($type)][strtolower($name)];
+		$func = create_function('$stuff', 'return ' . $methods[strtolower($type)][strtolower($name)]);
 		
 		return $func($param);
 		
