@@ -26,10 +26,11 @@ class Email {
      	}
      	
      	if(Config::get('email.type') == 'postmark') {
-     		return Postmark::send((object) array(
-     			'to' => $this->to,
-     			'subject' => $this->subject,
-     			'body' => $this->body
+     		return Postmark::send(array(
+     			'From' => Config::get('email.from'),
+     			'To' => $this->to,
+     			'Subject' => $this->subject,
+     			'HtmlBody' => $this->body
      		));
      	}
     }
@@ -41,7 +42,6 @@ class Postmark {
 
 	public static function send($data) {
 		// Get the config information
-		$sender = Config::get('email.from');
 		$pm = Config::get('email.postmark');
 		$key = $pm['apiKey'];
 				
@@ -52,21 +52,7 @@ class Postmark {
 			'X-Postmark-Server-Token: ' . $key
 		);
 		
-		dump(json_encode(array(
-			'From' => $sender,
-			'To' => $data->to,
-			'Subject' => $data->subject,
-			'HtmlBody' => $data->body
-		)));
-		
-		Request::post('http://api.postmarkapp.com/email',
-			json_encode(array(
-				'From' => $sender,
-				'To' => $data->to,
-				'Subject' => $data->subject,
-				'HtmlBody' => '<h1>' . $data->body . '<h1>'
-			)
-		));
+		Request::post('http://api.postmarkapp.com/email', json_encode($data));
 		
 		Request::set(CURLOPT_HTTPHEADER, $headers);
 		$return = Request::send();
