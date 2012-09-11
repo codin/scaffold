@@ -5,12 +5,10 @@ class Helper {
     //  Load a helper with an optional full URL
     public function load($helper, $url = false) {
         if($url === false) {
-            $url = 'helpers/' . preg_replace('/(\/.*)+/', '', $helper) . '.php';
+            $url = APP_BASE . 'helpers/' . preg_replace('/(\/.*)+/', '', $helper) . '.php';
             
-            if(file_exists(APP_BASE . $url)) {
-            	$url = APP_BASE . $url;
-            } else {
-            	$url = CORE_BASE . $url;
+            if(!file_exists($url)) {
+				return false;
             }
         }
         
