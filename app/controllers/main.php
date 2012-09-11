@@ -22,7 +22,8 @@ class Main_controller extends Controller {
         var_dump($this->validator->hasErrors());
        
         // bitch this works
-        $this->helper->load('test');
+        $email = new Email();
+        dump($email->to('childscraig17@gmail.com')->subject('test')->body(htmlentities("<b>Hello</b>"))->send());
     }
     
     public function index() {

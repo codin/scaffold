@@ -15,7 +15,7 @@ $config['email'] = array(
     'type' => 'postmark',
     
     //  Where to send application emails from
-    'from' => 'test@example.com'
+    'from' => 'craig@codin.co',
     
     
     //  Email methods
@@ -23,7 +23,7 @@ $config['email'] = array(
     
     //  See http://postmarkapp.com
     'postmark' => array(
-        'apiKey' => 'testing'
+        'apiKey' => '4b5c52f3-dc9c-41ba-807b-4b7164487ba8'
     ),
     
     //  See http://mandrill.com

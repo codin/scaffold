@@ -38,7 +38,7 @@ class Request {
 	public static function send() {
 		// get the data and close the connection
 		$data = curl_exec(self::$_curl);
-		$status = curl_getinfo(self::$curl, CURLINFO_HTTP_CODE);
+		$status = curl_getinfo(self::$_curl, CURLINFO_HTTP_CODE);
 		curl_close(self::$_curl);
 		
 		return (object) array('data' => $data, 'status' => $status);
