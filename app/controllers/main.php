@@ -20,6 +20,9 @@ class Main_controller extends Controller {
                         ->has('a');
         
         var_dump($this->validator->hasErrors());
+       
+        // bitch this works
+        $this->helper->load('test');
     }
     
     public function index() {
