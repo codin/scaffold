@@ -41,7 +41,7 @@ class Email {
 class Postmark {
 
 	public static function send($data) {
-		dump(json_encode($data));
+
 		// Get the config information
 		$pm = Config::get('email.postmark');
 		$key = $pm['apiKey'];

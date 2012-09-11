@@ -20,10 +20,6 @@ class Main_controller extends Controller {
                         ->has('a');
         
         var_dump($this->validator->hasErrors());
-       
-        // bitch this works
-        $email = new Email();
-        dump($email->to('childscraig17@gmail.com')->subject('test')->body(htmlentities("<b>Hello</b>"))->send());
     }
     
     public function index() {
