@@ -76,10 +76,11 @@ class Validator {
         if($what === false) {
             if(!$message) {
                 $trace = debug_backtrace();
+                $arg = $trace[1]['args'][0];
                 $trace = $trace[1]['function'];
             }
             
-            $this->_errors[] = $message ? $message : 'Did not validate &ldquo;' . $trace . '&rdquo;.';
+            $this->_errors[] = $message ? $message : 'Could not validate &ldquo;' . $trace . '(' . $arg . ')&rdquo; on ' . $this->_target . '.';
         }
         
         return $this;

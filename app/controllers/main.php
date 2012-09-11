@@ -17,9 +17,9 @@ class Main_controller extends Controller {
         $this->validator->ensure('iam@visualidiot.com')
                         ->is(':email')
                         ->lessThan(40)
-                        ->has('a');
+                        ->has('z');
         
-        var_dump($this->validator->hasErrors());
+        var_dump($this->validator->errors());
     }
     
     public function index() {
