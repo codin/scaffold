@@ -9,14 +9,11 @@ class Request {
 	}
 	
 	public static function post($url, $vars = array()) {
-		$vars = (array) $vars;
-		
-		// URL fitting
-		$vars_string = http_build_query($vars);
+		$vars = $vars;
 		
 		// Set our options
 		self::set(CURLOPT_POST, count($vars));
-		self::set(CURLOPT_POSTFIELDS, $vars_string);
+		self::set(CURLOPT_POSTFIELDS, $vars);
 		
 		self::doRequest($url);
 	}
