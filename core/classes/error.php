@@ -3,6 +3,10 @@
 class Error {
     public static $errors = array();
     
+    public static $WARNING = E_USER_WARNING,
+    			  $NOTICE = E_USER_NOTICE,
+    			  $FATAL = E_USER_ERROR;
+    
     //  Set up our error reporting
     public static function init() {
         $errors = Config::get('env.debug');
@@ -37,10 +41,15 @@ class Error {
         $error = array(
             'at' => $now,
             'message' => $what,
-            'stack_trace' => debug_backtrace(true)
+            'stack_trace' => first(debug_backtrace(true))
         );
         
         self::$errors[] = $error;
+        
+        $log = 'ERROR: ' . $what . ' at ' . $now . ' in ' . $error['stack_trace']['file'] . ' on line ' . $error['stack_trace']['line'] . "\n";
+        
+        File::write('error.txt', $log, true, CORE_BASE . 'logs/');
+        echo file_get_contents(CORE_BASE . 'logs/error.txt');
         
         return (object) $error;
     }
@@ -51,6 +60,19 @@ class Error {
     	$line = $ex->getLine();
     	$file = $ex->getFile();
         include_once CORE_BASE . 'defaults/error.php';
+    }
+    
+    public static function create($msg, $type) {
+    	
+    	if(in_array($type, Config::get('error.handled'))) {
+    		// Throw an actual error.
+    		$callee = first(debug_backtrace());
+    		trigger_error($msg . ' in <strong>' . $callee['file'] . '</strong> on line <strong>' . $callee['line'] . "</strong>.\n<br> Thrown", $type);
+    		self::log($msg);
+    		return true;
+    	}
+    	
+    	return false;
     }
     
     public static function output() {

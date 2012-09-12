@@ -110,9 +110,6 @@ class File {
 			return $write;
 		}
 		
-		// Throw an error.
-		Error::log($path . ': Does not exist or is not writable.');
-		
 		return false;
 		
 	}

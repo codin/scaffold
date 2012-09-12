@@ -20,6 +20,8 @@ class Main_controller extends Controller {
                         ->has('z');
         
         var_dump($this->validator->errors());
+        
+        Error::create('Your poo smells', Error::$WARNING);
     }
     
     public function index() {

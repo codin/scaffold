@@ -1,0 +1,2 @@
+
+ERROR: Your poo smells at 1347446503.5743 in /Users/craig/Sites/scaffold/core/classes/error.php on line 71
