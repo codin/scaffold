@@ -21,7 +21,7 @@ class Main_controller extends Controller {
         
         var_dump($this->validator->errors());
         
-        Error::create('Your poo smells', Error::$WARNING);
+//		Error::create('Your poo smells', Error::$WARNING);
     }
     
     public function index() {

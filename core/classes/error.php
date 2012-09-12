@@ -22,17 +22,20 @@ class Error {
     
     public static function exception($err, $message, $file, $line) {
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+       	self::log($trace['args']['0']);
         include_once CORE_BASE . 'defaults/error.php';
     }
     
     public static function native($err, $message, $file, $line) {                
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+       	self::log($trace['args']['0']);
         include_once CORE_BASE . 'defaults/error.php';
     }
     
     public static function shutdown() {
 		$trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
 		if(empty($trace['args'])) return false;
+		self::log($trace['args']['0']);
         include_once CORE_BASE . 'defaults/error.php';
     }
     
@@ -49,7 +52,6 @@ class Error {
         $log = 'ERROR: ' . $what . ' at ' . $now . ' in ' . $error['stack_trace']['file'] . ' on line ' . $error['stack_trace']['line'] . "\n";
         
         File::write('error.txt', $log, true, CORE_BASE . 'logs/');
-        echo file_get_contents(CORE_BASE . 'logs/error.txt');
         
         return (object) $error;
     }
