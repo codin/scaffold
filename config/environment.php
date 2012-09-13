@@ -15,16 +15,3 @@ $config['env'] = array(
     //  Enable or disable the CLI environment
     'cli' => true
 );
-
-
-//  You can override a mode's settings here
-//  by commenting any of the following lines out
-
-//  Log any errors
-//$config['env']['log'] = true; // TODO
-
-//  Display any errors to the screen
-//$config['env']['debug'] = true;
-
-//  Set the error_reporting() level
-//$config['env']['error_level'] = E_ALL & ~E_NOTICE;

@@ -22,7 +22,14 @@ class Database {
         
         //  And set PDO
         try {
-	        $this->_db = new PDO('mysql:host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'], $this->_config['user'], $this->_config['pass']);
+	        $this->_db = new PDO(
+	            $this->_driver . ':host=' . $this->_config['host'] . ';
+	             dbname=' . $this->_config['name'] . ';
+	             port=' . $this->_config['port'],
+    	         
+    	         $this->_config['user'],
+    	         $this->_config['pass']
+	         );
 	    } catch(PDOException $e) {
 	    	Error::grab($e);
 	    }

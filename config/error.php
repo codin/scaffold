@@ -25,5 +25,12 @@ $config['error'] = array(
 		//  These are the worst kind of error.
 		//  User-thrown errors, syntax errors. PHP dies when these eixst.
 		E_USER_ERROR
-	)
+	),
+	
+	//  Display any errors on the screen
+	//  This overwrites the environment settings, uncomment for a manual override
+	//  'display' => true
+	
+	//  Log errors to file? This does not affect outputted errors
+	'logging' => true
 );
