@@ -3,13 +3,11 @@
 /**
  *    Scaffold v0.1
  *    by the Codin' Co.
- *
- *    Coming soon.
  */
  
 // Set the encoding method.
 $config['csrf'] = array(
-	
-	// Token salt
-	'token_salt' => 'jhdsavuydasho8duhbvasduybadsoug9haduysvsjbvudyjak'
+    //  A salt that's made specifically for your site.
+    //  To generate one like this, simply add `echo random_string(49);` to a view
+	'salt' => 'lw1yhljfe930kc3q4ztwkc4oyi3uv3c7q4xwf52k4vkdwcur2'
 );

@@ -66,7 +66,7 @@ class Error {
     
     public static function create($msg, $type) {
     	
-    	if(in_array($type, Config::get('error.handled'))) {
+    	if(in_array($type, Config::get('error.levels'))) {
     		// Throw an actual error.
     		$callee = first(debug_backtrace());
     		trigger_error($msg . ' in <strong>' . $callee['file'] . '</strong> on line <strong>' . $callee['line'] . "</strong>.\n<br> Thrown", $type);

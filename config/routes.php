@@ -33,8 +33,5 @@ $config['routes'] = array(
     
     //  The main index controller
     'index' => 'main',
-    'index/help' => 'main.help',
-    
-    // The curl controller.
-    'curl' => 'curl'
+    'index/help' => 'main.help'
 );

@@ -12,7 +12,7 @@ class CSRF {
 		$tokens = Session::get('tokens');
 		
 		// Create a new one
-		$tokens[] = Crypt::encrypt(str_shuffle(Config::get('csrf.token_salt')), '6g67ba321', 'md5');
+		$tokens[] = Crypt::encrypt(str_shuffle(Config::get('csrf.salt')), '6g67ba321', 'md5');
 		
 		// Set it in the session
 		Session::set('tokens', $tokens);
