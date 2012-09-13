@@ -15,28 +15,33 @@ class Error {
             @ini_set('display_errors', false);
         }
 
-        error_reporting(E_ALL);
-//        error_reporting(Config::get('env.error_level', -1));
-//        error_reporting(0);
+        error_reporting(Config::get('env.error_level', E_ALL));
+    }
+    
+    private static function _trace($arg = false) {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
+        
+        if($arg === true and isset($backtrace['args']['0'])) {
+            self::log($backtrace['args']['0']);
+        }
+        
+        return $backtrace;
     }
     
     public static function exception($err, $message, $file, $line) {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
-       	self::log($trace['args']['0']);
-        include_once CORE_BASE . 'defaults/error.php';
+        return self::_throw();
     }
     
     public static function native($err, $message, $file, $line) {                
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
-       	self::log($trace['args']['0']);
-        include_once CORE_BASE . 'defaults/error.php';
+        return self::_throw();
     }
     
     public static function shutdown() {
-		$trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
-		if(empty($trace['args'])) return false;
-		self::log($trace['args']['0']);
-        include_once CORE_BASE . 'defaults/error.php';
+		return self::_throw();
+    }
+    
+    private static function _throw() {
+        return fetch(CORE_BASE . 'defaults/error.php', self::_trace());
     }
     
     public static function log($what) {
@@ -64,13 +69,16 @@ class Error {
         include_once CORE_BASE . 'defaults/error.php';
     }
     
-    public static function create($msg, $type) {
+    public static function create($msg, $type = E_USER_NOTICE) {
     	
     	if(in_array($type, Config::get('error.levels'))) {
     		// Throw an actual error.
     		$callee = first(debug_backtrace());
+    		
     		trigger_error($msg . ' in <strong>' . $callee['file'] . '</strong> on line <strong>' . $callee['line'] . "</strong>.\n<br> Thrown", $type);
+    		
     		self::log($msg);
+    		
     		return true;
     	}
     	

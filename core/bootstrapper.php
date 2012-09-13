@@ -8,11 +8,12 @@
  *    all of the files up properly. Here goes!
  */
 
-//  Strip magic quotes
-if(get_magic_quotes_gpc()) {
-    foreach(array($_GET, $_POST, $_COOKIE, $_REQUEST) as $m) {
-        $m = json_decode(stripslashes(json_encode($m, JSON_HEX_APOS)), true);
-    }
+//  Strip magic quotes if it's enabled
+if(get_magic_quotes_gpc() === 1) {
+    $_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
+    $_POST = json_decode(stripslashes(json_encode($_POST, JSON_HEX_APOS)), true);
+    $_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
+    $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
 }
 
 //  Set the default timezone to London if you don't have any set
@@ -22,7 +23,7 @@ if(!ini_get('date.timezone')) {
  
 //  Load the rest of the config
 $config = array();
-$files = array('environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error');
+$files = array('environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image');
 
 //  Try loading the config files
 //  If they don't work, log to an array for now

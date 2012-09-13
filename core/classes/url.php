@@ -45,4 +45,13 @@ class Url {
     public static function stripTags($segment) {
         return strip_tags($segment);
     }
+    
+    public static function base() {
+        return str_replace($_SERVER['HTTP_HOST'], '', $_SERVER['REQUEST_URI']);
+    }
+    
+    //  Convert a absolute PHP path to a relative public URL
+    public static function convert($path) {
+        return self::base() . str_replace(PUBLIC_BASE, '', $path);
+    }
 }

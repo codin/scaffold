@@ -9,13 +9,10 @@ class File {
 	 *	@param Path/URL
 	 *  @return (object) Array 
 	 */
-	public static function get($name, $char_limit = false, $url = false) {
+	public static function get($name, $char_limit = null, $url = false) {
 		
 		// Sort our urls and paths out.
-		$path = self::_make_path($url, $name);
-		
-		// How many characters shall we read?
-		if(!$char_limit) $char_limit = filesize($path);
+		$path = self::_makePath($url, $name);
 		
 		// If the file exists
 		if(file_exists($path) and is_readable($path)) {
@@ -50,7 +47,7 @@ class File {
 	 *  @return Boolean 
 	 */
 	public static function delete($name, $url = false) {
-		$path = self::_make_path($url, $name);
+		$path = self::_makePath($url, $name);
 		
 		// if its a directory
 		if(is_dir($path)) {
@@ -73,8 +70,8 @@ class File {
 	 *  @return Boolean 
 	 */
 	public static function rename($name, $new, $url = false) {
-		$oldpath = self::_make_path($url, $name);
-		$newpath = self::_make_path($url, $new);
+		$oldpath = self::_makePath($url, $name);
+		$newpath = self::_makePath($url, $new);
 		
 		if(self::exists($oldpath) and !self::exists($path)) {
 			return rename($oldpath, $newpath);
@@ -94,7 +91,7 @@ class File {
 	public static function write($name, $content = '', $append = false, $url = false) {
 		
 		// Sort our urls and paths out.
-		$path = self::_make_path($url, $name);
+		$path = self::_makePath($url, $name);
 		
 		if(self::writable($path)) {
 			
@@ -168,7 +165,7 @@ class File {
 		
 		// If everything is ok, upload it
 		if($file['size'] < Config::get('file.max_upload') and in_array($file['ext'], Config::get('file.allowed_types'))) {
-			return self::_move_from_tmp($file['tmp_name'], $dest . $file['name']);
+			return self::_move($file['tmp_name'], $dest . $file['name']);
 		}
 		
 		return false;
@@ -180,7 +177,7 @@ class File {
 	 *  @param Destination
 	 *  @return Boolean 
 	 */
-	private static function _move_from_tmp($temp, $dest) {
+	private static function _move($temp, $dest) {
 		return move_uploaded_file($temp, $dest);
 	}
 	
@@ -190,7 +187,7 @@ class File {
 	 *  @param Filename
 	 *  @return String 
 	 */
-	private static function _make_path($url, $name) {
+	private static function _makePath($url, $name) {
 		if(!$url) $url = APP_BASE . 'files/';
 		return $url . $name;
 	} 

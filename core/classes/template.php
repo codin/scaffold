@@ -10,7 +10,7 @@ class Template {
         //  Set some default variables to use in the template
         $this->set(array(
             'load_time' => load_time(),
-            'base' => PUBLIC_PATH,
+            'base' => Url::base(),
             
             'scaffold_version' => scaffold_version()
         ));
