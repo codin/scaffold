@@ -13,15 +13,6 @@ class Main_controller extends Controller {
             
             'query_count' => $this->database->queryCount()
         ));
-        
-        $this->validator->ensure('iam@visualidiot.com')
-                        ->is(':email')
-                        ->lessThan(40)
-                        ->has('z');
-        
-        var_dump($this->validator->errors());
-        
-//		Error::create('Your poo smells', Error::$WARNING);
     }
     
     public function index() {

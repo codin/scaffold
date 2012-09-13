@@ -1,8 +1,6 @@
 <?php !defined('IN_APP') and header('location: /');
 
 class Install extends Command {
-    //  Set a description for `./scaffold help`
-    public static $description = 'Install a helper from the Helper Centre.';
     public static $endpoint = 'http://localhost:8000/';
     
     //  Let's go.

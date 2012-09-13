@@ -1,6 +1,6 @@
 <?php !defined('IN_APP') and header('location: /');
 
-class Error extends Command {
+class Command_error extends Command {
     //  Let's go.
     public function __construct() {
         parent::__construct();
