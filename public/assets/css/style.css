@@ -14,5 +14,15 @@ html, body {
     height: 100%;
 }
     body {
-        background: #f7f5f0;
+        background: #f7f5f0 url('../img/scaffold-logo.png') fixed no-repeat 40px 40px;
+        color: #6d6054;
+        
+        font: 15px/25px "Gotham Rounded", "Proxima Nova Soft", "Proxima Nova";
+        
+        width: 70%;
+        margin: 100px auto;
     }
+    
+p {
+    padding-bottom: 15px;
+}
