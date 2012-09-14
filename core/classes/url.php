@@ -47,7 +47,7 @@ class Url {
     }
     
     public static function base() {
-        return str_replace($_SERVER['HTTP_HOST'], '', $_SERVER['REQUEST_URI']);
+        return PUBLIC_PATH;
     }
     
     //  Convert a absolute PHP path to a relative public URL
