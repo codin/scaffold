@@ -186,4 +186,14 @@ class Database {
     public function queryCount() {
         return $this->queryCount;
     }
+    
+    public function escape($str, $stripHTML = false, $filter = FILTER_SANITIZE_STRING) {
+        $str = htmlentities(filter_var($str, $filter));
+        
+        if($stripHTML === true) {
+            $str = strip_tags($str);
+        }
+        
+        return $str;
+    }
 }

@@ -44,6 +44,7 @@ class Ajax {
 	        return true;
 	    }
 	    
-	    return $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+	    $m = 'HTTP_X_REQUESTED_WITH';
+	    return isset($_SERVER[$m]) and $_SERVER[$m] === 'XMLHttpRequest';
 	}
 }

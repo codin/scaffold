@@ -2,8 +2,10 @@
 
 class Command_error extends Command {
     //  Let's go.
-    public function __construct() {
+    public function __construct($arg = '') {
         parent::__construct();
+        
+        $this->arg = $arg;
     }
     
     //  And handle the argument
@@ -22,6 +24,6 @@ class Command_error extends Command {
             'Bleep bloop bleep KTHWAWK.'
         );
         
-        return str_replace('*', '"' . $arg . '"', $fails[mt_rand(0, count($fails) -1)]);
+        return str_replace('*', '"' . $this->arg . '"', $fails[mt_rand(0, count($fails) -1)]);
     } 
 }

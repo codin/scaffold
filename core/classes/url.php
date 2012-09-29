@@ -24,7 +24,14 @@ class Url {
     }
     
     public static function request($stripBase = true) {
-        return preg_replace('/(\?.*)/', '', self::current($stripBase));
+        $url = preg_replace('/(\?.*)/', '', self::current($stripBase));
+        
+        //  Don't allow slash-only URLs
+        if($url === '/') {
+            $url = '';
+        }
+        
+        return $url;
     }
     
     public static function segment($which, $fallback = '') {

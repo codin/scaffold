@@ -51,14 +51,14 @@
     </head>
     <body>
         <div class="error">
-            <h1>
-                Error: <?php echo $message; ?>
-                
+            <h1>Error: <?php echo $message; ?>
                 <span><?php echo $file; ?>, line <b><?php echo $line; ?></b></span>
             </h1>
-            <p>Unfortunately, You have an error on line <code><?php echo $line; ?></code> of <code><?php echo $file; ?></code> in the function <code><?php echo $trace[0]['function']; ?></code>.</p>
+            <p>Unfortunately, you&rsquo;ve got an error on line <code><?php echo $line; ?></code> of <code><?php echo $file; ?></code>.</p>
             
-            <p> Here are the arguments:  <code><?php var_dump($trace[0]['args']); ?></code> </p>
+            <p>Just so you know, the function called was <code><?php echo (isset($trace[0]['class']) ? $trace[0]['class'] . '::' : '') . $trace[0]['function']; ?>('<?php echo join('\', \'', $trace[0]['args']); ?>')</code>, and the full stack is as follows:</p>
+            
+            <?php dump($trace); ?>
         </div>
     </body>
 </html>
