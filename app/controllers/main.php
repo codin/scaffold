@@ -4,6 +4,8 @@ class Main_controller extends Controller {
     public function __construct() {
         parent::__construct();
         
+        $this->helper->load('lkdto');
+        
         //  Set template data
         $this->template->set(array(
             'language' => Config::get('language'),
