@@ -19,7 +19,7 @@ class Lkdto {
     
     private static function _fetch($method, $append = '') {
         if(!isset(self::$_data[$method])) {
-            self::$_data[$method] = Curl::get(self::$_endpoint . $method . $append);
+            self::$_data[$method] = Request::get(self::$_endpoint . $method . $append);
         }
         
         return self::$_data[$method];

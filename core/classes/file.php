@@ -92,12 +92,12 @@ class File {
 		
 		// Sort our urls and paths out.
 		$path = self::_makePath($url, $name);
-		
-		if(self::writable($path)) {
+
+		if(self::writable($path) or self::writable($url)) {
 			
 			// Open the file stream
 			$h = fopen($path, ($append == false ? 'w' : 'a'));
-			
+
 			// Write to that file
 			$write = fwrite($h, $content);
 			
