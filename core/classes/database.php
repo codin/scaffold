@@ -111,8 +111,8 @@ class Database {
     	if(is_array($condition)) {
     	    $return = '';
     	    foreach($condition as $key => $value) {
-    	    	$value = (is_numeric($value) ? $value : '\'' . $value . '\'');
-    	        $return .= '`' . $key . '`=' . Input::escape($value) . ' and ';
+    	    	$value = (is_numeric($value) ? $value : '\'' . Input::escape($value) . '\'');
+    	        $return .= '`' . $key . '`=' . $value . ' and ';
     	    }
     	    
     	    return substr($return, 0, -5);
