@@ -69,11 +69,19 @@ class Template {
         }, $template);
         
         //  [conditionals][/conditionals]
-        $template = preg_replace_callback('/(\[[a-zA-Z0-9_]+\])(.*?\[\/[a-zA-Z0-9_]+\])/s', function($matches) {
+        $template = preg_replace_callback('/(\[[\!?a-zA-Z0-9_]+\])(.*?\[\/[a-zA-Z0-9_]+\])/s', function($matches) {
             $vars = load_vars();
             $match = str_replace(array('[', ']'), '', $matches[1]);
             
-            if(isset($vars[$match]) and !empty($vars[$match])) {
+            $cond = isset($vars[$match]) and !empty($vars[$match]);
+            
+            //  [!inverse][/inverse]
+            if(strpos($match, '!') !== false) {
+                $match = str_replace('!', '', $match);
+                $cond = !isset($vars[$match]) or empty($vars[$match]);
+            }
+            
+            if($cond !== false) {
                 return trim(preg_replace('/\[[\/]?' . $match . '\]/', '', $matches[0]));
             }
              
