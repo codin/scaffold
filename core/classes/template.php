@@ -44,7 +44,7 @@ class Template {
     }
     
     public function parse($template) {
-        //  Parse the template
+        //  Replace {{variables}}
         $template = preg_replace_callback('/{{([a-zA-Z0-9_]+)(\/[a-zA-Z0-9 \.,+\-_\/!\?]+)?}}/', function($matches) {
             //  Load all the available template variables
             $vars = load_vars();
@@ -66,6 +66,18 @@ class Template {
             
             //  Try a fallback
             return $fallback;
+        }, $template);
+        
+        //  [conditionals][/conditionals]
+        $template = preg_replace_callback('/(\[[a-zA-Z0-9_]+\])(.*?\[\/[a-zA-Z0-9_]+\])/s', function($matches) {
+            $vars = load_vars();
+            $match = str_replace(array('[', ']'), '', $matches[1]);
+            
+            if(isset($vars[$match]) and !empty($vars[$match])) {
+                return trim(preg_replace('/\[[\/]?' . $match . '\]/', '', $matches[0]));
+            }
+             
+            return '';
         }, $template);
         
         return $template;
