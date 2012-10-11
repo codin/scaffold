@@ -10,7 +10,6 @@ class Crush {
     public function css($str) {
         //  Strip comments
         $str = preg_replace_callback('/(\/\*)(.*)(\*\/)/', function($matches) {
-            var_dump($matches);
         }, $str);
     
         return trim($str);

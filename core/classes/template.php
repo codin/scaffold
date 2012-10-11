@@ -27,13 +27,13 @@ class Template {
         
         //  Set the view variable
         if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
-            self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php');
+            self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);
         } else {
             //  Set a 404
             Response::set(404);
             
             //  If it doesn't exist, show the error view
-            self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php');
+            self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php', self::$vars);
         }
         
         //  And load the main template
@@ -68,8 +68,21 @@ class Template {
         }, $template);
         
         //  [conditionals][/conditionals]
-        $template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
+        $template = preg_replace_callback('/(\[[\!?' . $alnum . '\= \/]+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
             $match = str_replace(array('[', ']'), '', $matches[1]);
+            
+            //  Handle equality
+            if(strpos($match, '=') !== false) {
+                $match = explode('=', $match);
+                
+                foreach($match as $i => $m) {
+                    $match[$i] = trim($m);
+                }
+                
+                $cond = isset($vars[$match[0]]) and $vars[$match[0]] == $match[1];
+                
+                $match = $matches[0] = preg_replace('/=.*/', '', $match[0]);
+            }
             
             $cond = isset($vars[$match]) and !empty($vars[$match]);
             
@@ -80,10 +93,15 @@ class Template {
             }
             
             if($cond !== false) {
-                return trim(preg_replace('/\[[\/]?' . $match . '\]/', '', $matches[0]));
+                return trim(preg_replace('/\[[\/!]?' . $match . '\]/', '', $matches[0]));
             }
              
             return '';
+        }, $template);
+        
+        //  Include partials (~partial~)
+        $template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($alnum) {
+            return grab(APP_BASE . 'partials/' . preg_replace('/[^' . $alnum . ']+/', '', $matches[0]) . '.php');
         }, $template);
         
         return $template;
