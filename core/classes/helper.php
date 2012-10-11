@@ -1,21 +1,33 @@
 <?php !defined('IN_APP') and header('location: /');
 
 class Helper {
+    private static $base = APP_BASE;
+    private static $url = 'helpers/?.php';
+    
+    public function __construct() {
+        //  Load the core helpers
+        foreach(glob(CORE_BASE . 'helpers/*.php') as $file) {
+            require_once $file;
+        }
+    }
     
     //  Load a helper with an optional full URL
     public function load($helper, $url = false) {
-        if($url === false) {
-            $url = APP_BASE . 'helpers/' . preg_replace('/(\/.*)+/', '', $helper) . '.php';
-            
-            if(!file_exists($url)) {
-				return false;
-            }
-        }
-        
         //  Handle arrays
         if(is_array($helper)) {
             foreach($helper as $h) {
                 $this->load($h);
+            }
+            
+            return;
+        }
+        
+        
+        if($url === false) {
+            $url = str_replace('?', preg_replace('/(\/.*)+/', '', $helper), self::$url);
+            
+            if(!file_exists($url)) {
+				return false;
             }
         }
         
