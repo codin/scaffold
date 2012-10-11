@@ -54,7 +54,7 @@ foreach($helpers as $helper) {
 }
 
 //  Our core classes to load
-$classes = array('cache', 'globals', 'config', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'curl', 'helper');
+$classes = array('cache', 'globals', 'config', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'helper');
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';

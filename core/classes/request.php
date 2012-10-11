@@ -1,6 +1,6 @@
 <?php !defined('IN_APP') and header('location: /');
 
-class Curl {
+class Request {
 	
 	private static $_curl;
 	
