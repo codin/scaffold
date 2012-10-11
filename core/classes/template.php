@@ -6,7 +6,6 @@ class Template {
     public static $vars = array();
 
     public function __construct() {
-        
         //  Set some default variables to use in the template
         $this->set(array(
             'load_time' => load_time(),
@@ -44,8 +43,10 @@ class Template {
     }
     
     public function parse($template) {
+        $alnum = 'a-zA-Z0-9_';
+        
         //  Replace {{variables}}
-        $template = preg_replace_callback('/{{([a-zA-Z0-9_]+)(\/[a-zA-Z0-9 \.,+\-_\/!\?]+)?}}/', function($matches) {
+        $template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) {
             //  Load all the available template variables
             $vars = load_vars();
             
@@ -69,7 +70,7 @@ class Template {
         }, $template);
         
         //  [conditionals][/conditionals]
-        $template = preg_replace_callback('/(\[[\!?a-zA-Z0-9_]+\])(.*?\[\/[a-zA-Z0-9_]+\])/s', function($matches) {
+        $template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) {
             $vars = load_vars();
             $match = str_replace(array('[', ']'), '', $matches[1]);
             
