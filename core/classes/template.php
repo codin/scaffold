@@ -21,12 +21,13 @@ class Template {
     }
 
     public function render($what = '') {
+
         //  Set the view to load
         if(empty($what)) {
             $what = self::$_routes->parse();
         }
-        
-        //  Set the view variable
+
+
         if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
             self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php');
         } else {
@@ -37,10 +38,27 @@ class Template {
             self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php');
         }
         
-        //  And load the main template
-        $template = grab(TEMPLATE_PATH, load_vars());
-                
-        return $this->parse($template);
+        // some caching
+        if(!File::exists(TEMP_BASE . 'cache/' . $what . '.txt' ) && Config::get('template.cache')) {
+
+            //  And load the main template
+            $template = grab(TEMPLATE_PATH, load_vars());
+
+            Cache::create($what . '.txt', array(
+                'content' => $this->parse($template),
+                'profile' => $what
+            ));
+        }
+        
+        if(File::exists(TEMP_BASE . 'cache/' . $what . '.txt' ) && Config::get('template.cache')) { 
+            $page = self::$vars['view'] = Cache::get($what . '.txt');
+        } else {
+            //  And load the main template
+            $template = grab(TEMPLATE_PATH, load_vars());
+            $page = $this->parse($template);
+        }
+
+        return $page;      
     }
     
     public function parse($template) {
@@ -87,7 +105,7 @@ class Template {
              
             return '';
         }, $template);
-        
+
         return $template;
     }
     

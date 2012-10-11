@@ -7,10 +7,10 @@
  */
 class Cache {
 
-	public function create($name, $data) {
+	public static function create($name, $data) {
 		if(is_array($data)) {
 			$data['modified'] = time();
-			File::write($name, json_encode($data), false, APP_BASE . 'cache/');
+			File::write($name, json_encode($data), false, TEMP_BASE . 'cache/');
 			return true;
 		} 
 
@@ -22,14 +22,22 @@ class Cache {
 		return false;
 	}
 
-	public function get($name) {
-		if(File::exists(APP_BASE . 'cache/' . $name)) {
-			$file = File::get($name, null, APP_BASE . 'cache/');
-			$decoded = json_decode($file['data']);
-			return $decoded['content'];
+	public static function get($name) {
+		if(File::exists(TEMP_BASE . 'cache/' . $name)) {
+			$file = File::get($name, 120321, TEMP_BASE . 'cache/');
+			$decoded = json_decode($file->content);
+			return $decoded->content;
 		}
 
 		return false;
+	}
+
+	public static function clear($name) {
+		$path = TEMP_BASE . 'cache/';
+
+		if($path != null && File::exists($path . $name)) {
+			File::delete($name, $path);
+		}
 	}
 }
 

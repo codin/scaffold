@@ -6,10 +6,14 @@ class Main_controller extends Controller {
         
         $this->helper->load('lkdto');
         
+        /*
         Cache::create('main.txt', array(
             'content' => 'hello world',
             'profile' => 'main_controller'
         ));
+        */
+
+        Cache::clear('main.txt');
 
         //  Set template data
         $this->template->set(array(

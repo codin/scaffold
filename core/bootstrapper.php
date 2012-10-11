@@ -23,7 +23,7 @@ if(!ini_get('date.timezone')) {
  
 //  Load the rest of the config
 $config = array();
-$files = array('environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
+$files = array('template', 'environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
 
 //  Try loading the config files
 //  If they don't work, log to an array for now
