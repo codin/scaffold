@@ -20,13 +20,12 @@ class Template {
     }
 
     public function render($what = '') {
-
         //  Set the view to load
         if(empty($what)) {
             $what = self::$_routes->parse();
         }
-
-
+        
+        //  Set the view variable
         if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
             self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php');
         } else {
@@ -37,37 +36,18 @@ class Template {
             self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php');
         }
         
-        // some caching
-        if(!File::exists(TEMP_BASE . 'cache/' . $what . '.txt' ) && Config::get('template.cache')) {
-
-            //  And load the main template
-            $template = grab(TEMPLATE_PATH, load_vars());
-
-            Cache::create($what . '.txt', array(
-                'content' => $this->parse($template),
-                'profile' => $what
-            ));
-        }
-        
-        if(File::exists(TEMP_BASE . 'cache/' . $what . '.txt' ) && Config::get('template.cache')) { 
-            $page = self::$vars['view'] = Cache::get($what . '.txt');
-        } else {
-            //  And load the main template
-            $template = grab(TEMPLATE_PATH, load_vars());
-            $page = $this->parse($template);
-        }
-
-        return $page;      
+        //  And load the main template
+        $template = grab(TEMPLATE_PATH, self::$vars);
+                
+        return $this->parse($template);
     }
     
     public function parse($template) {
         $alnum = 'a-zA-Z0-9_';
+        $vars = self::$vars;
         
         //  Replace {{variables}}
-        $template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) {
-            //  Load all the available template variables
-            $vars = load_vars();
-            
+        $template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) use($vars) {
             //  Discard the first match, and check for fallbacks
             $matches = explode('/', last($matches));
             
@@ -88,8 +68,7 @@ class Template {
         }, $template);
         
         //  [conditionals][/conditionals]
-        $template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) {
-            $vars = load_vars();
+        $template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
             $match = str_replace(array('[', ']'), '', $matches[1]);
             
             $cond = isset($vars[$match]) and !empty($vars[$match]);
@@ -106,7 +85,7 @@ class Template {
              
             return '';
         }, $template);
-
+        
         return $template;
     }
     
@@ -129,12 +108,4 @@ class Template {
         
         return $fallback;
     }
-    
-    public static function vars() {
-        return self::$vars;
-    }
-}
-
-function load_vars() {
-    return Template::vars();
 }
