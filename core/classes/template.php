@@ -48,6 +48,11 @@ class Template {
         
         //  Replace {{variables}}
         $template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) use($vars) {
+            if(count($matches) === 3) {
+                $matches[1] = $matches[1] . '/' . $matches[2];
+                unset($matches[2]);
+            }
+            
             //  Discard the first match, and check for fallbacks
             $matches = explode('/', last($matches));
             
