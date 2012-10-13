@@ -5,7 +5,7 @@ class Ajax {
     
     //  Ajax::output(array('variable' => 'output'));
     //  => {"variable":"output"}
-	public static function output($data, $allowCallbacks = true) {
+	public static function build($data, $allowCallbacks = true) {
 	
 	    //  Check it's being called with AJAX
 	    //  But only if we tell it to
@@ -36,6 +36,10 @@ class Ajax {
         
         //  Give 'em what they wanted
         return $json;
+	}
+	
+	public static function output($data, $allowCallbacks = true) {
+	    echo self::build($data, $allowCallbacks);
 	}
 	
 	public static function validOrigin() {

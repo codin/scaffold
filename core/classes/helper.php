@@ -24,7 +24,7 @@ class Helper {
         
         
         if($url === false) {
-            $url = str_replace('?', preg_replace('/(\/.*)+/', '', $helper), self::$url);
+            $url = self::$base . str_replace('?', preg_replace('/(\/.*)+/', '', $helper), self::$url);
             
             if(!file_exists($url)) {
 				return false;

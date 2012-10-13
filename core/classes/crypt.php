@@ -27,7 +27,7 @@ class Crypt {
 	    if(empty($type)) $type = Config::get('crypt.encode_method');
 	   	if(empty($salt)) $salt = Config::get('crypt.salt');
 	   	
-	    return self::doMethod($type, 'decode', $data . $salt);	
+	    return str_replace($salt, '', self::doMethod($type, 'decode', $data . $salt));	
 	}
 	
 	/** 
