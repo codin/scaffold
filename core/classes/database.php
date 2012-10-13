@@ -22,14 +22,13 @@ class Database {
         
         //  And set PDO
         try {
-	        $this->_db = new PDO(
-	            $this->_driver . ':host=' . $this->_config['host'] . ';
-	             dbname=' . $this->_config['name'] . ';
-	             port=' . $this->_config['port'],
-    	         
-    	         $this->_config['user'],
-    	         $this->_config['pass']
-	         );
+            $connection = $this->_driver . ':host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'];
+             
+	        $this->_db = new PDO($connection, $this->_config['user'], $this->_config['pass'], array(
+                PDO::ATTR_PERSISTENT => true
+            ));
+            
+            $this->_db->exec('set character set utf8');
 	    } catch(PDOException $e) {
 	    	Error::grab($e);
 	    }
@@ -67,16 +66,14 @@ class Database {
     }
     
     public function values($values) {
-    	// add the first bracket
-    	$value_string = '(';
+    	$val = '(';
     	
-    	// concatenate
     	foreach($values as $key => $value) {
-    		$value_string .= '\'' . Input::escape($value) . '\', ';
+    		$val .= '\'' . Input::escape($value) . '\', ';
     	}
     	
-    	// remove the last comma
-    	return $this->_set('values', substr($value_string, 0, -2) . ')');
+    	//  Remove the last comma
+    	return $this->_set('values', substr($val, 0, -2) . ')');
     }
     
     public function from($where) {
@@ -112,7 +109,7 @@ class Database {
     	    $return = '';
     	    foreach($condition as $key => $value) {
     	    	$value = (is_numeric($value) ? $value : '\'' . Input::escape($value) . '\'');
-    	        $return .= '`' . $key . '`=' . $value . ' and ';
+    	        $return .= '`' . $key . '` = ' . $value . ' and ';
     	    }
     	    
     	    return substr($return, 0, -5);
@@ -125,33 +122,39 @@ class Database {
         return $this->_set('set', $this->_buildCondition($condition));
     }
     
-    public function fetch() {
+    public function fetch($limit = false) {
+        if($limit !== false) {
+            $this->limit($limit);
+        }
+    
         //  Default structures to query the DB
         $query = $this->_buildQuery();
-
+        
         if(($result = $this->query($query))) {
             return $result->fetchAll(PDO::FETCH_OBJ);
         }
+
+        $this->query($query);
         
+        dump($this->_db->errorInfo());
         return false;
     }
     
     public function query($what) {
+        $this->query = array();
+
         if($what) {
             $this->queryCount++;
             $this->latestQuery = $what;
-            // reset the query
-            $this->query = '';
             
             return $this->_db ? $this->_db->query($what) : false;
         }
-        
+
         return false;
     }
     
     public function go() {
-    	$query = $this->_buildQuery();
-    	return $this->query($query);
+    	return $this->query($this->_buildQuery());
     }
     
     private function _buildQuery() {
