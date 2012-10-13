@@ -14,7 +14,7 @@ class Session {
 	 */
 	public static function set($key, $data) {
 		
-		$_SESSION[$key] = $data = (Config::get('session.encoded') == true ? self::_encode($data) : $data);
+		$_SESSION[$key] = (Config::get('session.encoded') == true ? self::_encode($data) : $data);
 		
 		if(Config::get('session.cookies')) {
 		
@@ -22,8 +22,8 @@ class Session {
 				$data = json_encode($data);
 			}
 			
-			setcookie($key, $data, Config::get('session.expires'));
-			
+			setcookie($key, $data, 100000);
+
 			return true;
 		}
 		
