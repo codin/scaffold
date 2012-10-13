@@ -2,7 +2,7 @@
 
 class Request {
 	
-	private static $_curl;
+	private static $_curl, $url;
 	
 	public static function init() {
 		self::$_curl = curl_init();
@@ -10,30 +10,31 @@ class Request {
 	
 	public static function post($url, $vars = array()) {
 		$count = count($vars);
-		
-		if(json_decode($vars) === null ) {
-			$vars = http_build_query($vars);
-		}
+		$vars = http_build_query($vars);
 		
 		// Set our options
 		self::set(CURLOPT_POST, $count);
 		self::set(CURLOPT_POSTFIELDS, $vars);
 		
-		self::doRequest($url);
+		return self::doRequest($url);
 	}
 	
 	private static function doRequest($url) {
+	    self::$url = $url;
+
 	    if(!self::$_curl) {
 	        self::init();
 	    }
 		
 		self::set(CURLOPT_RETURNTRANSFER, true);
-		self::set(CURLOPT_URL, $url);
+		self::set(CURLOPT_URL, self::$url);
+		
+		return self::send();
 	}
 	
 	public static function get($url) {
-		// URL fitting
-		self::doRequest($url);
+		// URL fitting 
+		return self::doRequest($url);
 	}
 	
 	public static function send() {
@@ -42,7 +43,7 @@ class Request {
 		$status = curl_getinfo(self::$_curl, CURLINFO_HTTP_CODE);
 		curl_close(self::$_curl);
 		
-		return (object) array('data' => $data, 'status' => $status);
+		return (object) array('data' => $data, 'status' => $status, 'url' => self::$url);
 	}
 	
 	public static function set($opt, $value) {
