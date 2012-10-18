@@ -24,14 +24,14 @@ class Database {
         try {
             $connection = $this->_driver . ':host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'];
              
-	        $this->_db = new PDO($connection, $this->_config['user'], $this->_config['pass'], array(
+            $this->_db = new PDO($connection, $this->_config['user'], $this->_config['pass'], array(
                 PDO::ATTR_PERSISTENT => true
             ));
             
             $this->_db->exec('set character set utf8');
-	    } catch(PDOException $e) {
-	    	Error::grab($e);
-	    }
+        } catch(PDOException $e) {
+            Error::grab($e);
+        }
     }
     
     //  Start building our queries up
@@ -44,11 +44,11 @@ class Database {
     }
     
     public function update($what) {
-	    if($what !== '*') {
-	        $what = '`' . $what . '`';
-	    }
-	    
-	    return $this->_set('update', $what);
+        if($what !== '*') {
+            $what = '`' . $what . '`';
+        }
+        
+        return $this->_set('update', $what);
     }
     
     public function insert() {
@@ -57,8 +57,8 @@ class Database {
     }
     
     public function delete() {
-    	$this->query['delete'] = '';
-    	return $this;
+        $this->query['delete'] = '';
+        return $this;
     }
 
     public function sum($column) {
@@ -80,18 +80,18 @@ class Database {
     }
 
     public function into($table) {
-    	return $this->_set('into', $table);
+        return $this->_set('into', $table);
     }
     
     public function values($values) {
-    	$val = '(';
-    	
-    	foreach($values as $key => $value) {
-    		$val .= '\'' . Input::escape($value) . '\', ';
-    	}
-    	
-    	//  Remove the last comma
-    	return $this->_set('values', substr($val, 0, -2) . ')');
+        $val = '(';
+        
+        foreach($values as $key => $value) {
+            $val .= '\'' . Input::escape($value) . '\', ';
+        }
+        
+        //  Remove the last comma
+        return $this->_set('values', substr($val, 0, -2) . ')');
     }
     
     public function from($where) {
@@ -113,31 +113,31 @@ class Database {
     
     //  Add a key to the query string
     private function _set($key, $val) {
-       	if($val) {
-	        //  Set it
-	        $this->query[$key] = $val;
-	    }
+        if($val) {
+            //  Set it
+            $this->query[$key] = $val;
+        }
         
         //  And chain
         return $this;
     }
     
-    private function _buildCondition($condition) {
-    	if(is_array($condition)) {
-    	    $return = '';
-    	    foreach($condition as $key => $value) {
-    	    	$value = (is_numeric($value) ? $value : '\'' . Input::escape($value) . '\'');
-    	        $return .= '`' . $key . '` = ' . $value . ' and ';
-    	    }
-    	    
-    	    return substr($return, 0, -5);
-    	}
-    	
-    	return false;
+    private function _buildCondition($condition, $escape = true) {
+        if(is_array($condition)) {
+            $return = '';
+            foreach($condition as $key => $value) {
+                $value = (is_numeric($value) ? $value : '\'' . ($escape ? Input::escape($value) : $value) . '\'');
+                $return .= '`' . $key . '` = ' . $value . ' and ';
+            }
+            
+            return substr($return, 0, -5);
+        }
+        
+        return false;
     }
     
-    public function set($condition) {
-        return $this->_set('set', $this->_buildCondition($condition));
+    public function set($condition, $escape = true) {
+        return $this->_set('set', $this->_buildCondition($condition, $escape));
     }
     
     public function fetch($limit = false) {
@@ -172,7 +172,7 @@ class Database {
     }
     
     public function go() {
-    	return $this->query($this->_buildQuery());
+        return $this->query($this->_buildQuery());
     }
     
     private function _buildQuery() {
