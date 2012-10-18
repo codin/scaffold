@@ -57,7 +57,7 @@ class Main_controller extends Controller {
     
     public function index() {
         $this->template->set('db', array(
-        	'users' => $this->model->allUsers(),
+        	'users' => $this->model->testSum(),
         	'edit' => $this->model->editUser()
         ));
         

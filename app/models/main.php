@@ -5,8 +5,8 @@ class Main_model extends Model {
         parent::__construct();
     }
     
-    public function allUsers() {
-        return $this->db->select('*')->from('test')->fetch();
+    public function testSum() {
+        return $this->db->select('*')->sum('num')->poo('total')->from('test')->group()->by('uid')->fetch();
     }
     
     public function editUser() {

@@ -60,7 +60,25 @@ class Database {
     	$this->query['delete'] = '';
     	return $this;
     }
+
+    public function sum($column) {
+        $this->query['select'] .= ', ';
+        return $this->_set('sum', '(' . $column . ')');
+    }
+
+    public function poo($name) {
+       return $this->_set('as', '"' . $name . '"');
+    }
+
+    public function group() {
+        $this->query['group'] = '';
+        return $this;
+    }
     
+    public function by($field) {
+        return $this->_set('by', $field);
+    }
+
     public function into($table) {
     	return $this->_set('into', $table);
     }
@@ -159,7 +177,7 @@ class Database {
     
     private function _buildQuery() {
         $structures = array(
-            'select' => array('from', 'where', 'order', 'limit'),
+            'select' => array('sum', 'as', 'from', 'where', 'order', 'limit', 'group', 'by'),
             'insert' => array('into', 'where', 'values'),
             'update' => array('set', 'where'),
             'delete' => array('from', 'where')
@@ -171,7 +189,7 @@ class Database {
                 
                 foreach($val as $step) {
                     if(isset($this->query[$step])) {
-                        $query .= $step . ' ' . $this->query[$step] . ' ';
+                        $query .= $step . ($step == 'sum' ? '' : ' ') . $this->query[$step] . ' ';
                     }
                 }
                 
