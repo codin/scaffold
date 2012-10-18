@@ -24,14 +24,14 @@ class Database {
         try {
             $connection = $this->_driver . ':host=' . $this->_config['host'] . ';dbname=' . $this->_config['name'] . ';port=' . $this->_config['port'];
              
-            $this->_db = new PDO($connection, $this->_config['user'], $this->_config['pass'], array(
+	        $this->_db = new PDO($connection, $this->_config['user'], $this->_config['pass'], array(
                 PDO::ATTR_PERSISTENT => true
             ));
             
             $this->_db->exec('set character set utf8');
-        } catch(PDOException $e) {
-            Error::grab($e);
-        }
+	    } catch(PDOException $e) {
+	    	Error::grab($e);
+	    }
     }
     
     //  Start building our queries up
@@ -44,11 +44,11 @@ class Database {
     }
     
     public function update($what) {
-        if($what !== '*') {
-            $what = '`' . $what . '`';
-        }
-        
-        return $this->_set('update', $what);
+	    if($what !== '*') {
+	        $what = '`' . $what . '`';
+	    }
+	    
+	    return $this->_set('update', $what);
     }
     
     public function insert() {
@@ -57,8 +57,8 @@ class Database {
     }
     
     public function delete() {
-        $this->query['delete'] = '';
-        return $this;
+    	$this->query['delete'] = '';
+    	return $this;
     }
 
     public function sum($column) {
@@ -66,12 +66,17 @@ class Database {
         return $this->_set('sum', '(' . $column . ')');
     }
 
-    public function poo($name) {
+    public function storeAs($name) {
        return $this->_set('as', '"' . $name . '"');
     }
 
     public function group() {
         $this->query['group'] = '';
+        return $this;
+    }
+
+    public function count() {
+        $this->query['select'] = 'count(' . $this->query['select'] . ')';
         return $this;
     }
     
@@ -80,26 +85,43 @@ class Database {
     }
 
     public function into($table) {
-        return $this->_set('into', $table);
+    	return $this->_set('into', $table);
     }
     
     public function values($values) {
-        $val = '(';
-        
-        foreach($values as $key => $value) {
-            $val .= '\'' . Input::escape($value) . '\', ';
-        }
-        
-        //  Remove the last comma
-        return $this->_set('values', substr($val, 0, -2) . ')');
+    	$val = '(';
+    	
+    	foreach($values as $key => $value) {
+    		$val .= '\'' . Input::escape($value) . '\', ';
+    	}
+    	
+    	//  Remove the last comma
+    	return $this->_set('values', substr($val, 0, -2) . ')');
     }
     
     public function from($where) {
         return $this->_set('from', '`' . Input::escape($where) . '`');
     }
     
-    public function where($condition) { 
-        return $this->_set('where', $this->_buildCondition($condition));
+    public function where($condition) {
+        $return = '';
+
+        foreach($condition as $key => $value) {
+            if(strpos($value, ',') !== false) {
+                $parts = explode(',', $value);
+                foreach($parts as $k => $v) {
+                    $return .= $this->_buildCondition(array($key => $v)) . (count($parts) > 1 ? ' and ' : '');
+                }
+            } else {
+                $return .= $this->_buildCondition(array($key => $value)) . (count($condition) > 1 ? ' and ' : '');
+            }
+        }
+
+        if(strpos($return, 'and') !== false && count($parts) > 1) {
+            $return = substr($return, 0, -5);
+        }
+
+        return $this->_set('where', $return);
     }
     
     public function limit($from, $to = -1) {
@@ -113,27 +135,34 @@ class Database {
     
     //  Add a key to the query string
     private function _set($key, $val) {
-        if($val) {
-            //  Set it
-            $this->query[$key] = $val;
-        }
+       	if($val) {
+	        //  Set it
+	        $this->query[$key] = $val;
+	    }
         
         //  And chain
         return $this;
     }
     
     private function _buildCondition($condition, $escape = true) {
-        if(is_array($condition)) {
-            $return = '';
-            foreach($condition as $key => $value) {
+    	if(is_array($condition)) {
+    	    $return = ' ';
+    	    foreach($condition as $key => $value) {
+    	    	$operator = '`';
+
+                if(strpos($value, '>') !== false or strpos($value, '<') !== false) {
+                    $operator = '` ' . substr($value, 0, 1);
+                    $value = substr($value, 1, strlen($value));
+                }
+
                 $value = (is_numeric($value) ? $value : '\'' . ($escape ? Input::escape($value) : $value) . '\'');
-                $return .= '`' . $key . '` = ' . $value . ' and ';
-            }
-            
-            return substr($return, 0, -5);
-        }
-        
-        return false;
+    	        $return .= '`' . $key . $operator . '= ' . $value . ' and ';
+    	    }
+    	    
+    	    return substr($return, 0, -5);
+    	}
+    	
+    	return false;
     }
     
     public function set($condition, $escape = true) {
@@ -172,7 +201,7 @@ class Database {
     }
     
     public function go() {
-        return $this->query($this->_buildQuery());
+    	return $this->query($this->_buildQuery());
     }
     
     private function _buildQuery() {
