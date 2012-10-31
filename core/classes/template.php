@@ -1,9 +1,9 @@
 <?php !defined('IN_APP') and header('location: /');
 
 class Template {
-
     private static $_routes;
     public static $vars = array();
+    public static $templatepath = TEMPLATE_PATH;
 
     public function __construct() {
         //  Set some default variables to use in the template
@@ -25,21 +25,29 @@ class Template {
             $what = self::$_routes->parse();
         }
         
-        //  Set the view variable
-        if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
-            self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);
-        } else {
-            //  Set a 404
-            Response::set(404);
-            
-            //  If it doesn't exist, show the error view
-            self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php', self::$vars);
-        }
+        //  Looad the view
+        $this->loadView($what);
         
         //  And load the main template
-        $template = grab(TEMPLATE_PATH, self::$vars);
+        $template = grab(self::$templatepath, self::$vars);
                 
         return $this->parse($template);
+    }
+    
+    public function loadView($what = '') {
+        if(!isset(self::$vars['view'])) {
+            if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
+                self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);
+            } else {
+                //  Set a 404
+                Response::set(404);
+                
+                //  If it doesn't exist, show the error view
+                self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php', self::$vars);
+            }
+        }
+        
+        return self::$vars['view'];
     }
     
     public function parse($template) {
@@ -52,7 +60,7 @@ class Template {
                 $matches[1] = $matches[1] . '/' . $matches[2];
                 unset($matches[2]);
             }
-            
+        
             //  Discard the first match, and check for fallbacks
             $matches = explode('/', last($matches));
             
@@ -64,7 +72,7 @@ class Template {
             
             //  Return matching variables, if they exist
             //  AND are not null or empty-ish
-            if(isset($vars[$match]) and $vars[$match]) {
+            if(isset($vars[$match])) {
                 return $vars[$match];
             }
             
@@ -73,21 +81,8 @@ class Template {
         }, $template);
         
         //  [conditionals][/conditionals]
-        $template = preg_replace_callback('/(\[[\!?' . $alnum . '\= \/]+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
+        $template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
             $match = str_replace(array('[', ']'), '', $matches[1]);
-            
-            //  Handle equality
-            if(strpos($match, '=') !== false) {
-                $match = explode('=', $match);
-                
-                foreach($match as $i => $m) {
-                    $match[$i] = trim($m);
-                }
-                
-                $cond = isset($vars[$match[0]]) and $vars[$match[0]] == $match[1];
-                
-                $match = $matches[0] = preg_replace('/=.*/', '', $match[0]);
-            }
             
             $cond = isset($vars[$match]) and !empty($vars[$match]);
             
@@ -121,7 +116,19 @@ class Template {
             return;
         }
         
+        if($key === 'path') {
+            return $this->setPath($val);
+        }
+        
         self::$vars[$key] = $val;
+    }
+    
+    public function setPath($path) {
+        if(file_exists($path)) {
+            return self::$templatepath = $path;
+        }
+        
+        Error::log('Path ' . $path . ' not found');
     }
     
     public function get($key, $fallback = '') {

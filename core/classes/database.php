@@ -181,10 +181,7 @@ class Database {
             return $result->fetchAll(PDO::FETCH_OBJ);
         }
 
-        $this->query($query);
-        
-        dump($this->_db->errorInfo());
-        return false;
+        return $this->query($query);
     }
     
     public function query($what) {
