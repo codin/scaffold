@@ -19,7 +19,7 @@ class Template {
 		self::$_routes = $scaffold->objects['routes'];
 	}
 
-	public function render($what = '') {
+	public function render($what = '', $echo = true) {
 		//  Set the view to load
 		if(empty($what)) {
 			$what = self::$_routes->parse();
@@ -103,6 +103,10 @@ class Template {
 		$template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($alnum) {
 			return grab(APP_BASE . 'partials/' . preg_replace('/[^' . $alnum . ']+/', '', $matches[0]) . '.php');
 		}, $template);
+		
+		if($echo !== false) {
+			echo $template;
+		}
 		
 		return $template;
 	}
