@@ -1,16 +1,16 @@
 <?php
 
 /**
- *    Scaffold v0.1
- *    by the Codin' Co.
+ *	Scaffold v0.1
+ *	by the Codin' Co.
  *
- *    If you're looking for database/application configuration, check out the "config" folder.
- *    If you want application code, check out the "app" folder.
- *    Otherwise, see http://scaffold.im for more details.
+ *	If you're looking for database/application configuration, check out the "config" folder.
+ *	If you want application code, check out the "app" folder.
+ *	Otherwise, see http://scaffold.im for more details.
  */
  
 if(version_compare(phpversion(), '5.3.2') < 0) {
-    die("You're running an old version of PHP, which means you can't run Scaffold. Sorry about that!\n");
+	die("You're running an old version of PHP, which means you can't run Scaffold. Sorry about that!\n");
 }
 
 //  Set the base URL

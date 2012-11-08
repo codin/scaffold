@@ -2,10 +2,10 @@
 <?php
 
 /**
- *    Scaffold v0.1
- *    by the Codin' Co.
+ *	Scaffold v0.1
+ *	by the Codin' Co.
  *
- *    Command-line utilities are here. Not very interesting.
+ *	Command-line utilities are here. Not very interesting.
  */
  
 include_once 'public/index.php';

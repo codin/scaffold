@@ -1,10 +1,10 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 /**
- *    Scaffold v0.1
- *    by the Codin' Co.
+ *	Scaffold v0.1
+ *	by the Codin' Co.
  *
- *    Options for working with the Image class
+ *	Options for working with the Image class
  */
  
 // Set the encoding method.

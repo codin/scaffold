@@ -1,10 +1,10 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 /**
- *    Scaffold v0.1
- *    by the Codin' Co.
+ *	Scaffold v0.1
+ *	by the Codin' Co.
  *
- *    Template config
+ *	Template config
  */
  
 // Set the encoding method.

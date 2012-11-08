@@ -1,8 +1,8 @@
 {
-    "name": "Install",
-    "description": "Install a helper from the Helper Centre.",
-    "author": "Codin' Co.",
-    "version": "0.1.0",
-    
-    "file": "install.php"
+	"name": "Install",
+	"description": "Install a helper from the Helper Centre.",
+	"author": "Codin' Co.",
+	"version": "0.1.0",
+	
+	"file": "install.php"
 }

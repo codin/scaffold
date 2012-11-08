@@ -4,38 +4,38 @@ class Input {
 
 	public static function posted($what = false) {
 	
-	    if($what !== false) {
-            if(is_array($what)) {
-                foreach($what as $field) {
-                    if(!isset($_POST[$field]) or empty($_POST[$field])) return false;
-                }
-                
-                return true;
-            }
-            
-            return isset($_POST[$what]);
-    	}
+		if($what !== false) {
+			if(is_array($what)) {
+				foreach($what as $field) {
+					if(!isset($_POST[$field]) or empty($_POST[$field])) return false;
+				}
+				
+				return true;
+			}
+			
+			return isset($_POST[$what]);
+		}
 	
 		return count($_POST) > 0;
 	}
 
 	public static function get($var = false, $fallback = '') {
-	    if($var === false) {
-	        foreach($_GET as $key => $value) {
-	            self::get($key);
-	        }
-	    }
-	    
+		if($var === false) {
+			foreach($_GET as $key => $value) {
+				self::get($key);
+			}
+		}
+		
 		return self::_receive($_GET, $var, $fallback);
 	}
 
 	public static function post($var, $fallback = '') {
-	    if($var === false) {
-	        foreach($_POST as $key => $value) {
-	            self::post($key);
-	        }
-	    }
-	    
+		if($var === false) {
+			foreach($_POST as $key => $value) {
+				self::post($key);
+			}
+		}
+		
 		return self::_receive($_POST, $var, $fallback);
 	}
 	
@@ -44,7 +44,7 @@ class Input {
 	}
 	
 	public static function escape($str) {
-	    return filter_var($str, FILTER_SANITIZE_STRING);
+		return filter_var($str, FILTER_SANITIZE_STRING);
 	}
 	
 	//  Input::hash('password', 'post');

@@ -8,7 +8,7 @@ class Response {
 		} else {
 			//  Too late. Might as well try to redirect, anyway
 			echo '<script>window.location = ' . $url . '</script>';
-            echo '<meta http-equiv="refresh" content="0;url=' . $url . '">';
+			echo '<meta http-equiv="refresh" content="0;url=' . $url . '">';
 		}
 		
 		exit;

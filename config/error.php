@@ -1,20 +1,20 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 /**
- *    Scaffold v0.1
- *    by the Codin' Co.
+ *	Scaffold v0.1
+ *	by the Codin' Co.
  *
- *    Configure error levels in more detail
+ *	Configure error levels in more detail
  */
 
 //  To enable/disable the viewing of errors, see config/environment.php
 $config['error'] = array(
-    
-    //  What levels do you want to handle with the error class?
+	
+	//  What levels do you want to handle with the error class?
 	'levels' => array(
-	    //  Notice-level errors
-	    //  Your site won't break if you have these errors.
-	    //  Caused by undefined variables, accessing array indexes that don't exist, etc.
+		//  Notice-level errors
+		//  Your site won't break if you have these errors.
+		//  Caused by undefined variables, accessing array indexes that don't exist, etc.
 		E_USER_NOTICE,
 		
 		//  Warning-level errors
