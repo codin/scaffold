@@ -30,8 +30,13 @@ class Template {
 		
 		//  And load the main template
 		$template = grab(self::$templatepath, self::$vars);
+		$template = $this->parse($template);
 				
-		return $this->parse($template);
+		if($echo !== false) {
+			echo $template;
+		}
+				
+		return $template;
 	}
 	
 	public function loadView($what = '') {
@@ -103,10 +108,6 @@ class Template {
 		$template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($alnum) {
 			return grab(APP_BASE . 'partials/' . preg_replace('/[^' . $alnum . ']+/', '', $matches[0]) . '.php');
 		}, $template);
-		
-		if($echo !== false) {
-			echo $template;
-		}
 		
 		return $template;
 	}
