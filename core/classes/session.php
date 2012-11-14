@@ -3,7 +3,7 @@
 class Session {
 	
 	public static function init() {
-		session_start();
+		session_start();		
 	}
 	
 	/**
@@ -14,7 +14,7 @@ class Session {
 	 */
 	public static function set($key, $data) {
 		
-		$_SESSION[$key] = (Config::get('session.encoded') == true ? self::_encode($data) : $data);
+		$_SESSION[$key] = $data = (Config::get('session.encoded') == true ? self::_encode($data) : $data);
 		
 		if(Config::get('session.cookies')) {
 		
@@ -22,8 +22,8 @@ class Session {
 				$data = json_encode($data);
 			}
 			
-			setcookie($key, $data, 100000);
-
+			setcookie($key, $data, Config::get('session.expires'));
+			
 			return true;
 		}
 		
@@ -55,6 +55,14 @@ class Session {
 	 */
 	public static function exists($key) {
 		return isset($_SESSION[$key]);
+	}
+	
+	/**
+	 *	@desc Destroy the session
+	 */
+	public static function destroy($key) {
+		unset($_SESSION[$key]);
+		return setcookie($key, false, -1);
 	}
 	
 	/**

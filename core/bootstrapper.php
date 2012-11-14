@@ -23,7 +23,7 @@ if(!ini_get('date.timezone')) {
  
 //  Load the rest of the config
 $config = array();
-$files = array('template', 'environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
+$files = array('environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
 
 //  Try loading the config files
 //  If they don't work, log to an array for now
@@ -54,7 +54,7 @@ foreach($helpers as $helper) {
 }
 
 //  Our core classes to load
-$classes = array('cache', 'globals', 'config', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'helper');
+$classes = array('globals', 'config', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'request', 'helper', 'cache');
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';

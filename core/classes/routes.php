@@ -18,7 +18,7 @@ class Routes {
 		}
 	}
 	
-	public function parse() {
+	public function parse($force = '') {
 		if(!$this->match) {
 			$this->match = $this->_build();
 		}

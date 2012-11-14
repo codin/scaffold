@@ -19,7 +19,7 @@ class Template {
 		self::$_routes = $scaffold->objects['routes'];
 	}
 
-	public function render($what = '', $echo = true) {
+	public function render($what = '') {
 		//  Set the view to load
 		if(empty($what)) {
 			$what = self::$_routes->parse();
@@ -30,16 +30,15 @@ class Template {
 		
 		//  And load the main template
 		$template = grab(self::$templatepath, self::$vars);
-		$template = $this->parse($template);
 				
-		if($echo !== false) {
-			echo $template;
-		}
-				
-		return $template;
+		return $this->parse($template);
 	}
 	
-	public function loadView($what = '') {
+	public function loadView($what = '', $data = false) {
+		if($data !== false) {
+			$this->set($data);
+		}
+		
 		if(!isset(self::$vars['view'])) {
 			if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
 				self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);

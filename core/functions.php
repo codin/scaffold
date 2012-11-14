@@ -149,6 +149,10 @@ function random_string($length = 10, $range = 'abcdefghijklmnopqrstuvxwxyz123456
 	return join('', $return);
 }
 
+function current_timestamp() {
+	return date('Y-m-d H:i:s');
+}
+
 //  Using HTTPS?
 function is_https() {
 	return $_SERVER['HTTPS'] === 'on';

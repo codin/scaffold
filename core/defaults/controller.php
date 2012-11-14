@@ -19,6 +19,8 @@ class Controller {
 		//  And call the model
 		$this->defaultModel = new Model;
 		$this->model = $this->_load('model');
+		
+		$this->helper->load('pages');
 	}
 	
 	private function _load($what) {

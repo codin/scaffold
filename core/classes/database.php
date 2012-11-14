@@ -36,10 +36,6 @@ class Database {
 	
 	//  Start building our queries up
 	public function select($what) {
-		if($what !== '*') {
-			$what = '\'' . $what . '\'';
-		}
-		
 		return $this->_set('select', $what);
 	}
 	
@@ -107,18 +103,11 @@ class Database {
 		$return = '';
 
 		foreach($condition as $key => $value) {
-			if(strpos($value, ',') !== false) {
-				$parts = explode(',', $value);
-				foreach($parts as $k => $v) {
-					$return .= $this->_buildCondition(array($key => $v)) . (count($parts) > 1 ? ' and ' : '');
-				}
-			} else {
-				$return .= $this->_buildCondition(array($key => $value)) . (count($condition) > 1 ? ' and ' : '');
-			}
+			$return .= ' `' . $key . '` = ' . '\'' . Input::escape($value) . '\' and';  
 		}
-
-		if(strpos($return, 'and') !== false && count($parts) > 1) {
-			$return = substr($return, 0, -5);
+		
+		if(substr($return, -4) == ' and') {
+			$return = substr($return, 0, -4);
 		}
 
 		return $this->_set('where', $return);
@@ -198,7 +187,13 @@ class Database {
 	}
 	
 	public function go() {
-		return $this->query($this->_buildQuery());
+		$q = $this->query($this->_buildQuery());
+		
+		if(is_callable($q, 'rowCount')) {
+			return $q->rowCount();
+		}
+		
+		return $q;
 	}
 	
 	private function _buildQuery() {

@@ -25,7 +25,7 @@ class Request {
 		if(!self::$_curl) {
 			self::init();
 		}
-		
+
 		self::set(CURLOPT_RETURNTRANSFER, true);
 		self::set(CURLOPT_URL, self::$url);
 		
@@ -37,13 +37,21 @@ class Request {
 		return self::doRequest($url);
 	}
 	
+	public static function getJSON($url) {
+		$request = self::doRequest($url);
+		$request->data = json_decode($request->data);
+		
+		return $request;
+	}
+	
 	public static function send() {
 		// get the data and close the connection
+		$start = microtime(true);
 		$data = curl_exec(self::$_curl);
 		$status = curl_getinfo(self::$_curl, CURLINFO_HTTP_CODE);
-		curl_close(self::$_curl);
+		$finish = microtime(true);
 		
-		return (object) array('data' => $data, 'status' => $status, 'url' => self::$url);
+		return (object) array('data' => $data, 'status' => $status, 'url' => self::$url, 'ex_time' => $finish - $start);
 	}
 	
 	public static function set($opt, $value) {

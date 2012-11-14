@@ -4,7 +4,7 @@ class Scaffold {
 
 	public $data;
 	public $config;
-	private $classes;
+	public $classes;
 	
 	public function __construct($config, $classes) {
 		//  Set the config
