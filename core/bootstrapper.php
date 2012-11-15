@@ -10,10 +10,11 @@
 
 //  Strip magic quotes if it's enabled
 if(get_magic_quotes_gpc() === 1) {
-	$_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
-	$_POST = json_decode(stripslashes(json_encode($_POST, JSON_HEX_APOS)), true);
-	$_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
-	$_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
+	function unslashit(&$value) { $value = stripslashes($value); }
+    
+    foreach(array($_GET, $_POST, $_COOKIE, $_REQUEST) as $method) {
+    	array_walk_recursive(&$method, 'unslashit');
+    }
 }
 
 //  Set the default timezone to London if you don't have any set
@@ -23,7 +24,7 @@ if(!ini_get('date.timezone')) {
  
 //  Load the rest of the config
 $config = array();
-$files = array('environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
+$files = array('template', 'environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
 
 //  Try loading the config files
 //  If they don't work, log to an array for now
@@ -54,7 +55,7 @@ foreach($helpers as $helper) {
 }
 
 //  Our core classes to load
-$classes = array('globals', 'config', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'request', 'helper', 'cache');
+$classes = array('cache', 'globals', 'config', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'helper');
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
