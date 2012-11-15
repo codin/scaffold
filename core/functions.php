@@ -132,6 +132,16 @@ function ip_address() {
 	return '127.0.0.1';
 }
 
+//  Pick a random string from an array
+function random($wat) {
+	if(is_array($wat)) {
+		shuffle($wat);
+		return first($wat);
+	}
+	
+	return false;
+}
+
 //  Get a random string of optional length
 function random_string($length = 10, $range = 'abcdefghijklmnopqrstuvxwxyz1234567890') {
 	$return = array();
