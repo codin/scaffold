@@ -47,8 +47,13 @@ class Database {
 		return $this->_set('update', $what);
 	}
 	
-	public function insert() {
+	public function insert($into = false) {
 		$this->query['insert'] = '';
+		
+		if($into !== false) {
+			return $this->into($into);
+		}
+		
 		return $this;
 	}
 	
