@@ -9,19 +9,21 @@
  */
 
 //  Strip magic quotes if it's enabled
-if(get_magic_quotes_gpc() === 1) {
-	function unslashit(&$value) { $value = stripslashes($value); }
-    
-    foreach(array($_GET, $_POST, $_COOKIE, $_REQUEST) as $method) {
-    	array_walk_recursive(&$method, 'unslashit');
-    }
+if(function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc()) {
+	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+
+	foreach($magics as &$method) {
+		array_walk_recursive($_GET, function(&$value) {
+			$value = stripslashes($value);
+		});
+	}
 }
 
 //  Set the default timezone to London if you don't have any set
 if(!ini_get('date.timezone')) {
 	date_default_timezone_set('Europe/London');
 }
- 
+
 //  Load the rest of the config
 $config = array();
 $files = array('template', 'environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
@@ -35,7 +37,7 @@ $badFiles = array();
 //  Loop all the config files to check they're good
 foreach($files as $file) {
 	$filename = BASE . 'config/' . $file . '.php';
-	
+
 	if(file_exists($filename)) {
 		$config[] = $file;
 		include $filename;
@@ -64,7 +66,7 @@ $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
 if(file_exists($scaffoldPath)) {
 	include_once $scaffoldPath;
 	$scaffold = new Scaffold($config, $classes);
-	
+
 	if($config['env']['cli'] === true and PHP_SAPI === 'cli') {
 		include_once CORE_BASE . 'cli/bootstrapper.php';
 	} else {
