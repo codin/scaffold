@@ -13,7 +13,7 @@ if(function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc()) {
 	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
 
 	foreach($magics as &$method) {
-		array_walk_recursive($_GET, function(&$value) {
+		array_walk_recursive($method, function(&$value) {
 			$value = stripslashes($value);
 		});
 	}
