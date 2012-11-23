@@ -41,6 +41,11 @@ class Routes {
 			preg_match('#^' . $route . '$#', $this->url, $matches);
 			
 			if(isset($matches[0])) {
+				//  Basic URL redirection
+				if(strpos($controller, '://') !== false) {
+					return Response::redirect($controller);
+				}
+				
 				//  Handle methods
 				if(strpos($controller, '.') !== false) {
 					$controller = explode('.', $controller);

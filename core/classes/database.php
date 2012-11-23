@@ -36,6 +36,10 @@ class Database {
 	
 	//  Start building our queries up
 	public function select($what) {
+		if($what !== '*') {
+			$what = '`' . $what . '`';
+		}
+		
 		return $this->_set('select', $what);
 	}
 	
@@ -106,13 +110,14 @@ class Database {
 	
 	public function where($condition) {
 		$return = '';
+		$parts = array();
 
 		foreach($condition as $key => $value) {
-			$return .= ' `' . $key . '` = ' . '\'' . Input::escape($value) . '\' and';  
+			$return .= $this->_buildCondition(array($key => Input::escape($value))) . (count($condition) > 1 ? ' and ' : '');
 		}
-		
-		if(substr($return, -4) == ' and') {
-			$return = substr($return, 0, -4);
+
+		if(strpos($return, 'and') !== false) {
+			$return = substr($return, 0, -5);
 		}
 
 		return $this->_set('where', $return);
@@ -121,6 +126,10 @@ class Database {
 	public function limit($from, $to = -1) {
 		$limit = $to > 0 ? $from . ', ' . $to : $from;
 		return $this->_set('limit', $limit);
+	}
+	
+	public function order($what) {
+		return $this->_set('order', 'by ' . $what);
 	}
 	
 	public function drop($table) {
@@ -181,24 +190,18 @@ class Database {
 	public function query($what) {
 		$this->query = array();
 
-		if($what) {
+		if($what and $this->_db) {
 			$this->queryCount++;
 			$this->latestQuery = $what;
 			
-			return $this->_db ? $this->_db->query($what) : false;
+			return $this->lastQuery = $this->_db->query($what);
 		}
 
 		return false;
 	}
 	
 	public function go() {
-		$q = $this->query($this->_buildQuery());
-		
-		if(is_callable($q, 'rowCount')) {
-			return $q->rowCount();
-		}
-		
-		return $q;
+		return $this->query($this->_buildQuery());
 	}
 	
 	private function _buildQuery() {
