@@ -35,8 +35,8 @@ class Database {
 	}
 	
 	//  Start building our queries up
-	public function select($what) {
-		if($what !== '*') {
+	public function select($what, $quotes = true) {
+		if($what !== '*' and $quotes === true) {
 			$what = '`' . $what . '`';
 		}
 		
@@ -75,9 +75,8 @@ class Database {
 	   return $this->_set('as', '"' . $name . '"');
 	}
 
-	public function group() {
-		$this->query['group'] = '';
-		return $this;
+	public function group($what = '') {
+		return $this->_set('group', $what ? 'by `' . $what . '`' : '');
 	}
 
 	public function count() {
@@ -206,7 +205,7 @@ class Database {
 	
 	private function _buildQuery() {
 		$structures = array(
-			'select' => array('sum', 'as', 'from', 'where', 'order', 'limit', 'group', 'by'),
+			'select' => array('sum', 'as', 'from', 'where', 'group', 'by', 'order', 'limit'),
 			'insert' => array('into', 'where', 'values'),
 			'update' => array('set', 'where'),
 			'delete' => array('from', 'where')
