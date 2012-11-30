@@ -20,11 +20,6 @@ class Main_controller extends Controller {
 	}
 	
 	public function index() {
-		$this->template->set('db', array(
-			'users' => $this->model->testSum(),
-			'edit' => $this->model->editUser()
-		));
-		
 		echo $this->template->render('main');
 	}
 	

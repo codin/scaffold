@@ -20,7 +20,12 @@ class Controller {
 		$this->defaultModel = new Model;
 		$this->model = $this->_load('model');
 		
-		$this->helper->load('pages');
+		//  Set the default config from the database
+		if(Config::get('autoload_config') === true) {
+			foreach($this->model->_loadConfig() as $key => $value) {
+				Config::set($key, $value);
+			}
+		}
 	}
 	
 	private function _load($what) {

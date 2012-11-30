@@ -12,3 +12,6 @@ $config['default_method'] = 'index';
 
 //  The name of the 404 view.
 $config['404_page'] = 'error_404';
+
+//  Autoload config from the database as well as the config files
+$config['autoload_config'] = true;
