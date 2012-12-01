@@ -6,7 +6,7 @@ class Scaffold {
 	public $config;
 	public $classes;
 	
-	public function __construct($config, $classes) {
+	public function __construct($config, $classes) {		
 		//  Set the config
 		$this->config = $config;
 		
@@ -15,6 +15,43 @@ class Scaffold {
 		
 		//  Load our classes
 		$this->_loadClasses();
+				
+		Storage::set('objects', $this->objects);
+
+		//  Call our controllers
+		foreach(array('model', 'controller') as $type) {
+			$this->objects[$type] = $this->bind($type);
+		}
+	}
+	
+	public function bind($what) {
+		$routes = $this->objects['routes']->parse();
+		
+		//  Include the default class that gets extended
+		include_once CORE_BASE . 'defaults/' . $what . '.php';
+
+		//  Store our class names
+		$class = false;
+		$u = ucfirst($routes[0]) . '_' . $what;
+		
+		//  The path to the routed controller/model
+		$path = APP_BASE . $what . 's/' . $routes[0] . '.php';
+		
+		if(file_exists($path)) {
+			include_once $path;
+			
+			if(class_exists($u)) {
+				$class = new $u;
+				
+				//  Call the methods
+				$method = isset($routes[1]) ? $routes[1] : Config::get('default_method', false);
+				if($method && method_exists($class, $method)) {
+					$class->{$method}();
+				}
+			}
+		}
+		 
+		return $class;
 	}
 	
 	private function _loadClasses() {
