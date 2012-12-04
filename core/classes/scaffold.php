@@ -15,13 +15,16 @@ class Scaffold {
 		
 		//  Load our classes
 		$this->_loadClasses();
-				
+		
+		//  Set our model up
+		Storage::set('db', $this->objects['database']);
+		$this->objects['model'] = $this->bind('model');
+		
+		//  Save the model for the controller
 		Storage::set('objects', $this->objects);
-
-		//  Call our controllers
-		foreach(array('model', 'controller') as $type) {
-			$this->objects[$type] = $this->bind($type);
-		}
+		
+		//  And go
+		return $this->bind('controller');
 	}
 	
 	public function bind($what) {

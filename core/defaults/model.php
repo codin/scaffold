@@ -4,17 +4,18 @@ class Model {
 	public $routes;
 	
 	public function __construct() {
-		$objects = Storage::get('objects');
+		$object = Storage::get('db', false);
 		
 		//  Sanity check
-		if(!isset($objects->database)) {
+		if($object === false) {
 			return Error::log('Could not get Database class');
 		}
 		
-		$this->db = $objects->database;
+		$this->db = $this->database = $object;
 	}
 	
 	public function _loadConfig() {
+		return;
 		$config = $this->db->select('*')->from('config')->fetch();
 		
 		//  Always return an array
