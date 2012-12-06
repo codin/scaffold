@@ -15,7 +15,6 @@ class Model {
 	}
 	
 	public function _loadConfig() {
-		return;
 		$config = $this->db->select('*')->from('config')->fetch();
 		
 		//  Always return an array
