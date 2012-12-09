@@ -15,8 +15,6 @@ class Main_controller extends Controller {
 			
 			'query_count' => $this->database->queryCount()
 		));
-		
-		echo $this->template->render();
 	}
 	
 	public function index() {

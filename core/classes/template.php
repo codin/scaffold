@@ -39,15 +39,17 @@ class Template {
 			$this->set($data);
 		}
 		
+		$base = $this->get('view_base', APP_BASE . 'views/');
+		
 		if(!isset(self::$vars['view'])) {
-			if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
-				self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);
+			if(file_exists($base . $what . '.php')) {
+				self::$vars['view'] = grab($base . $what . '.php', self::$vars);
 			} else {
 				//  Set a 404
 				Response::set(404);
 				
 				//  If it doesn't exist, show the error view
-				self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php', self::$vars);
+				self::$vars['view'] = grab($base . Config::get('404_page') . '.php', self::$vars);
 			}
 		}
 		
@@ -57,6 +59,8 @@ class Template {
 	public function parse($template) {
 		$alnum = 'a-zA-Z0-9_';
 		$vars = self::$vars;
+		
+		$this->set('_alnum', $alnum);
 		
 		//  Replace {{variables}}
 		$template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) use($vars) {
@@ -104,8 +108,9 @@ class Template {
 		}, $template);
 		
 		//  Include partials (~partial~)
-		$template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($alnum) {
-			return grab(APP_BASE . 'partials/' . preg_replace('/[^' . $alnum . ']+/', '', $matches[0]) . '.php');
+		$vars['partial_base'] = $this->get('partial_base', APP_BASE . 'partials/');
+		$template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($vars) {
+			return grab($vars['partial_base'] . preg_replace('/[^a-zA-Z0-9_]+/', '', $matches[0]) . '.php', $vars);
 		}, $template);
 		
 		return $template;
@@ -117,7 +122,7 @@ class Template {
 				$this->set($k, $v);
 			}
 			
-			return;
+			return $this;
 		}
 		
 		if($key === 'path') {
@@ -125,14 +130,24 @@ class Template {
 		}
 		
 		self::$vars[$key] = $val;
+		
+		return $this;
+	}
+	
+	public function remove($key) {
+		unset(self::$vars[$key]);
+		
+		return $this;
 	}
 	
 	public function setPath($path) {
 		if(file_exists($path)) {
-			return self::$templatepath = $path;
+			self::$templatepath = $path;
+		} else {
+			Error::log('Path ' . $path . ' not found');
 		}
 		
-		Error::log('Path ' . $path . ' not found');
+		return $this;
 	}
 	
 	public function get($key, $fallback = '') {
