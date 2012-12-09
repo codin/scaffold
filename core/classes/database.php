@@ -82,7 +82,7 @@ class Database {
 	}
 
 	public function avg($column, $format = '') {
-		if($format) {
+		if($format or $format == '0') {
 			return $this->format('avg(' . $column . ')', $format);
 		} else {
 			$this->query['select'] .= ', ';
