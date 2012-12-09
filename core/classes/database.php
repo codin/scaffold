@@ -139,7 +139,7 @@ class Database {
 
 				if(is_array($value)) {
 					foreach($value as $valueKey => $valueFromArray) {
-						$return .= $this->_buildCondition(array($key => Input::escape($valueFromArray))) . (count($condition) > 1 ? ' and ' : '');
+						$return .= $this->_buildCondition(array($key => Input::escape($valueFromArray))) . ' and ';
 					}
 				} else {
 					$return .= $this->_buildCondition(array($key => Input::escape($value))) . (count($condition) > 1 ? ' and ' : '');
