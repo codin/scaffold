@@ -71,6 +71,21 @@ class Database {
 		return $this->_set('sum', '(' . $column . ')');
 	}
 
+	public function max($column) {
+		$this->query['select'] .= ', ';
+		return $this->_set('max', '(' . $column . ')');
+	}
+
+	public function min($column) {
+		$this->query['select'] .= ', ';
+		return $this->_set('min', '(' . $column . ')');
+	}
+
+	public function avg($column) {
+		$this->query['select'] .= ', ';
+		return $this->_set('avg', '(' . $column . ')');
+	}
+
 	public function storeAs($name) {
 	   return $this->_set('as', '"' . $name . '"');
 	}
@@ -205,7 +220,7 @@ class Database {
 	
 	private function _buildQuery() {
 		$structures = array(
-			'select' => array('sum', 'as', 'from', 'where', 'group', 'by', 'order', 'limit'),
+			'select' => array('sum', 'max', 'min', 'avg', 'as', 'from', 'where', 'group', 'by', 'order', 'limit'),
 			'insert' => array('into', 'where', 'values'),
 			'update' => array('set', 'where'),
 			'delete' => array('from', 'where')
@@ -217,7 +232,24 @@ class Database {
 				
 				foreach($val as $step) {
 					if(isset($this->query[$step])) {
-						$query .= $step . ($step == 'sum' ? '' : ' ') . $this->query[$step] . ' ';
+						$query .= $step;
+							switch($step) {
+								case 'sum':
+									$query .= '';
+									break;
+								case 'max':
+									$query .= '';
+									break;
+								case 'min':
+									$query .= '';
+									break;
+								case 'avg':
+									$query .= '';
+									break;
+								default:
+									$query .= ' ';
+							}
+						$query .= $this->query[$step] . ' ';
 					}
 				}
 				
