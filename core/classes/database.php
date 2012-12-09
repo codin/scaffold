@@ -174,7 +174,7 @@ class Database {
 		return $this;
 	}
 	
-	public function _parseOperators($value) {
+	private function _parseOperators($value) {
 		$operator = '` =';
 
 		if(strpos($value, '>') !== false or strpos($value, '<') !== false) {
