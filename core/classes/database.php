@@ -132,7 +132,15 @@ class Database {
 		$parts = array();
 
 		foreach($condition as $key => $value) {
-			$return .= $this->_buildCondition(array($key => Input::escape($value))) . (count($condition) > 1 ? ' and ' : '');
+
+				if(is_array($value)) {
+					foreach($value as $valueKey => $valueFromArray) {
+						$return .= $this->_buildCondition(array($key => Input::escape($valueFromArray))) . (count($condition) > 1 ? ' and ' : '');
+					}
+				} else {
+					$return .= $this->_buildCondition(array($key => Input::escape($value))) . (count($condition) > 1 ? ' and ' : '');
+				}
+			
 		}
 
 		if(strpos($return, 'and') !== false) {
@@ -166,26 +174,32 @@ class Database {
 		return $this;
 	}
 	
+	public function _parseOperators($value) {
+		$operator = '` =';
+
+		if(strpos($value, '>') !== false or strpos($value, '<') !== false) {
+			if(substr($value, 1, 1) == '=' or substr($value, 0, 2) == '<>') {
+				$operator = '` ' . substr($value, 0, 2);
+				$value = substr($value, 2, strlen($value));
+			} else {
+				$operator = '` ' . substr($value, 0, 1);
+				$value = substr($value, 1, strlen($value));
+			}
+		} elseif(strpos($value, '!=') !== false) {
+			$operator = '` ' . substr($value, 0, 2);
+			$value = substr($value, 2, strlen($value));
+		}
+
+		$value = (is_numeric($value) ? $value : '\'' . ($escape ? Input::escape($value) : $value) . '\'');
+
+		return array('operator' => $operator, 'value' => $value);
+	}
+
 	private function _buildCondition($condition, $escape = true) {
 		if(is_array($condition)) {
 			$return = ' ';
 			foreach($condition as $key => $value) {
-				$operator = '` =';
-
-				if(strpos($value, '>') !== false or strpos($value, '<') !== false) {
-					if(substr($value, 1, 1) == '=' or substr($value, 0, 2) == '<>') {
-						$operator = '` ' . substr($value, 0, 2);
-						$value = substr($value, 2, strlen($value));
-					} else {
-						$operator = '` ' . substr($value, 0, 1);
-						$value = substr($value, 1, strlen($value));
-					}
-				} elseif(strpos($value, '!=') !== false) {
-					$operator = '` ' . substr($value, 0, 2);
-					$value = substr($value, 2, strlen($value));
-				}
-
-				$value = (is_numeric($value) ? $value : '\'' . ($escape ? Input::escape($value) : $value) . '\'');
+				extract($this->_parseOperators($value));
 				$return .= '`' . $key . $operator . ' ' . $value . ' and ';
 			}
 			
