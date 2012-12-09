@@ -170,15 +170,23 @@ class Database {
 		if(is_array($condition)) {
 			$return = ' ';
 			foreach($condition as $key => $value) {
-				$operator = '`';
+				$operator = '` =';
 
 				if(strpos($value, '>') !== false or strpos($value, '<') !== false) {
-					$operator = '` ' . substr($value, 0, 1);
-					$value = substr($value, 1, strlen($value));
+					if(substr($value, 1, 1) == '=' or substr($value, 0, 2) == '<>') {
+						$operator = '` ' . substr($value, 0, 2);
+						$value = substr($value, 2, strlen($value));
+					} else {
+						$operator = '` ' . substr($value, 0, 1);
+						$value = substr($value, 1, strlen($value));
+					}
+				} elseif(strpos($value, '!=') !== false) {
+					$operator = '` ' . substr($value, 0, 2);
+					$value = substr($value, 2, strlen($value));
 				}
 
 				$value = (is_numeric($value) ? $value : '\'' . ($escape ? Input::escape($value) : $value) . '\'');
-				$return .= '`' . $key . $operator . '= ' . $value . ' and ';
+				$return .= '`' . $key . $operator . ' ' . $value . ' and ';
 			}
 			
 			return substr($return, 0, -5);
