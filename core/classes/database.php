@@ -81,9 +81,13 @@ class Database {
 		return $this->_set('min', '(' . $column . ')');
 	}
 
-	public function avg($column) {
-		$this->query['select'] .= ', ';
-		return $this->_set('avg', '(' . $column . ')');
+	public function avg($column, $format = '') {
+		if($format) {
+			return $this->format('avg(' . $column . ')', $format);
+		} else {
+			$this->query['select'] .= ', ';
+			return $this->_set('avg', '(' . $column . ')');
+		}
 	}
 
 	public function format($column, $format) {
