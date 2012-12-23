@@ -1,7 +1,7 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 /**
- *	Scaffold v0.1
+ *	Scaffold v0.1.1
  *	by the Codin' Co.
  *
  *	Here's some handy functions we think you'll like.
@@ -129,7 +129,7 @@ function ip_address() {
 		}
 	}
 	
-	return '127.0.0.1';
+	return '127.0.v0.1.1';
 }
 
 //  Pick a random string from an array

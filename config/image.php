@@ -1,7 +1,7 @@
 <?php defined('IN_APP') or die('Get out of here');
 
 /**
- *	Scaffold v0.1
+ *	Scaffold v0.1.1
  *	by the Codin' Co.
  *
  *	Options for working with the Image class

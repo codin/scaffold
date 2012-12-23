@@ -1,7 +1,7 @@
 
 ERROR: Your poo smells at 1347446503.5743 in /Users/craig/Sites/scaffold/core/classes/error.php on line 71
 ERROR: ./app/files/./core/cli/tasks/install/meta.json: Does not exist or is not readable. at 1347730764.4721 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37
-ERROR: ./app/files/./core/cli/tasks/install/meta.json: Does not exist or is not readable. at 1347730810.1783 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37
+ERROR: ./app/files/./core/cli/tasks/install/meta.json: Does not exist or is not readable. at 134773081v0.1.1783 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37
 ERROR: ./app/files/./core/cli/tasks/install/meta.json: Does not exist or is not readable. at 1347730819.0119 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37
 ERROR: ./app/files/./core/cli/tasks/insta/meta.json: Does not exist or is not readable. at 1347730824.1923 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37
 ERROR: ./app/files/./core/cli/tasks/insta/meta.json: Does not exist or is not readable. at 1347730855.5816 in /Users/idiot/Sites/scaffold/core/classes/file.php on line 37

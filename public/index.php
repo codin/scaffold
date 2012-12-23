@@ -1,7 +1,7 @@
 <?php
 
 /**
- *	Scaffold v0.1
+ *	Scaffold v0.1.1
  *	by the Codin' Co.
  *
  *	If you're looking for database/application configuration, check out the "config" folder.
@@ -23,7 +23,7 @@ define('BASE', dirname(dirname($_SERVER['SCRIPT_FILENAME'])) . '/');
 define('IN_APP', true);
 
 //  Set the version of Scaffold
-define('SCAFFOLD_VERSION', 0.1);
+define('SCAFFOLD_VERSION', v0.1.1);
 
 //  Start your clocks, mister!
 define('TIMER_START', microtime(true));

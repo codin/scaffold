@@ -1,7 +1,7 @@
 <?php !defined('IN_APP') and header('location: /');
 
 /**
- *  Scaffold CLI v0.1
+ *  Scaffold CLI v0.1.1
  */
  
 //  We make the errors, not PHP
