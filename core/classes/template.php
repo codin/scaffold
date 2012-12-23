@@ -19,7 +19,7 @@ class Template {
 		self::$_routes = $scaffold->objects['routes'];
 	}
 
-	public function render($what = '') {
+	public function render($what = '', $echo = true) {
 		//  Set the view to load
 		if(empty($what)) {
 			$what = self::$_routes->parse();
@@ -30,26 +30,25 @@ class Template {
 		
 		//  And load the main template
 		$template = grab(self::$templatepath, self::$vars);
+		$template = $this->parse($template);
 				
-		return $this->parse($template);
+		if($echo !== false) {
+			echo $template;
+		}
+				
+		return $template;
 	}
 	
-	public function loadView($what = '', $data = false) {
-		if($data !== false) {
-			$this->set($data);
-		}
-		
-		$base = $this->get('view_base', APP_BASE . 'views/');
-		
+	public function loadView($what = '') {
 		if(!isset(self::$vars['view'])) {
-			if(file_exists($base . $what . '.php')) {
-				self::$vars['view'] = grab($base . $what . '.php', self::$vars);
+			if(file_exists(APP_BASE . 'views/' . $what . '.php')) {
+				self::$vars['view'] = grab(APP_BASE . 'views/' . $what . '.php', self::$vars);
 			} else {
 				//  Set a 404
 				Response::set(404);
 				
 				//  If it doesn't exist, show the error view
-				self::$vars['view'] = grab($base . Config::get('404_page') . '.php', self::$vars);
+				self::$vars['view'] = grab(APP_BASE . 'views/' . Config::get('404_page') . '.php', self::$vars);
 			}
 		}
 		
@@ -57,13 +56,11 @@ class Template {
 	}
 	
 	public function parse($template) {
-		$alnum = 'a-zA-Z0-9_';
 		$vars = self::$vars;
-		
-		$this->set('_alnum', $alnum);
+		$vars['_alnum'] = 'a-zA-Z0-9_';
 		
 		//  Replace {{variables}}
-		$template = preg_replace_callback('/{{([' . $alnum . ']+)(\/[' . $alnum . ' \.,+\-\/!\?]+)?}}/', function($matches) use($vars) {
+		$template = preg_replace_callback('/{{([' . $vars['_alnum'] . ']+)(\/[' . $vars['_alnum'] . ' \.,+\-\/!\?]+)?}}/', function($matches) use($vars) {
 			if(count($matches) === 3) {
 				$matches[1] = $matches[1] . '/' . $matches[2];
 				unset($matches[2]);
@@ -89,7 +86,7 @@ class Template {
 		}, $template);
 		
 		//  [conditionals][/conditionals]
-		$template = preg_replace_callback('/(\[[\!?' . $alnum . ']+\])(.*?\[\/[' . $alnum . ']+\])/s', function($matches) use($vars) {
+		$template = preg_replace_callback('/(\[[\!?' . $vars['_alnum'] . ']+\])(.*?\[\/[' . $vars['_alnum'] . ']+\])/s', function($matches) use($vars) {
 			$match = str_replace(array('[', ']'), '', $matches[1]);
 			
 			$cond = isset($vars[$match]) and !empty($vars[$match]);
@@ -108,9 +105,8 @@ class Template {
 		}, $template);
 		
 		//  Include partials (~partial~)
-		$vars['partial_base'] = $this->get('partial_base', APP_BASE . 'partials/');
-		$template = preg_replace_callback('/~([' . $alnum . ']+)~/', function($matches) use($vars) {
-			return grab($vars['partial_base'] . preg_replace('/[^a-zA-Z0-9_]+/', '', $matches[0]) . '.php', $vars);
+		$template = preg_replace_callback('/~([' . $vars['_alnum'] . ']+)~/', function($matches) use($vars) {
+			return grab(APP_BASE . 'partials/' . preg_replace('/[^' . $vars['_alnum'] . ']+/', '', $matches[0]) . '.php', $vars);
 		}, $template);
 		
 		return $template;
@@ -134,20 +130,12 @@ class Template {
 		return $this;
 	}
 	
-	public function remove($key) {
-		unset(self::$vars[$key]);
-		
-		return $this;
-	}
-	
 	public function setPath($path) {
 		if(file_exists($path)) {
-			self::$templatepath = $path;
-		} else {
-			Error::log('Path ' . $path . ' not found');
+			return self::$templatepath = $path;
 		}
 		
-		return $this;
+		Error::log('Path ' . $path . ' not found');
 	}
 	
 	public function get($key, $fallback = '') {

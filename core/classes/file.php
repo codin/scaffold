@@ -9,7 +9,7 @@ class File {
 	 *	@param Path/URL
 	 *  @return (object) Array 
 	 */
-	public static function get($name, $char_limit = null, $url = false) {
+	public static function get($name, $char_limit = 10, $url = false) {
 		
 		// Sort our urls and paths out.
 		$path = self::_makePath($url, $name);
@@ -56,7 +56,7 @@ class File {
 		
 		// if its a file
 		if(is_file($path) and file_exists($path)) {
-			return unlink($path);
+			return @unlink($path);
 		}
 		
 		return false;

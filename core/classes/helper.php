@@ -22,6 +22,7 @@ class Helper {
 			return;
 		}
 		
+		
 		if($url === false) {
 			$url = self::$base . str_replace('?', preg_replace('/(\/.*)+/', '', $helper), self::$url);
 			
@@ -29,7 +30,7 @@ class Helper {
 				return false;
 			}
 		}
-				
+		
 		//  Load the file
 		fetch($url);
 		

@@ -176,3 +176,22 @@ function linkify($url) {
 	
 	return $url;
 }
+
+//  Get the first truthy value
+//  merge(false, '', 'hello') => hello
+//  merge('yo', 'sup') => yo
+//  merge(array(0, 1)) => 1
+//  merge(array('', null)) => false (because nothing was truthy)
+function merge($array = false) {
+	$args = func_get_args();
+	
+	if(count($args) < 2 and is_array($array)) {
+		$args = $array;
+	}
+	
+	foreach($args as $arg) {
+		if($arg) return $arg;
+	}
+	
+	return false;
+}

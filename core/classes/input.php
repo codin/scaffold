@@ -56,7 +56,7 @@ class Input {
 	
 	private static function _receive($type, $var, $fallback = '') {
 		if(isset($type[$var])) {
-			return Database::escape($type[$var]);
+			return self::escape($type[$var]);
 		}
 		
 		return $fallback;

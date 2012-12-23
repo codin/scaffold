@@ -8,29 +8,40 @@
 class Cache {
 
 	public static function create($name, $data) {
-		$path = TMP_PATH . 'cache/';
-
-		if($data) {
-			$data2['data'] = $data;
-			$data2['modified'] = time();
-			return File::write($name, json_encode($data2), false, $path);
+		if(is_array($data)) {
+			$data['modified'] = time();
+			File::write($name, json_encode($data), false, TEMP_BASE . 'cache/');
+			return true;
 		} 
 
-		return false;		
+		Error::create(
+			'The second parameter must be an array. 
+			With keys : name, content and profile'
+		);
+
+		return false;
 	}
 
 	public static function get($name) {
-		$path = TMP_PATH . 'cache/';
-		$file = File::get($name, 99999999, $path);
-		return json_decode($file->content)->data;
-	}
-
-	public static function wipe($name) {
-		$path = TMP_PATH . 'cache/';
-		if(File::exists($path . $name)) {
-			return File::remove($name, $path);
+		if(File::exists(TEMP_BASE . 'cache/' . $name)) {
+			$file = File::get($name, 120321, TEMP_BASE . 'cache/');
+			$decoded = json_decode($file->content);
+			return $decoded->content;
 		}
 
 		return false;
 	}
+
+	public static function clear($name) {
+		$path = TEMP_BASE . 'cache/';
+
+		if($path != null && File::exists($path . $name)) {
+			File::delete($name, $path);
+		}
+	}
 }
+
+/** 
+ * If enabled cache a view to a file, and load that if there is no new content to be displayed.
+ * Use template class to display it.
+ */
