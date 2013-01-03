@@ -23,7 +23,7 @@ define('BASE', dirname(dirname($_SERVER['SCRIPT_FILENAME'])) . '/');
 define('IN_APP', true);
 
 //  Set the version of Scaffold
-define('SCAFFOLD_VERSION', v0.1.1);
+define('SCAFFOLD_VERSION', '0.1.1');
 
 //  Start your clocks, mister!
 define('TIMER_START', microtime(true));

@@ -9,7 +9,7 @@
  
 $config['database'] = array(
 	//  Your database host. Usually 127.0.v0.1.1 or localhost
-	'host' => '127.0.v0.1.1',
+	'host' => '127.0.0.1',
 	
 	//  The database user that has permissions to read/write/execute on the database.
 	'user' => 'root',

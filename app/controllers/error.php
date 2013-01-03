@@ -12,7 +12,7 @@ class Error_controller extends Controller {
 			'route' => $this->routes
 		));
 		
-		echo $this->template->render(404);
+		$this->template->render(404);
 	}
 	
 	public function error_404() {
