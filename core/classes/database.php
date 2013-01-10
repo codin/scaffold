@@ -239,7 +239,14 @@ class Database {
 			$this->queryCount++;
 			$this->latestQuery = $what;
 			
-			return $this->lastQuery = $this->_db->query($what);
+			$query = $this->_db->query($what);
+			
+			//  If we've got one resultset, don't put it in an array
+			if(count($query) === 1) {
+				$query = first($query);
+			}
+			
+			return $this->lastQuery = $query;
 		}
 
 		return false;
@@ -257,6 +264,9 @@ class Database {
 			'delete' => array('from', 'where')
 		);
 		
+		//  Should we space it out?
+		$noSpaces = array('sum', 'max', 'min', 'avg', 'format');
+		
 		foreach($structures as $structure => $val) {
 			if(isset($this->query[$structure])) {
 				$query = $structure . ' ' . $this->query[$structure] . ' ';
@@ -264,25 +274,7 @@ class Database {
 				foreach($val as $step) {
 					if(isset($this->query[$step])) {
 						$query .= $step;
-							switch($step) {
-								case 'sum':
-									$query .= '';
-									break;
-								case 'max':
-									$query .= '';
-									break;
-								case 'min':
-									$query .= '';
-									break;
-								case 'avg':
-									$query .= '';
-									break;
-								case 'format':
-									$query .= '';
-									break;
-								default:
-									$query .= ' ';
-							}
+						$query .= in_array($step, $noSpaces, true) !== false ? '' : ' ';
 						$query .= $this->query[$step] . ' ';
 					}
 				}
