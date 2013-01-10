@@ -217,7 +217,10 @@ class Database {
 		return $this->_set('set', $this->_buildCondition($condition, $escape));
 	}
 	
-	public function fetch($limit = false) {
+	/**
+	 *   fetch(limit resultset, always wrap results in an array);
+	 */
+	public function fetch($limit = false, $alwaysWrap = false) {
 		if($limit !== false) {
 			$this->limit($limit);
 		}
@@ -226,7 +229,14 @@ class Database {
 		$query = $this->_buildQuery();
 		
 		if(($result = $this->query($query))) {
-			return $result->fetchAll(PDO::FETCH_OBJ);
+			$all = $result->fetchAll(PDO::FETCH_OBJ);
+			
+			//  Don't put it in an array if there's only one
+			if($alwaysWrap == false and count($all) === 1) {
+				return first($all);
+			}
+			
+			return $all;
 		}
 
 		return $this->query($query);
@@ -239,14 +249,7 @@ class Database {
 			$this->queryCount++;
 			$this->latestQuery = $what;
 			
-			$query = $this->_db->query($what);
-			
-			//  If we've got one resultset, don't put it in an array
-			if(count($query) === 1) {
-				$query = first($query);
-			}
-			
-			return $this->lastQuery = $query;
+			return $this->lastQuery = $this->_db->query($what);
 		}
 
 		return false;
