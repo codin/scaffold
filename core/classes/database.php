@@ -159,8 +159,8 @@ class Database {
 		return $this->_set('limit', $limit);
 	}
 	
-	public function order($what) {
-		return $this->_set('order', 'by ' . $what);
+	public function order($key, $what) {
+		return $this->_set('order','by ' . '`' . $key . '` ' . $what);
 	}
 	
 	public function drop($table) {
@@ -169,7 +169,7 @@ class Database {
 	
 	//  Add a key to the query string
 	private function _set($key, $val) {
-	   	if($val) {
+		if($val) {
 			//  Set it
 			$this->query[$key] = $val;
 		}
@@ -286,7 +286,7 @@ class Database {
 						$query .= $this->query[$step] . ' ';
 					}
 				}
-				
+
 				return trim($query);
 			}
 		}
