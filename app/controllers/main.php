@@ -18,7 +18,7 @@ class Main_controller extends Controller {
 	}
 	
 	public function index() {
-		echo $this->template->render('main');
+		$this->template->render('main');
 	}
 	
 	public function help() {

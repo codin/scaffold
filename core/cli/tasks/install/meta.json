@@ -1,8 +1,0 @@
-{
-	"name": "Install",
-	"description": "Install a helper from the Helper Centre.",
-	"author": "Codin' Co.",
-	"version": "v0.1.1.0",
-	
-	"file": "install.php"
-}
