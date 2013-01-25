@@ -88,8 +88,8 @@ function count_words($str) {
 
 //  Pluralise a string based on a number
 //  pluralise(24, 'cat') => cats, pluralise(3, 'bench', 'es') => benches
-function pluralise($amount, $str, $alt = '') {
-	return intval($amount) === 1 ? $str : $str . ($alt !== '' ? $alt : 's');
+function pluralise($amount, $str, $ending = 's') {
+	return intval($amount) === 1 ? $str : $str . $ending;
 }
 
 //  Get the relative time from a epoch timestamp
@@ -174,7 +174,7 @@ function current_timestamp() {
 
 //  Using HTTPS?
 function is_https() {
-	return $_SERVER['HTTPS'] === 'on';
+	return isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] === 'on';
 }
 
 //  Auto-link any URLs

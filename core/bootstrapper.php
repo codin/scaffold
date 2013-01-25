@@ -49,15 +49,8 @@ foreach($files as $file) {
 //  Include the functions
 include_once CORE_BASE . 'functions.php';
 
-//  Include the helper classes
-$helpers = array('email', 'typography');
-foreach($helpers as $helper) {
-	//  Load, but don't instantiate
-	fetch(CORE_BASE . 'helpers/' . $helper . '.php');
-}
-
 //  Our core classes to load
-$classes = array('cache', 'config', 'storage', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'template', 'helper');
+$classes = array('cache', 'config', 'storage', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'email', 'template', 'helper');
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
