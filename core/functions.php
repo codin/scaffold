@@ -29,6 +29,15 @@ function fetch($what, $data = array()) {
 	return false;
 }
 
+function bad_files() {
+	if(Config::get('env.mode') === 'local') {
+		global $badFiles;
+		return $badFiles;
+	}
+	
+	return false;
+}
+
 //  Debug a variable
 //  dump($_SERVER);
 function dump($what) {
