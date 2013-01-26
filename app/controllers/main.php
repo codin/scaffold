@@ -18,10 +18,10 @@ class Main_controller extends Controller {
 	}
 	
 	public function index() {
-		$this->email->to('idiot@codin.co')
+		dump($this->email->to('idiot@codin.co')
 					->subject('yo bizatch')
 					->message('what up? Love @idiot')
-					->send();
+					->send());
 		
 		$this->template->render('main');
 	}

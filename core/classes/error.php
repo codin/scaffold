@@ -14,7 +14,7 @@ class Error {
 		if(!$errors) {
 			@ini_set('display_errors', false);
 		}
-
+		
 		error_reporting(Config::get('env.error_level', E_ALL));
 	}
 	

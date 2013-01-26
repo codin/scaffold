@@ -9,8 +9,11 @@ class Request {
 	}
 	
 	public static function post($url, $vars = array()) {
-		$count = count($vars);
-		$vars = http_build_query($vars);
+		$count = min(1, count($vars));
+		
+		if(is_array($vars)) {
+			$vars = http_build_query($vars);
+		}
 		
 		// Set our options
 		self::set(CURLOPT_POST, $count);

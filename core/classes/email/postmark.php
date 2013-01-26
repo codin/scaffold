@@ -2,7 +2,6 @@
 
 class Postmark extends Email {
 	public function __construct() {
-		$this->wrap = false;
 		$this->headers = array(
 			'Accept: application/json',
 			'Content-Type: application/json',
@@ -29,28 +28,21 @@ class Postmark extends Email {
 	}
 	
 	public function send() {
-		return dump($this);
+		Request::post('http://api.postmarkapp.com/email', $this->parseData());
+		
+		Request::set(CURLOPT_HTTPHEADER, $this->headers);
+		$return = Request::send();
+
+		return isset($return['data']) ? $return['data'] : $return;
 	}
 	
-	private function _headers() {
-		//  PHP mail() doesn't accept from and replyTo as parameters, so we need
-		//  to add them here
-		$this->headers['From'] = $this->from;
-		$this->headers['Reply-To'] = merge($this->replyTo, $this->from);
-		
-		//  Everything needs to be converted to a newlined string
-		$return = '';
-		
-		foreach($this->headers as $header => $value) {
-			if($value) {
-				$return .= $header . ': ' . $value . PHP_EOL;
-			}
-		}
-		
-		//  Since we can't do a backwards search, we'll make the string go backwards
-		$return = strrev($return);
-		$return = preg_replace('/' . PHP_EOL . '/', '', $return, 1);
-		
-		return strrev($return);
+	public function parseData() {
+		return json_encode(array(
+			'From' => $this->from,
+			'To' => $this->to,
+			'Subject' => $this->subject,
+			'HtmlBody' => $this->message
+		));
 	}
 }
+

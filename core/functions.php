@@ -40,9 +40,9 @@ function bad_files() {
 
 //  Debug a variable
 //  dump($_SERVER);
-function dump($what) {
+function dump() {
 	echo '<pre>';
-		var_dump($what);
+		var_dump(func_get_args());
 	echo '</pre>';
 }
 
