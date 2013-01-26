@@ -60,14 +60,10 @@ class Config {
 			foreach($config as $key) {
 				if(isset($str[$key])) {
 					$str = $str[$key];
-				} else {
-					$str = $fallback;
 				}
 			}
-						
-			if(isset($this->config[$config[0]][$config[1]])) {
-				return $this->config[$config[0]][$config[1]];
-			}
+			
+			return $str === $this->config ? $fallback : $str;
 		}
 	
 		if(isset($this->config[$what])) {
