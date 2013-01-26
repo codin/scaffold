@@ -33,7 +33,7 @@ class Postmark extends Email {
 		Request::set(CURLOPT_HTTPHEADER, $this->headers);
 		$return = Request::send();
 
-		return isset($return['data']) ? $return['data'] : $return;
+		return isset($return->data) ? $return->data : $return;
 	}
 	
 	public function parseData() {
