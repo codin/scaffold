@@ -20,8 +20,4 @@ class Main_controller extends Controller {
 	public function index() {
 		$this->template->render('main');
 	}
-	
-	public function help() {
-		echo 'test';
-	}
 }

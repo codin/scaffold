@@ -4,7 +4,7 @@ class Url {
 
 	public static function current($stripBase = true) {
 		//  ALL IN UPPERCASE
-		$current = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+		$current = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 		
 		//  Strip the base path out
 		if($stripBase === true) {

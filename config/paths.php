@@ -14,7 +14,7 @@ define('APP_BASE', BASE . 'app/');
 define('CORE_BASE', BASE . 'core/');
 
 //  If your public folder has a different name... You know the drill.
-define('PUBLIC_BASE', BASE . 'public/');
+define('PUBLIC_BASE', BASE . 'html/');
 
 // Temp path
 define('TEMP_BASE', BASE . 'tmp/');
