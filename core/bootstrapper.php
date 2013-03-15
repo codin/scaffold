@@ -24,6 +24,9 @@ if(!ini_get('date.timezone')) {
 	date_default_timezone_set('Europe/London');
 }
 
+//  Load local environment variables
+$env = getenv('scaffold_env');
+
 //  Load the rest of the config
 $config = array();
 $files = array('template', 'environment', 'language', 'routes', 'database', 'misc', 'crypt', 'session', 'file', 'csrf', 'email', 'error', 'image', 'cache');
@@ -37,6 +40,10 @@ $badFiles = array();
 //  Loop all the config files to check they're good
 foreach($files as $file) {
 	$filename = BASE . 'config/' . $file . '.php';
+
+	if($env !== false and file_exists(BASE . 'config/' . $file . '.' . $env . '.php')) {
+		$filename = BASE . 'config/' . $file . '.' . $env . '.php';
+	}
 
 	if(file_exists($filename)) {
 		$config[] = $file;
