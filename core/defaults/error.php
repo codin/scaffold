@@ -21,7 +21,6 @@
 			
 			.error {
 				width: 840px;
-				height: 360px;
 				margin: -200px 0 0 -450px;
 				padding: 20px 30px;
 				
@@ -56,7 +55,7 @@
 			</h1>
 			<p>Unfortunately, you&rsquo;ve got an error on line <code><?php echo $line; ?></code> of <code><?php echo $file; ?></code>.</p>
 			
-			<p>Just so you know, the function called was <code><?php echo (isset($trace[0]['class']) ? $trace[0]['class'] . '::' : '') . $trace[0]['function']; ?>('<?php echo join('\', \'', $trace[0]['args']); ?>')</code>, and the full stack is as follows:</p>
+			<p>Just so you know, the function called was <code><?php echo (isset($trace[0]['class']) ? $trace[0]['class'] . '::' : '') . $trace[0]['function']; ?>('<?php dump($trace[0]['args']); ?>')</code>, and the full stack is as follows:</p>
 			
 			<?php dump($trace); ?>
 		</div>

@@ -6,15 +6,20 @@ class Error {
 	public static $WARNING = E_USER_WARNING,
 				  $NOTICE = E_USER_NOTICE,
 				  $FATAL = E_USER_ERROR;
+
+	public static $reporting = true;
 	
 	//  Set up our error reporting
 	public static function init() {
-		$errors = Config::get('env.debug');
+		$err = Config::get('env.debug');
 		
-		if(!$errors) {
+		if(!$err) {
 			@ini_set('display_errors', false);
+			self::$reporting = false;
+			error_reporting(0);
+			return;
 		}
-		
+
 		error_reporting(Config::get('env.error_level', E_ALL));
 	}
 	
@@ -41,7 +46,8 @@ class Error {
 	}
 	
 	private static function _throw() {
-		return fetch(CORE_BASE . 'defaults/error.php', self::_trace());
+		if(self::$reporting)
+			return fetch(CORE_BASE . 'defaults/error.php', self::_trace());
 	}
 	
 	public static function log($what) {
@@ -62,11 +68,13 @@ class Error {
 	}
 	
 	public static function grab($ex) {
-		$trace = $ex->getTrace();
-		$message = $ex->getMessage();
-		$line = $ex->getLine();
-		$file = $ex->getFile();
-		include_once CORE_BASE . 'defaults/error.php';
+		if(self::$reporting){
+			$trace = $ex->getTrace();
+			$message = $ex->getMessage();
+			$line = $ex->getLine();
+			$file = $ex->getFile();
+			include_once CORE_BASE . 'defaults/error.php';
+		}
 	}
 	
 	public static function create($msg, $type = E_USER_NOTICE) {

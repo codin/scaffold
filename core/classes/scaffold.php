@@ -63,7 +63,7 @@ class Scaffold {
 			
 			if(file_exists($path)) {
 				include_once $path;
-				
+
 				$u = ucfirst($class);
 				if(class_exists($u)) {				
 				
@@ -72,7 +72,7 @@ class Scaffold {
 					if(method_exists($u, 'init')) {
 						$this->data->{$class} = call_user_func_array($u . '::init', array($this));
 					}
-					
+
 					$this->data->{$class} = new $u($this->config);
 					$this->objects[$class] = $this->data->{$class};
 				}

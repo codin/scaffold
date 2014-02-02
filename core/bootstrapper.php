@@ -8,6 +8,9 @@
  *	all of the files up properly. Here goes!
  */
 
+/* Comment out the line below if you wish to display errors (Overrides error class) */
+error_reporting(0);
+
 //  Strip magic quotes if it's enabled
 if(function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc()) {
 	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
@@ -72,6 +75,6 @@ if(file_exists($scaffoldPath)) {
 }
 
 //  When any errors get thrown, call our error class
-//set_exception_handler(array('Error', 'exception'));
-//set_error_handler(array('Error', 'native'));
-//register_shutdown_function(array('Error', 'shutdown'));
+set_exception_handler(array('Error', 'exception'));
+set_error_handler(array('Error', 'native'));
+register_shutdown_function(array('Error', 'shutdown'));

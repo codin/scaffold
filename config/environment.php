@@ -10,7 +10,7 @@
 $config['env'] = array(
 	//  Choose from "live" or "local" 
 	//  Live will turn off debugging and error displaying, local will do the opposite
-	'mode' => 'local',
+	'debug' => false,
 	
 	'error_level' => E_ALL
 );
