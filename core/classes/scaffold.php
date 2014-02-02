@@ -4,17 +4,23 @@ class Scaffold {
 
 	public $data;
 	public $config;
-	public $classes;
+	public $classes, $classPath;
 	
-	public function __construct($config, $classes) {		
+	public function __construct($config, $classes, $dependants) {		
 		//  Set the config
 		$this->config = $config;
+
+		// Set the default class path
+		$this->classPath = CORE_BASE . "classes/";
 		
 		//  Core classes
 		$this->classes = $classes;
 		
 		//  Load our classes
-		$this->_loadClasses();
+		$this->loadClasses();
+
+		// Then load our dependants
+		$this->loadClasses($dependants, $this->classPath . 'dependants/');
 		
 		//  Set our model up
 		Storage::set('db', $this->objects['database']);
@@ -57,16 +63,23 @@ class Scaffold {
 		return $class;
 	}
 	
-	private function _loadClasses() {
-		foreach($this->classes as $class) {
-			$path = CORE_BASE . 'classes/' . preg_replace('/(\/.*)/', '', $class) . '.php';
-			
+	public function loadClasses($list = null, $p = false) {
+		if($list == null) {
+			$list = $this->classes;
+		}
+
+		if(!$p) {
+			$p = $this->classPath;
+		}
+
+		foreach($list as $class) {
+			$path = $p . preg_replace('/(\/.*)/', '', $class) . '.php';
 			if(file_exists($path)) {
 				include_once $path;
 
 				$u = ucfirst($class);
 				if(class_exists($u)) {				
-				
+
 					//  Handle static instances
 					//  We label them by using the method "init"
 					if(method_exists($u, 'init')) {

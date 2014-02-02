@@ -60,7 +60,15 @@ foreach($files as $file) {
 include_once CORE_BASE . 'functions.php';
 
 //  Our core classes to load
-$classes = array('cache', 'config', 'storage', 'request', 'validator', 'file', 'error', 'crypt', 'database', 'session', 'csrf', 'response', 'ajax', 'image', 'input', 'url', 'routes', 'email', 'template', 'helper');
+$classes = array(
+	'config', 'file', 'error', 'storage', 
+	'request', 'validator', 'crypt', 'database', 'response', 'input', 'url', 
+	'routes', 'email', 'helper'
+);
+
+$dependants = array(
+	'ajax', 'cache', 'session', 'image', 'csrf', 'template'
+);
 
 //  Just load our class and we'll do the rest
 $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
@@ -68,7 +76,7 @@ $scaffoldPath = CORE_BASE . 'classes/scaffold.php';
 //  Load Scaffold
 if(file_exists($scaffoldPath)) {
 	include_once $scaffoldPath;
-	$scaffold = new Scaffold($config, $classes);
+	$scaffold = new Scaffold($config, $classes, $dependants);
 } else {
 	$badFiles[] = $scaffoldPath;
 	die('Scaffold class not loaded. Sky is falling.');

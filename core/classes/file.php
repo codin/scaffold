@@ -33,9 +33,6 @@ class File {
 			return $data;
 		}
 		
-		// Give an error.
-		Error::log($path . ': Does not exist or is not readable.');
-		
 		// Otherwise return false
 		return false;
 	}

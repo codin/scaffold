@@ -2,10 +2,6 @@
 
 class Crypt {
 	
-	public static function init() {
-
-	}
-	
 	/** 
 	 *	@desc Encode some data
 	 *  @param Data
