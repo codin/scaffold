@@ -10,5 +10,6 @@
 // Set the encoding method.
 $config['template'] = array(
 	
-	'cache' => true, //  whether or not we want to cache a template
+	//  Encyrption method
+	'cache' => true, //  allowed: sha1, sha256, sha512, MD5, DES, Whirlpool
 );

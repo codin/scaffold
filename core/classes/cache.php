@@ -7,12 +7,6 @@
  */
 class Cache {
 
-	/**
-	 * @desc Create a new cache file
-	 * @param name, the name of the file
-	 * @param data, and array of data to cache
-	 * @return whether or not the file was created
-	 */
 	public static function create($name, $data) {
 		if(is_array($data)) {
 			$data['modified'] = time();
@@ -28,11 +22,6 @@ class Cache {
 		return false;
 	}
 
-	/**
-	 * @desc Get a cache file
-	 * @param name, the name of the file
-	 * @return the content of the cache, else false
-	 */
 	public static function get($name) {
 		if(File::exists(TEMP_BASE . 'cache/' . $name)) {
 			$file = File::get($name, 120321, TEMP_BASE . 'cache/');
@@ -43,18 +32,7 @@ class Cache {
 		return false;
 	}
 
-	/**
-	 * DEPRECATED DUE TO MIS-NAMING, USE Cache::delete(...)
-	 */
 	public static function clear($name) {
-		trigger_error("Cache::clear() is DEPRECATED, please use Cache::delete() instead!", E_USER_NOTICE);
-	}
-
-	/**
-	 * @desc delete a cache file
-	 * @param the name of the file 
-	 */
-	public static function delete($name) {
 		$path = TEMP_BASE . 'cache/';
 
 		if($path != null && File::exists($path . $name)) {
@@ -62,3 +40,8 @@ class Cache {
 		}
 	}
 }
+
+/** 
+ * If enabled cache a view to a file, and load that if there is no new content to be displayed.
+ * Use template class to display it.
+ */
