@@ -28,10 +28,6 @@ $config['routes'] = array(
 	//  This not only handles 404s/403s, but also system errors.
 	'error' => 'error',
 	
-	//  These two routes are required
-	//  You can change them, but don't delete them!
-	
-	//  The main index controller
-	'index' => 'main',
-	'index/help' => 'main.help'
+	//  This is an example route for your index controller
+	'index' => 'main'
 );
