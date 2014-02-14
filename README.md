@@ -7,6 +7,7 @@ This is where you will find the documentation for Scaffold, we reccommend that y
 ##Sections
 ####Complete
 - Setting up a controller
+
 ####Incomplete
 - Setting up a view
 - Setting up a model
