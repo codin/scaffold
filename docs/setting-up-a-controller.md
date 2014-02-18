@@ -1,6 +1,6 @@
 #Setting up a controller
 
-The logical side of your application will be controlled by the controllers that you create, with the default installation we provide you with a starting controller ```main``` which represents the index page of your application. In this section you will be shown how to produce an output from your controller and how to add another controller in which we will navigate to using the controller logic.
+The logical side of your application will be controlled by the controllers that you create, with the default installation we provide you with a starting controller ```main``` which represents the index page of your application. In this section you will be shown how to produce an output from your controller and how to add another controller to your application and set it up in the routes.
 
 First navigate to ```/app/controllers/main.php``` in this file you should see something along the lines of:
 
@@ -81,6 +81,13 @@ class Test_model extends Model {
 }
 ?>
 ```
+
+Then to set up a route for the app navigate to the routes file, add the following (key, value) pair route to the array:
+
+```'test' => 'test'```
+
+You should now be able to see the out put if you navigate to ```/test``` in your app!
+
 The next step in this documentation will detail how to properly set up a set of views.
 
 [Go home](../README.md) ---
