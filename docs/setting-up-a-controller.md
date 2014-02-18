@@ -1,6 +1,6 @@
 #Setting up a controller
 
-The logical side of your application will be controlled by the controllers that you create, with the default installation we provide you with a starting controllre ```main``` which represents the index page of your application. In this section you will be shown how to produce an output from your controller and how to add another controller in which we will navigate to using the controller logic.
+The logical side of your application will be controlled by the controllers that you create, with the default installation we provide you with a starting controller ```main``` which represents the index page of your application. In this section you will be shown how to produce an output from your controller and how to add another controller in which we will navigate to using the controller logic.
 
 First navigate to ```/app/controllers/main.php``` in this file you should see something along the lines of:
 
