@@ -1,4 +1,4 @@
-###Setting up a controller
+#Setting up a controller
 
 The logical side of your application will be controlled by the controllers that you create, with the default installation we provide you with a starting controllre ```main``` which represents the index page of your application. In this section you will be shown how to produce an output from your controller and how to add another controller in which we will navigate to using the controller logic.
 
@@ -82,3 +82,7 @@ class Test_model extends Model {
 ?>
 ```
 The next step in this documentation will detail how to properly set up a set of views.
+
+[Go home](../README.md)
+[Previous](setting-up-routes.md)
+[Next](setting-up-a-view.md)
