@@ -3,17 +3,10 @@
 class Main_controller extends Controller {
 	public function __construct() {
 		parent::__construct();
-		
-		$this->helper->load(array('lkdto', 'crush'));
 
 		//  Set template data
 		$this->template->set(array(
-			'language' => Config::get('language'),
-			'title' => 'Hiya, world.',
-			'heading' => 'Howdy, world!',
-			'route' => $this->routes,
-			
-			'query_count' => $this->database->queryCount()
+			'hello' => 'world'
 		));
 	}
 	

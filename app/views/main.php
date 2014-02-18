@@ -1,3 +1,4 @@
+<p><?php echo $hello; ?></p>
 <p>Hi there, and welcome to the wonderful world of <a href="http://scaffold.im">Scaffold</a>! What you&rsquo;re looking at (that's me) is the default controller.</p>
 <p>You'll find me hanging around <code>app/controllers/main.php</code>, and the view (that's the fancy HTML outputting bit) is in <code>app/views/main.php</code>.</p>
 
