@@ -2,7 +2,7 @@
 
 IN PROGRESS
 
-This is where you will find the documentation for Scaffold, we reccommend that you use the latest version of PHP when using this framework!
+This is where you will find the documentation for Scaffold, we recommend that you use the latest version of PHP when using this framework!
 
 ##Sections
 ####Complete
