@@ -1,1 +1,1 @@
-hello
+<p>This is a test partial</p>

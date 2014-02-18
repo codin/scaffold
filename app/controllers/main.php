@@ -6,6 +6,7 @@ class Main_controller extends Controller {
 
 		//  Set template data
 		$this->template->set(array(
+			'heading' => 'test',
 			'hello' => 'world'
 		));
 	}
