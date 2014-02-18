@@ -9,7 +9,7 @@ class Template {
 		//  Set some default variables to use in the template
 		$this->set(array(
 			'load_time' => load_time(),
-			'base' => Url::base(),
+			'base' => Url::base() . '/',
 			
 			'scaffold_version' => scaffold_version()
 		));
@@ -90,7 +90,7 @@ class Template {
 			$match = str_replace(array('[', ']'), '', $matches[1]);
 			
 			$cond = isset($vars[$match]) and !empty($vars[$match]);
-			
+
 			//  [!inverse][/inverse]
 			if(strpos($match, '!') !== false) {
 				$match = str_replace('!', '', $match);
