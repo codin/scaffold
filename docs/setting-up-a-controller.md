@@ -83,6 +83,6 @@ class Test_model extends Model {
 ```
 The next step in this documentation will detail how to properly set up a set of views.
 
-[Go home](../README.md)
-[Previous](setting-up-routes.md)
+[Go home](../README.md) ---
+[Previous](setting-up-routes.md) ---
 [Next](setting-up-a-view.md)

@@ -35,5 +35,5 @@ it would invoke the main controller and run a method named ```about```. This all
 
 Routing in Scaffold is very customisable and will be covered later on within a "configuring your app" secton, though there are some comments which attempt to explain various things which you're able to do.
 
-[Go home](../README.md)
+[Go home](../README.md) ---
 [Next](setting-up-a-controller.md)
