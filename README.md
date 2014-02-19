@@ -34,5 +34,9 @@ Also ensure that you have ```mod_rewrite``` enabled otherwise the ```.htaccess``
 - Setting up a model
 - Using core classes within your app
 
+
+##Classes
+- [Ajax](/docs/classes/ajax.md)
+
 ##Contributions
 We are open for contributions on this project, any requests or suggestions are welcome. 

@@ -1,7 +1,7 @@
 <?php !defined('IN_APP') and header('location: /');
 
 class Ajax {
-	public static $noDirect = false;
+	public static $direct = true;
 	
 	//  Ajax::output(array('variable' => 'output'));
 	//  => {"variable":"output"}
@@ -44,7 +44,7 @@ class Ajax {
 	
 	public static function validOrigin() {
 		//  If we allow direct, it doesn't matter
-		if(self::$noDirect === false) {
+		if(self::$direct === true) {
 			return true;
 		}
 		
