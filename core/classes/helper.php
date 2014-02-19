@@ -36,7 +36,7 @@ class Helper {
 		
 		//  Instantiate the helper
 		$u = ucfirst($helper);
-		if(class_exists($u) and !isset($this->{$helper})) {
+		if(class_exists($u) and !isset($this->{$helper}) and !method_exists($this, $helper)) {
 			$this->{$helper} = new $u;
 		}
 		

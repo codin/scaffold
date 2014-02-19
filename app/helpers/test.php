@@ -2,6 +2,14 @@
 
 class Test {
 	public static function hello() {
-		echo 'it worked, again!';
+		dump('hello');
+	}
+
+	public function __construct() {
+		dump('constructing the test helper');
+	}
+
+	public function world() {
+		dump('world');
 	}
 }
