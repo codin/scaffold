@@ -105,4 +105,5 @@ Now to move onto partials, these can be included using ```~the_name_of_the_parti
 That's pretty much all you need to know about views, we have tried to make them as easy for non-programmers to use as possible so that teams are able to work on the same project with different levels of knowledge. Though one last thing... css files, js and images should be found in ```html/assets/```
 
 [Go home](../README.md) ---
-[Previous](setting-up-a-controller.md)
+[Previous](setting-up-a-controller.md) ---
+[Next](setting-up-helpers.md)

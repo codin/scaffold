@@ -28,12 +28,11 @@ Also ensure that you have ```mod_rewrite``` enabled otherwise the ```.htaccess``
 - [Setting up routes](/docs/setting-up-routes.md)
 - [Setting up a controller](/docs/setting-up-a-controller.md)
 - [Setting up a view](/docs/setting-up-a-view.md)
+- [Including, using and creating helpers](/docs/setting-up-helpers.md)
 
 ####Incomplete
 - Setting up a model
-- Including a helper class
 - Using core classes within your app
-- Creating a helper class
 
 ##Contributions
 We are open for contributions on this project, any requests or suggestions are welcome. 
