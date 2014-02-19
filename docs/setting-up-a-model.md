@@ -45,7 +45,7 @@ $this->model->add();
 $this->model->get();
 ```
 
-The next step is to tie this all into the database, to do so we need to use the connection to the database which is available using ```$this->db```, in this guide we're only going to be using ```insert``` and ```select``` statements, full documentation on the database class can be found [here](../classes/database.md).
+The next step is to tie this all into the database, to do so we need to use the connection to the database which is available using ```$this->db```, in this guide we're only going to be using ```insert``` and ```select``` statements, full documentation on the database class can be found [here](../docs/classes/database.md).
 
 The following line will insert a new record into our table, add this to the ```add``` method.
 
