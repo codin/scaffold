@@ -6,7 +6,7 @@ This is where you will find the documentation for Scaffold, we recommend that yo
 
 ##Installation
 
-To allow scaffold to work correctly we suggest that you set-up a vhost that points it's document root to ```scaffold/html``` here is and example:
+To allow scaffold to work correctly we suggest that you set-up a vhost that points it's document root to ```scaffold/html``` here is an example:
 
 ```
 Listen 1337
