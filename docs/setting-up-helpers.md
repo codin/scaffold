@@ -67,4 +67,5 @@ array (size=1)
 And that's it, using a helper class is simple once you know how! And you know what's even simpler? Creating your own! A helper is just a class and does not require any fancy things in order for it to run, we just advise that they're located in ```app/helpers``` when possible.
 
 [Go home](../README.md) ---
-[Previous](setting-up-a-view.md)
+[Previous](setting-up-a-view.md) ---
+[Next](setting-up-a-model.md)

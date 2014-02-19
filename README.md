@@ -29,9 +29,9 @@ Also ensure that you have ```mod_rewrite``` enabled otherwise the ```.htaccess``
 - [Setting up a controller](/docs/setting-up-a-controller.md)
 - [Setting up a view](/docs/setting-up-a-view.md)
 - [Including, using and creating helpers](/docs/setting-up-helpers.md)
+- [Setting up a model](/docs/setting-up-a-model.md)
 
 ####Incomplete
-- Setting up a model
 - Using core classes within your app
 
 
