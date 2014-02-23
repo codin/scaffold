@@ -1,0 +1,10 @@
+{
+    "name": "Scaffold",
+    "description": "A little framework for building webapps.",
+    "version": "2.0.0-alpha"
+    "type": "library",
+    "homepage": "http://scaffold.im",
+    "license": "WTFPL",
+    "authors": [{"name": "Codin Co.", "email": "hi@codin.co", "homepage": "http://codin.co"}],
+    "require": {"php": ">=5.3.2"}
+}

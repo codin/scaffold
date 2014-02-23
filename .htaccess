@@ -1,0 +1,17 @@
+#  If you have mod_rewrite installed, you're able to rewrite URLs
+#  from index.php/whatever to just /whatever.
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	# If you're using a subfolder, you might need to uncomment the
+	# line below, replacing "/" with "/subfolder_name".
+	# RewriteBase /
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ index.php/$1 [L,QSA]
+</IfModule>
+
+#  If mod_rewrite isn't installed, redirect all 404s to the index.php
+#  script, which might let your install use clean URLs anyway.
+<IfModule !mod_rewrite.c> 
+	ErrorDocument 404 index.php
+</IfModule>
