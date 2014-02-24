@@ -3,9 +3,9 @@
 /**
  *   Scaffold, a tiny PHP webapp framework.
  *
- *   @author    Codin' Co. <hi@codin.co>
- *   @version   2.0.0-alpha
- *   @package   Scaffold
+ *   @author	Codin' Co. <hi@codin.co>
+ *   @version	2.0.0-alpha
+ *   @package	Scaffold
  *
  *   This is just a sample usage for Scaffold. Adjust for taste.
  */
@@ -20,8 +20,8 @@ require 'scaffold/init.php';
  *   Set up our Scaffold object as $app.
  *   We can give Scaffold options three ways:
  *    1. Passing an array of options as parameters.
- *    2. Passing the name of a file as a string parameter.
- *    3. Passing the name of a directory as a string parameter.
+ *	  2. Passing the name of a file as a string parameter.
+ *	  3. Passing the name of a directory as a string parameter.
  */
 $app = new \Scaffold\Scaffold('app/config');
 
