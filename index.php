@@ -25,7 +25,6 @@ require 'scaffold/init.php';
  */
 $app = new \Scaffold\Scaffold('app/config');
 
-
 /**
  *   We'll include a directory of routes instead of muddying up
  *   our main file, so we can call the routes() method to auto-
