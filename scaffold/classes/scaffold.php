@@ -25,6 +25,13 @@ class Scaffold {
 		if($settings !== false) {
 			$this->settings = \options($settings);
 		}
+		
+		//  Build the rest of Scaffold's application up
+		//  return $this->init();
+	}
+	
+	public function __call($name, $vars) {
+		var_dump($name, $vars);
 	}
 	
 	/**
@@ -42,6 +49,6 @@ class Scaffold {
 	 *   @param	$routes		A string or array 
 	 */
 	public function run() {
-		echo 'yay';
+		echo Helpers\Storage::get('what');
 	}
 }

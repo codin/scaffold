@@ -13,5 +13,11 @@
 namespace Scaffold\Routes;
 
 class Routes {
-	public static function init() {}
+	public static function init($routes) {
+		var_dump($routes);
+		
+		$routes = \options($routes);
+		
+		var_dump($routes);
+	}
 }
