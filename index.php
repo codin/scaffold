@@ -26,11 +26,16 @@ require 'scaffold/init.php';
 $app = new \Scaffold\Scaffold('app/config');
 
 /**
- *   We'll include a directory of routes instead of muddying up
- *   our main file, so we can call the routes() method to auto-
- *   load an entire folder of routes.
+ *   Instead of loading all of our routes here, we can autoload
+ *   them in using glob(). It's more maintainable, but less
+ *   secure.
+ *
+ *   If you know you're not going to be adding/removing routes,
+ *   then replace the 
  */
-$app->routes('app/routes');
+foreach(glob('app/routes/*.php') as $file) {
+	include $file;
+}
 
 /**
  *   And start the application!

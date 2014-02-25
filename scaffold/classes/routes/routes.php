@@ -16,7 +16,10 @@ class Routes {
 	public static $routes = array();
 	
 	public static function init($routes = array()) {
-		\Scaffold\Cache\Cache::clear();
-		self::$routes = $routes;
+		self::$routes = \options($routes);
+	}
+	
+	public static function get($url, $callback) {
+		if($url) $callback($url, 'hello');
 	}
 }

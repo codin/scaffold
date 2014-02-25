@@ -13,8 +13,28 @@
 namespace Scaffold;
 
 class Scaffold {
+	/**
+	 *   Store our settings here. You shouldn't use this object to
+	 *   modify anything, but it won't break if you do.
+	 */
 	public $settings;
+	
+	/**
+	 *   Store all the matched routes we find.
+	 */
 	public $routes;
+	
+	/**
+	 *   A list of all function aliases. To use with __call().
+	 */
+	public $aliases = array(
+		'get' => '\Scaffold\Routes\Routes::get',
+		'post' => '\Scaffold\Routes\Routes::post',
+		'put' => '\Scaffold\Routes\Routes::put',
+		'delete' => '\Scaffold\Routes\Routes::delete',
+		
+		'view' => '\Scaffold\View'
+	);
 	
 	/**
 	 *   Set up our settings object
@@ -30,17 +50,20 @@ class Scaffold {
 		//  return $this->init();
 	}
 	
-	public function __call($name, $vars) {
-		var_dump($name, $vars);
-	}
-	
 	/**
-	 *   Set up our routes object
-	 *
-	 *   @param	$routes		A string or array 
+	 *   Automatically try to load any class here.
+	 *   TODO: Probably a better way to do this.
 	 */
-	public function routes($routes) {
-		return $this->routes = \Scaffold\Routes\Routes::init($routes);
+	public function __call($name, $vars) {
+		if(isset($this->aliases[$name])) {
+			//  Handle non-static classes
+			if(strpos($this->aliases[$name], ':') === false) {
+				return new $this->aliases[$name]($vars);
+			}
+			
+			//  And handle static classes here
+			return call_user_func_array($this->aliases[$name], $vars);
+		}
 	}
 	
 	/**
