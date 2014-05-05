@@ -4,7 +4,7 @@ In this short section I will show you how to set up a simple view, this will inc
 
 The example view file ```main.php``` was covered in the section on setting up your controller, we're going to look deeper into how this ties into the application and extra view files that are used to build the entire front end of your application.
 
-The first stage in setting up your view is understanding how our templating system works, navigate to ```html/tenplate.html``` here you should find something similar to this:
+The first stage in setting up your view is understanding how our templating system works, navigate to ```html/template.html``` here you should find something similar to this:
 
 ```html
 <!doctype html>
