@@ -23,20 +23,6 @@ Listen 1337
 
 Also ensure that you have ```mod_rewrite``` enabled otherwise the ```.htaccess``` file will cause a ```500``` error.
 
-##Sections
-####Complete
-- [Setting up routes](/docs/setting-up-routes.md)
-- [Setting up a controller](/docs/setting-up-a-controller.md)
-- [Setting up a view](/docs/setting-up-a-view.md)
-- [Including, using and creating helpers](/docs/setting-up-helpers.md)
-- [Setting up a model](/docs/setting-up-a-model.md)
-
-####Incomplete
-- Using core classes within your app
-
-
-##Classes
-- [Ajax](/docs/classes/ajax.md)
 
 ##Contributions
 We are open for contributions on this project, any requests or suggestions are welcome. 
