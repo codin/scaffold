@@ -1,0 +1,4 @@
+.phpintel
+*.lock
+
+/vendor/

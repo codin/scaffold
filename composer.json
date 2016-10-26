@@ -1,0 +1,21 @@
+{
+    "name": "craigchilds/framework",
+    "description": "Lemon - Simple MVC framework",
+    "type": "framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Craig Childs",
+            "email": "childscraig17@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Lemon\\": "system/"
+        }
+    }
+}
