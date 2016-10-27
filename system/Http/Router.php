@@ -2,7 +2,6 @@
 
 namespace Scaffold\Http;
 
-use Scaffold\Exception\InvalidNumberOfArgumentsException;
 use Scaffold\Exception\NotFoundException;
 use Scaffold\Exception\UnsupportedMethodException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
