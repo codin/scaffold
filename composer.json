@@ -18,7 +18,8 @@
         "symfony/stopwatch": "^3.1",
         "symfony/templating": "^3.1",
         "symfony/event-dispatcher": "^3.1",
-        "symfony/dependency-injection": "^3.1"
+        "symfony/dependency-injection": "^3.1",
+        "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
         "psr-4": {
