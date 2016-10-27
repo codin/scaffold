@@ -1,6 +1,6 @@
 {
-    "name": "craigchilds/framework",
-    "description": "Lemon - Simple MVC framework",
+    "name": "codinco/scaffold",
+    "description": "Scaffold - Simple MVC framework",
     "type": "framework",
     "license": "MIT",
     "authors": [
@@ -23,7 +23,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Lemon\\": "system/"
+            "Scaffold\\": "system/"
         }
     }
 }
