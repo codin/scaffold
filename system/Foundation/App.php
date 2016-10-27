@@ -7,6 +7,7 @@ use Scaffold\Http\Request;
 use Scaffold\Http\Response;
 use Scaffold\Http\Router;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Stopwatch\Stopwatch;
 
 
 /**
@@ -31,6 +32,9 @@ class App
         $dotenv->load();
 
         $this->container = new ContainerBuilder();
+
+        $this->bind('stopwatch', new Stopwatch());
+        $this->get('stopwatch')->start('application');
 
         $this->bind('request', new Request());
         $this->bind('response', new Response());
@@ -61,10 +65,14 @@ class App
         return $this->container->get($service);
     }
 
+    /**
+     * Match the application routes with the request
+     * 
+     * @return void
+     */
     public function matchRoutes()
     {
         $matches = $this->get('router')->match($this->get('request'));
-        dd($matches);
     }
 
     /**
@@ -74,6 +82,10 @@ class App
      */
     public function render()
     {
-        $this->get('response')->prepare($this->get('request'))->send();
+        $this->get('response')->prepare($this->get('request'));
+
+        $this->profile = $this->get('stopwatch')->stop('application');
+
+        $this->get('response')->send();
     }
 }
