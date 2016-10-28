@@ -63,10 +63,19 @@ class App
      */
     public function render()
     {
-        $this->container->get('response')->prepare($this->container->get('request'));
+        $response = $this->container->get('response');
+        $response->prepare($this->container->get('request'));
+        
+        $content = $response->getContent();
 
         $this->profile = $this->container->get('stopwatch')->stop('application');
 
-        $this->container->get('response')->send();
+        $this->profile = [
+            'memory' => humanFileSize($this->profile->getMemory(), 'MB'),
+            'time'   => $this->profile->getDuration() . 'ms',
+        ];
+
+        $content .= '<!-- Profile ' . json_encode($this->profile) . ' -->';
+        $response->setContent($content)->send();
     }
 }
