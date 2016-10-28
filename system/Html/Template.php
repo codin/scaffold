@@ -11,7 +11,7 @@ class Template
     /**
      * Holds the templating engine instance
      * 
-     * @var PhpEngine
+     * @var DelegatingEngine
      */
     protected $templater;
 

@@ -14,7 +14,7 @@ use Scaffold\Http\Response;
  * to the controllers that we need.
  */
 class Resolver
-{       
+{
     /**
      * The name of the controller
      * 
@@ -72,7 +72,7 @@ class Resolver
         unset($this->match['_route']);
 
         $params = array_merge([
-            container('request'), 
+            container('request'),
             container('response'),
         ], $this->match);
 

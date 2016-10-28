@@ -9,10 +9,10 @@ use Scaffold\Http\Response;
 use Scaffold\Http\Router;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Templating\DelegatingEngine;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
-
 
 /**
  * The primary application class in Scaffold
@@ -45,7 +45,9 @@ class App
 
         $this->container->bind('router', new Router());
 
-        $this->container->bind('templater', new PhpEngine(new TemplateNameParser(), new FilesystemLoader($root . '/views/%name%')));
+        $this->container->bind('templater', new DelegatingEngine([
+            new PhpEngine(new TemplateNameParser(), new FilesystemLoader($root . '/views/%name%')),
+        ]));
     }
 
     /**

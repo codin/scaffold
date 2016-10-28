@@ -20,16 +20,6 @@ class PagesController extends Controller
      */
     public function home(Request $request, Response $response)
     {
-        return $response->view('index.php', ['testing' => 'boobs']);
-    }
-
-    /**
-     * Show the test view
-     * 
-     * @return Response
-     */
-    public function test(Request $request, Response $response, $params)
-    {
-        return $response->setContent($params);
+        return $response->view('index.php', ['text' => 'Welcome to Scaffold']);
     }
 }
