@@ -20,7 +20,7 @@ class PagesController extends Controller
      */
     public function home(Request $request, Response $response)
     {
-        return $response->setContent('Hello world');
+        return $response->view('index.php', ['testing' => 'boobs']);
     }
 
     /**

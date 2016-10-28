@@ -2,6 +2,7 @@
 
 namespace Scaffold\Http;
 
+use Scaffold\Html\Template;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
@@ -12,4 +13,17 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 class Response extends SymfonyResponse
 {
 
+    /**
+     * Render a view by name, and pass some arguments to it
+     * 
+     * @param  string $name
+     * @param  array  $arguments
+     * @return Scaffold\Html\Template
+     */
+    public function view($name, array $arguments)
+    {
+        $template = new Template($name, $arguments);
+
+        return $this->setContent($template->render());
+    }
 }

@@ -9,6 +9,9 @@ use Scaffold\Http\Response;
 use Scaffold\Http\Router;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
 
 
 /**
@@ -41,6 +44,8 @@ class App
         $this->container->bind('response', new Response());
 
         $this->container->bind('router', new Router());
+
+        $this->container->bind('templater', new PhpEngine(new TemplateNameParser(), new FilesystemLoader($root . '/views/%name%')));
     }
 
     /**
