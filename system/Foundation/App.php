@@ -32,38 +32,15 @@ class App
         $dotenv = new Dotenv($root);
         $dotenv->load();
 
-        $this->container = new ContainerBuilder();
+        $this->container = container();
 
-        $this->bind('stopwatch', new Stopwatch());
-        $this->get('stopwatch')->start('application');
+        $this->container->bind('stopwatch', new Stopwatch());
+        $this->container->get('stopwatch')->start('application');
 
-        $this->bind('request', new Request());
-        $this->bind('response', new Response());
+        $this->container->bind('request', new Request());
+        $this->container->bind('response', new Response());
 
-        $this->bind('router', new Router());
-    }
-
-    /**
-     * Bind a service to the App container
-     * 
-     * @param  string $service
-     * @param  Object $instance
-     * @return Object
-     */
-    public function bind($service, $instance)
-    {   
-        $this->container->set($service, $instance);
-    }
-
-    /**
-     * Get a service from the App container
-     * 
-     * @param  string $service
-     * @return Object
-     */
-    public function get($service)
-    {
-        return $this->container->get($service);
+        $this->container->bind('router', new Router());
     }
 
     /**
@@ -73,10 +50,10 @@ class App
      */
     public function matchRoutes()
     {
-        $match = $this->get('router')->match($this->get('request'));
-        $resolver = new Resolver($this, $match);
+        $match = $this->container->get('router')->match($this->container->get('request'));
+        $resolver = new Resolver($match);
 
-        $this->bind('response', $resolver->resolve());
+        $this->container->bind('response', $resolver->resolve());
     }
 
     /**
@@ -86,10 +63,10 @@ class App
      */
     public function render()
     {
-        $this->get('response')->prepare($this->get('request'));
+        $this->container->get('response')->prepare($this->container->get('request'));
 
-        $this->profile = $this->get('stopwatch')->stop('application');
+        $this->profile = $this->container->get('stopwatch')->stop('application');
 
-        $this->get('response')->send();
+        $this->container->get('response')->send();
     }
 }

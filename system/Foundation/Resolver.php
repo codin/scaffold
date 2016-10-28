@@ -30,21 +30,13 @@ class Resolver
     private $method;
 
     /**
-     * The instance of our application
-     * 
-     * @var Scaffold\Foundation\App
-     */
-    private $app;
-
-    /**
      * Construc the resolver with the route match
      * data. So we can set things on this instance.
      * 
      * @param array $match
      */
-    public function __construct(App $app, $match)
+    public function __construct($match)
     {
-        $this->app = $app;
         $this->match = $match;
 
         $parts = explode('@', $this->match['controller']);
@@ -70,7 +62,7 @@ class Resolver
         $controller = $this->controller;
         $method = $this->method;
 
-        $controller = new $controller($this->app);
+        $controller = new $controller();
 
         if (!method_exists($controller, $method)) {
             throw new MethodNotFoundException($controller, $method);
@@ -80,8 +72,8 @@ class Resolver
         unset($this->match['_route']);
 
         $params = array_merge([
-            $this->app->get('request'), 
-            $this->app->get('response'),
+            container('request'), 
+            container('response'),
         ], $this->match);
 
         $response = call_user_func_array([$controller, $method], $params);

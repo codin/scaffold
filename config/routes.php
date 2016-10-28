@@ -5,7 +5,7 @@
  */
 
 // Pull in the router
-$router = $app->get('router');
+$router = container('router');
 
 
 // Define our home route
