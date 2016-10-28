@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use Scaffold\Foundation\App;
+
 /**
  * This class must be extended by your application controllers,
  * you should add any functionality here in which you wish to be
@@ -9,5 +11,16 @@ namespace App\Controllers;
  */
 abstract class Controller
 {
+    protected $app;
 
+    /**
+     * Inject the app into the constructor
+     * of the controllers.
+     * 
+     * @param App $app
+     */
+    public function __construct(App $app)
+    {
+        $this->app = $app;
+    }
 }

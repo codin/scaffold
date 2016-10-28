@@ -3,6 +3,7 @@
 namespace Scaffold\Foundation;
 
 use Dotenv\Dotenv;
+use Scaffold\Foundation\Resolver;
 use Scaffold\Http\Request;
 use Scaffold\Http\Response;
 use Scaffold\Http\Router;
@@ -72,7 +73,10 @@ class App
      */
     public function matchRoutes()
     {
-        $matches = $this->get('router')->match($this->get('request'));
+        $match = $this->get('router')->match($this->get('request'));
+        $resolver = new Resolver($this, $match);
+
+        $this->bind('response', $resolver->resolve());
     }
 
     /**
