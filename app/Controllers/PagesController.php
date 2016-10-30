@@ -18,7 +18,6 @@ class PagesController extends Controller
      */
     public function home()
     {
-        return response()->json(['testing' => 'poop']);
         return response()->view('index.php', [
             'text' => 'Welcome to Scaffold'
         ]);

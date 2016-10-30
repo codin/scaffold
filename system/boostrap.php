@@ -18,7 +18,7 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
 ]);
 
 // Include our routes file
-include_once '../config/routes.php';
+include_once '../app/routes.php';
 
 // Match our routes
 $app->matchRoutes();

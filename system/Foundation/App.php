@@ -98,7 +98,7 @@ class App
             'memory' => humanFileSize($this->profile->getMemory(), 'MB'),
             'time'   => $this->profile->getDuration() . 'ms',
         ];
-        
+
         $response->setContent($content)->send();
     }
 

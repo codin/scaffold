@@ -15,7 +15,7 @@ function env($name, $fallback = false)
         return $data;
     }
 
-    return $name;
+    return $fallback;
 }
 
 /**
