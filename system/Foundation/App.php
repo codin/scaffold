@@ -3,13 +3,9 @@
 namespace Scaffold\Foundation;
 
 use Dotenv\Dotenv;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Scaffold\Foundation\Resolver;
-use Scaffold\Http\Request;
-use Scaffold\Http\Response;
-use Scaffold\Http\Router;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Stopwatch\Stopwatch;
-use Symfony\Component\Templating\DelegatingEngine;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
@@ -29,25 +25,46 @@ class App
     /**
      * Do stuff when we boot the app up.
      */
-    public function __construct($root)
+    public function __construct($root, $services = [])
     {
         // Load in environment variables from ".env"
-        $dotenv = new Dotenv($root);
-        $dotenv->load();
+        $this->setupPaths($root);
 
         $this->container = container();
 
-        $this->container->bind('stopwatch', new Stopwatch());
+        foreach ($services as $name => $service) {
+            $this->container->bind($name, $service);
+        }
+
+        $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
         $this->container->get('stopwatch')->start('application');
 
-        $this->container->bind('request', new Request());
-        $this->container->bind('response', new Response());
+        $this->container->get('config')->loadConfigurationFiles(
+            $this->paths['config_path'],
+            $this->getEnvironment()
+        );
 
-        $this->container->bind('router', new Router());
+        $this->container->get('templater')->addEngine(new PhpEngine(
+            new TemplateNameParser(), 
+            new FilesystemLoader($this->paths['view_path'])
+        ));
 
-        $this->container->bind('templater', new DelegatingEngine([
-            new PhpEngine(new TemplateNameParser(), new FilesystemLoader($root . '/views/%name%')),
-        ]));
+        $database = $this->container->get('database');
+        $database->addConnection($this->container->get('config')->get('database'));
+        $database->setAsGlobal();
+        $database->bootEloquent();
+    }
+
+    /**
+     * Initialize the paths.
+     */
+    private function setupPaths($root)
+    {
+        $this->paths['env_file_path'] = $root;
+        $this->paths['env_file']      = $this->paths['env_file_path'].'.env';
+        $this->paths['config_path']   = $root . '/config';
+        $this->paths['log_file']      = $root . '/logs/scaffold.log';
+        $this->paths['view_path']     = $root . '/views/%name%';
     }
 
     /**
@@ -81,8 +98,22 @@ class App
             'memory' => humanFileSize($this->profile->getMemory(), 'MB'),
             'time'   => $this->profile->getDuration() . 'ms',
         ];
-
-        $content .= '<!-- Profile ' . json_encode($this->profile) . ' -->';
+        
         $response->setContent($content)->send();
+    }
+
+    /**
+     * Detect the environment. Defaults to `production`.
+     *
+     * @return string
+     */
+    public function getEnvironment()
+    {
+        if (is_file($this->paths['env_file'])) {
+            $dotenv = new Dotenv($this->paths['env_file_path']);
+            $dotenv->load();
+        }
+
+        return env('ENVIRONMENT') ?: 'production';
     }
 }

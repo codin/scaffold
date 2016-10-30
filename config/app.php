@@ -5,5 +5,5 @@
  */
 
 return [
-    'host' => env('HOST', 'localhost'),
+    
 ];

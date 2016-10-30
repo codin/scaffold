@@ -71,10 +71,7 @@ class Resolver
         unset($this->match['controller']);
         unset($this->match['_route']);
 
-        $params = array_merge([
-            container('request'),
-            container('response'),
-        ], $this->match);
+        $params = $this->match;
 
         $response = call_user_func_array([$controller, $method], $params);
 

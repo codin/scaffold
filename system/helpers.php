@@ -3,6 +3,22 @@
 use Scaffold\Foundation\Container;
 
 /**
+ * Pull data from the environment
+ * 
+ * @param  string  $name
+ * @param  boolean|mixed $fallback
+ * @return mixed
+ */
+function env($name, $fallback = false)
+{
+    if ($data = getenv($name)) {
+        return $data;
+    }
+
+    return $name;
+}
+
+/**
  * Pretty-dump some
  * data for debugging purposes.
  * 
@@ -14,19 +30,6 @@ function dump($what)
     echo '<pre>';
     var_dump($what);
     echo '</pre>';
-}
-
-/**
- * Die and pretty-dump some
- * data for debugging purposes.
- * 
- * @param  mixed $what
- * @return void
- */
-function dd($what)
-{
-    dump($what);
-    die();
 }
 
 /**
@@ -66,4 +69,44 @@ function container($make = null)
     }
 
     return Container::getInstance()->get($make);
+}
+
+/**
+ * Get the app instance
+ * 
+ * @return Scaffold\Foundation\App
+ */
+function app()
+{
+    return container('app');
+}
+
+/**
+ * Get the instance of our config loader
+ * 
+ * @return Scaffold\Foundation\Config
+ */
+function config()
+{
+    return container('config');
+}
+
+/**
+ * Get the response instance
+ * 
+ * @return Scaffold\Http\Response
+ */
+function response()
+{
+    return container('response');
+}
+
+/**
+ * Get the request instance
+ * 
+ * @return Scaffold\Http\Request
+ */
+function request()
+{
+    return container('request');
 }

@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
-use Scaffold\Http\Request;
-use Scaffold\Http\Response;
 
 /**
  * Handle the static pages of our application, this 
@@ -16,10 +14,13 @@ class PagesController extends Controller
     /**
      * Show the home view
      * 
-     * @return Response
+     * @return Scaffold\Http\Response
      */
-    public function home(Request $request, Response $response)
+    public function home()
     {
-        return $response->view('index.php', ['text' => 'Welcome to Scaffold']);
+        return response()->json(['testing' => 'poop']);
+        return response()->view('index.php', [
+            'text' => 'Welcome to Scaffold'
+        ]);
     }
 }

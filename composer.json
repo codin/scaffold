@@ -1,12 +1,13 @@
 {
     "name": "codinco/scaffold",
-    "description": "Scaffold - Simple MVC framework",
+    "description": "Scaffold - Lightweight MVC framework",
     "type": "framework",
     "license": "MIT",
     "authors": [
         {
             "name": "Craig Childs",
-            "email": "childscraig17@gmail.com"
+            "email": "childscraig17@gmail.com",
+            "homepage": "http://craigchilds.me"
         }
     ],
     "require": {
@@ -14,12 +15,16 @@
         "symfony/asset": "^3.1",
         "symfony/security": "^3.1",
         "symfony/filesystem": "^3.1",
+        "symfony/finder": "^3.1",
         "symfony/routing": "^3.1",
         "symfony/stopwatch": "^3.1",
         "symfony/templating": "^3.1",
         "symfony/event-dispatcher": "^3.1",
         "symfony/dependency-injection": "^3.1",
-        "vlucas/phpdotenv": "^2.4"
+        "vlucas/phpdotenv": "^2.4",
+        "illuminate/database": "~5.1",
+        "monolog/monolog": "^1.17",
+        "illuminate/config": "^5.3"
     },
     "autoload": {
         "psr-4": {

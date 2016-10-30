@@ -18,12 +18,26 @@ class Response extends SymfonyResponse
      * 
      * @param  string $name
      * @param  array  $arguments
-     * @return Scaffold\Html\Template
+     * @return Scaffold\Http\Response
      */
     public function view($name, array $arguments)
     {
         $template = new Template($name, $arguments);
 
         return $this->setContent($template->render());
+    }
+
+    /**
+     * Render a json response
+     * 
+     * @param  mixed $data
+     * @return Scaffold\Http\Response
+     */
+    public function json($data)
+    {
+        $json = json_encode($data, JSON_PRETTY_PRINT);
+        $this->headers->set('Content-Type', 'application/json');
+
+        return $this->setContent($json);
     }
 }
