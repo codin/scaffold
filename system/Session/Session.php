@@ -2,6 +2,7 @@
 
 namespace Scaffold\Session;
 
+use Scaffold\Exception\SessionNotStartedException;
 use Scaffold\Session\Adapters\SessionAdapter;
 
 /**
@@ -29,7 +30,7 @@ class Session
         $status = session_status();
 
         if ($status != PHP_SESSION_ACTIVE) {
-            throw new SesssionNotStartedException();
+            throw new SessionNotStartedException();
         }
 
         $this->adapter = $adapter;
