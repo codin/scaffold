@@ -1,0 +1,49 @@
+<?php 
+
+namespace Scaffold\Session;
+
+use Scaffold\Session\Adapters\SessionAdapter;
+
+/**
+ * Handle interactions with the sessions
+ * on this application
+ */
+class Session
+{       
+    /**
+     * The adapter used to store the
+     * session data.
+     * 
+     * @var SessionAdapter
+     */
+    protected $adapter;
+
+    /**
+     * Construct the session object and pass in
+     * the adapter which we're going to be using.
+     * 
+     * @param SessionAdapter $adapter
+     */
+    public function __construct(SessionAdapter $adapter)
+    {
+        $status = session_status();
+
+        if ($status != PHP_SESSION_ACTIVE) {
+            throw new SesssionNotStartedException();
+        }
+
+        $this->adapter = $adapter;
+    }
+
+    /**
+     * Handle calling methods in the adapter
+     * 
+     * @param  string $method
+     * @param  array  $arguments
+     * @return mixed
+     */
+    public function __call($method, $arguments)
+    {
+        return call_user_method_array($method, $this->adapter, $arguments);
+    }
+}
