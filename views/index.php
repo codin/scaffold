@@ -26,6 +26,6 @@
         </style>
     </head>
     <body>
-        <h1><?php echo $text; ?></h1>
+        <h1><?php echo $message; ?> <?php echo $text; ?></h1>
     </body>
 </html>

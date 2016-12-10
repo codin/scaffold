@@ -14,6 +14,26 @@ class Response extends SymfonyResponse
 {
 
     /**
+     * The arguments which can be passed to the
+     * response, namely when rendering a view.
+     * 
+     * @var array
+     */
+    public $arguments = [];
+
+    /**
+     * Add a new argument to this response
+     * 
+     * @param string $key
+     * @param mixed $data
+     */
+    public function addArgument($key, $data)
+    {
+        $this->arguments[$key] = $data;
+        return $this;
+    }
+
+    /**
      * Render a view by name, and pass some arguments to it
      * 
      * @param  string $name
@@ -22,7 +42,8 @@ class Response extends SymfonyResponse
      */
     public function view($name, array $arguments)
     {
-        $template = new Template($name, $arguments);
+        $this->arguments = array_merge($this->arguments, $arguments);
+        $template = new Template($name, $this->arguments);
 
         return $this->setContent($template->render());
     }

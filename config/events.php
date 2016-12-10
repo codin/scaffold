@@ -15,7 +15,7 @@ return [
      * name of the event with '.'
      */
     'events' => [
-        // \App\Events\MyEvent::class => 'my.event'
+        \App\Events\MyEvent::class => 'my.event'
     ],
 
     /**
@@ -24,6 +24,6 @@ return [
      * application.
      */
     'listeners' => [
-        // \App\Listeners\MyEventListener::class
+        \App\Listeners\MyEventListener::class
     ],
 ];

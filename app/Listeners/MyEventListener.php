@@ -28,6 +28,7 @@ class MyEventListener extends EventListener
      */
     public function onMyEvent(Event $event)
     {
-
+        // Add the message as an argument to the response
+        response()->addArgument('message', $event->message);
     }
 }

@@ -23,7 +23,7 @@ class EventListener
      * 
      * @return array
      */
-    protected function getEvents()
+    public function getEvents()
     {
         return $this->events;
     }

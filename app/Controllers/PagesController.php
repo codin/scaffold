@@ -18,8 +18,10 @@ class PagesController extends Controller
      */
     public function home()
     {
+        dispatch(new \App\Events\MyEvent('Welcome to'));
+
         return response()->view('index.php', [
-            'text' => 'Welcome to Scaffold'
+            'text' => 'Scaffold',
         ]);
     }
 }

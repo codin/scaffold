@@ -77,10 +77,12 @@ class App
 
         $listeners = $config['listeners'];
 
-        foreach ($listeners as $key => $listener) {
+        foreach ($listeners as $listener) {
             $listener = new $listener;
 
-
+            foreach ($listener->getEvents() as $event => $method) {
+                $dispatcher->addListener($event, [$listener, $method]);
+            }
 
             $this->listeners[] = $listener;
         }
