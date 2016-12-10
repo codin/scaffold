@@ -7,7 +7,6 @@
 // Pull in the router
 $router = container('router');
 
-
 // Define our home route
 $router->addRoute('GET', '/', [
     'name' => 'home',
