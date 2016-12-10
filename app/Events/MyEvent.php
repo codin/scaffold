@@ -2,10 +2,12 @@
 
 namespace App\Events;
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * Your application event.
  */
-class MyEvent
+class MyEvent extends Event
 {
 
 }

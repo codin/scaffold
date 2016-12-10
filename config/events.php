@@ -15,7 +15,7 @@ return [
      * name of the event with '.'
      */
     'events' => [
-        // 'my.event' => \App\Events\MyEvent::class
+        // \App\Events\MyEvent::class => 'my.event'
     ],
 
     /**

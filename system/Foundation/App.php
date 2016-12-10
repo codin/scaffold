@@ -50,7 +50,7 @@ class App
         ));
 
         $database = $this->container->get('database');
-        $database->addConnection($this->container->get('config')->get('database'));
+        $database->addConnection($this->container->get('config')->get('database.default'));
         $database->setAsGlobal();
         $database->bootEloquent();
     }
