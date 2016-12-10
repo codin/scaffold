@@ -23,6 +23,13 @@ class App
     public $container;
 
     /**
+     * Store the listener instances
+     * 
+     * @var array
+     */
+    private $listeners = [];
+
+    /**
      * Do stuff when we boot the app up.
      */
     public function __construct($root, $services = [])
@@ -44,6 +51,8 @@ class App
             $this->getEnvironment()
         );
 
+        $this->bindEventListeners();
+
         $this->container->get('templater')->addEngine(new PhpEngine(
             new TemplateNameParser(), 
             new FilesystemLoader($this->paths['view_path'])
@@ -56,7 +65,32 @@ class App
     }
 
     /**
+     * Bind the application event listeners given the
+     * event configuration.
+     * 
+     * @return void
+     */
+    private function bindEventListeners()
+    {
+        $dispatcher = $this->container->get('dispatcher');
+        $config = $this->container->get('config')->get('events');
+
+        $listeners = $config['listeners'];
+
+        foreach ($listeners as $key => $listener) {
+            $listener = new $listener;
+
+
+
+            $this->listeners[] = $listener;
+        }
+    }
+
+    /**
      * Initialize the paths.
+     *
+     * @param  string $root
+     * @return void
      */
     private function setupPaths($root)
     {

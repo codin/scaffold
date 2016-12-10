@@ -1,5 +1,6 @@
 <?php 
 
+use Scaffold\Eventing\Event;
 use Scaffold\Foundation\Container;
 
 /**
@@ -122,12 +123,11 @@ function dispatch(Event $event)
 {
     $events = config()->get('events.events');
     $classname = get_class($event);
+    $name = $event->getEventName();
 
-    if (!isset($events[$classname])) {
-        throw new EventNotDispatchedException('Cannot find event name matching classname of event which was dispatched.');
+    if (isset($events[$classname])) {
+        $name = $events[$classname];
     }
-
-    $name = $events[$classname];
 
     return container('dispatcher')->dispatch($name, $event);
 }

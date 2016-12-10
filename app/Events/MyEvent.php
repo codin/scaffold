@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use Symfony\Component\EventDispatcher\Event;
+use Scaffold\Eventing\Event;
 
 /**
  * Your application event.
