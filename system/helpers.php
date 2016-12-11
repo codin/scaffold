@@ -189,3 +189,24 @@ function module_path()
 {
     return paths('module_path');
 }
+    
+/**
+ * Render a module by it's name, this is a lowercase
+ * identifier for the module.
+ * 
+ * @param  string $name
+ * @param  array  $arguments
+ * @return void
+ */
+function module($name, $arguments = [])
+{
+    $config = config()->get('templating');
+
+    if (!isset($config['modules'][$name])) {
+        throw new Exception('Module mapping not found');
+    }
+
+    $class = $config['modules'][$name];
+
+    new $class($arguments);
+}

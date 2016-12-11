@@ -25,9 +25,10 @@ return [
     'view_path' => env('VIEW_PATH', '/views/%name%'),
 
     /**
-     * The path to the module template from the root
-     * of the application
+     * Name => Class mapping for our modules.
      */
-    'module_path' => env('MODULE_PATH', '/views/modules/%name%'),
+    'modules' => [
+        'header' => \App\Modules\Header::class,
+    ],
 
 ];

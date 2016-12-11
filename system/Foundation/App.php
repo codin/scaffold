@@ -62,7 +62,9 @@ class App
 
         $this->bindEventListeners();
 
-        $this->container->get('templater')->addEngine(new PhpEngine(
+        $templater = $this->container->get('templater');
+        
+        $templater->addEngine(new PhpEngine(
             new TemplateNameParser(), 
             new FilesystemLoader($this->paths['view_path'])
         ));
@@ -121,7 +123,6 @@ class App
         $config = $this->container->get('config');
         $this->paths['log_file']  = $root . $config->get('app.log_file');
         $this->paths['view_path'] = $root . $config->get('templating.view_path');
-        $this->paths['module_path'] = $root . $config->get('templating.module_path');
     }
 
     /**
