@@ -30,12 +30,18 @@ class App
     private $listeners = [];
 
     /**
+     * The paths for this application
+     * 
+     * @var array
+     */
+    private $paths = [];
+
+    /**
      * Do stuff when we boot the app up.
      */
     public function __construct($root, $services = [])
     {
-        // Load in environment variables from ".env"
-        $this->setupPaths($root);
+        $this->setupInitialPaths($root);
 
         $this->container = container();
 
@@ -43,13 +49,16 @@ class App
             $this->container->bind($name, $service);
         }
 
-        $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
         $this->container->get('stopwatch')->start('application');
 
         $this->container->get('config')->loadConfigurationFiles(
             $this->paths['config_path'],
             $this->getEnvironment()
         );
+
+        $this->setupConfigurablePaths($root);
+        
+        $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
 
         $this->bindEventListeners();
 
@@ -94,13 +103,25 @@ class App
      * @param  string $root
      * @return void
      */
-    private function setupPaths($root)
+    private function setupInitialPaths($root)
     {
         $this->paths['env_file_path'] = $root;
         $this->paths['env_file']      = $this->paths['env_file_path'].'.env';
         $this->paths['config_path']   = $root . '/config';
-        $this->paths['log_file']      = $root . '/logs/scaffold.log';
-        $this->paths['view_path']     = $root . '/views/%name%';
+    }
+
+    /**
+     * Setup our configurable paths.
+     * 
+     * @param  string $root
+     * @return void
+     */
+    private function setupConfigurablePaths($root)
+    {
+        $config = $this->container->get('config');
+        $this->paths['log_file']  = $root . $config->get('app.log_file');
+        $this->paths['view_path'] = $root . $config->get('templating.view_path');
+        $this->paths['module_path'] = $root . $config->get('templating.module_path');
     }
 
     /**
@@ -131,7 +152,7 @@ class App
         $this->profile = $this->container->get('stopwatch')->stop('application');
 
         $this->profile = [
-            'memory' => humanFileSize($this->profile->getMemory(), 'MB'),
+            'memory' => human_file_size($this->profile->getMemory(), 'MB'),
             'time'   => $this->profile->getDuration() . 'ms',
         ];
 
@@ -151,5 +172,15 @@ class App
         }
 
         return env('ENVIRONMENT') ?: 'production';
+    }
+
+    /**
+     * Get the application paths
+     * 
+     * @return array
+     */
+    public function getPaths()
+    {
+        return $this->paths;
     }
 }

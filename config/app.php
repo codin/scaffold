@@ -40,4 +40,10 @@ return [
      */
     'app_token' => env('APP_TOKEN', '6e40dbb0b5ea620d42c5cf10cc4e0285'),
 
+    /**
+     * The path to the log file from the root
+     * of the application.
+     */
+    'log_file'  => env('LOG_FILE', '/logs/scaffold.log'),
+
 ];

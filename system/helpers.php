@@ -40,7 +40,7 @@ function dump($what)
  * @param  string $unit
  * @return string
  */
-function humanFileSize($size, $unit = false)
+function human_file_size($size, $unit = false)
 {
     if ((!$unit && $size >= 1<<30) || $unit == "GB") {
         return number_format($size/(1<<30), 2)."GB";
@@ -130,4 +130,62 @@ function dispatch(Event $event)
     }
 
     return container('dispatcher')->dispatch($name, $event);
+}
+
+/**
+ * Get the app paths with an option to
+ * pass in a specific key.
+ * 
+ * @param  boolean $key
+ * @return string|array
+ */
+function paths($key = false)
+{
+    $paths = app()->getPaths();
+
+    if ($key && isset($paths[$key])) {
+        return $paths[$key];
+    }
+
+    return $paths;
+}
+    
+/**
+ * Get the public path
+ * 
+ * @return string
+ */
+function public_path()
+{
+    return paths('public_path');
+}
+
+/**
+ * Get the asset path
+ * 
+ * @return string
+ */
+function asset_path()
+{
+    return paths('asset_path');
+}
+
+/**
+ * Get the view path
+ * 
+ * @return string
+ */
+function view_path()
+{
+    return paths('view_path');
+}
+
+/**
+ * Get the module path
+ * 
+ * @return string
+ */
+function module_path()
+{
+    return paths('module_path');
 }
