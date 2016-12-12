@@ -45,6 +45,9 @@ class Session
      */
     public function __call($method, $arguments)
     {
-        return call_user_method_array($method, $this->adapter, $arguments);
-    }
+        if (!method_exists($this->adapter, $method)) {
+            throw new Exception('Method doesn\'t exist on adapter');
+        }
+        
+        return $this->adapter->$method(...$arguments);    }
 }
