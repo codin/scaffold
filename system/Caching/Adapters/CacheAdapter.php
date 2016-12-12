@@ -1,6 +1,6 @@
 <?php 
 
-namespace Scaffold\Storage\Caching\Adapters;
+namespace Scaffold\Caching\Adapters;
 
 /**
  * The interface for our caching adapters.

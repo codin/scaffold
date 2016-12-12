@@ -26,7 +26,6 @@
         </style>
     </head>
     <body>
-        <?php // module('header', ['name' => 'testing']); ?>
-        <h1><?php echo $message; ?> <?php echo $text; ?></h1>
+        <?php module('header', ['name' => $message . ' ' . $text]); ?>
     </body>
 </html>

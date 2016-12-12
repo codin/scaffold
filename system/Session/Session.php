@@ -4,13 +4,16 @@ namespace Scaffold\Session;
 
 use Scaffold\Exception\SessionNotStartedException;
 use Scaffold\Session\Adapters\SessionAdapter;
+use Scaffold\Traits\AdapterPattern;
 
 /**
  * Handle interactions with the sessions
  * on this application
  */
 class Session
-{       
+{      
+    use AdapterPattern;
+
     /**
      * The adapter used to store the
      * session data.
@@ -35,19 +38,4 @@ class Session
 
         $this->adapter = $adapter;
     }
-
-    /**
-     * Handle calling methods in the adapter
-     * 
-     * @param  string $method
-     * @param  array  $arguments
-     * @return mixed
-     */
-    public function __call($method, $arguments)
-    {
-        if (!method_exists($this->adapter, $method)) {
-            throw new Exception('Method doesn\'t exist on adapter');
-        }
-        
-        return $this->adapter->$method(...$arguments);    }
 }

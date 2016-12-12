@@ -8,7 +8,6 @@ include_once 'helpers.php';
 $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'config'     => new Scaffold\Foundation\Config(),
     'database'   => new Illuminate\Database\Capsule\Manager(),
-    'finder'     => new Symfony\Component\Finder\Finder(),
     'logger'     => new Monolog\Logger('scaffold'),
     'request'    => new Scaffold\Http\Request(),
     'response'   => new Scaffold\Http\Response(),
@@ -16,8 +15,8 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
-    'cache'      => new Scaffold\Storage\Caching\Cache(
-        new Scaffold\Storage\Caching\Adapters\FileCacheAdapter()
+    'cache'      => new Scaffold\Caching\Cache(
+        new Scaffold\Caching\Adapters\FileCacheAdapter()
     ),
 ]);
 

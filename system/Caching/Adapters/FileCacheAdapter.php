@@ -1,9 +1,9 @@
 <?php
 
-namespace Scaffold\Storage\Caching\Adapters;
+namespace Scaffold\Caching\Adapters;
 
 use Symfony\Component\Filesystem\Filesystem;
-use Scaffold\Storage\Caching\Adapters\CacheAdapter;
+use Scaffold\Caching\Adapters\CacheAdapter;
 
 /**
  * Implementation of caching using a simple filesystem.
