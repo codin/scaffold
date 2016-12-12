@@ -168,7 +168,7 @@ class App
 
         if ($this->container->has('stopwatch')) {
             $this->profile = $this->container->get('stopwatch')->stop('application');
-            $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . ';time=' . $this->profile->getDuration() . 'ms;';
+            $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . '; time=' . $this->profile->getDuration() . 'ms;';
             $response->headers->set('X-Scaffold-Profiling', $this->profile);
         }
 
