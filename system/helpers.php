@@ -144,7 +144,7 @@ function paths($key = false)
     $paths = app()->getPaths();
 
     if ($key && isset($paths[$key])) {
-        return $paths[$key];
+        return rtrim($paths[$key], '/');
     }
 
     return $paths;

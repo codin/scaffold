@@ -104,7 +104,7 @@ class Module
      */
     private function getCached($path)
     {
-        return cache()->get($path);
+        return cache()->setNamespace('modules')->get($path);
     }
 
     /**
@@ -116,7 +116,7 @@ class Module
      */
     private function setCached($path, $output)
     {
-        cache()->set($path, $output);
+        cache()->setNamespace('modules')->set($path, $output);
         return $output;
     }
 

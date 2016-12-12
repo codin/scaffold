@@ -8,8 +8,23 @@ use Scaffold\Storage\Caching\Adapters\CacheAdapter;
 /**
  * Implementation of caching using a simple filesystem.
  */
-class FileCacheAdapter extends Filesystem implements CacheAdapter
-{
+class FileCacheAdapter extends CacheAdapter
+{   
+    /**
+     * The filesystem used to read filers.
+     * 
+     * @var Symfony\Component\Filesystem\Filesystem
+     */
+    private $fs;
+
+    /**
+     * Construct the filesystem
+     */
+    public function __construct()
+    {
+        $this->fs = new Filesystem;
+    }
+
     /**
      * Get a single cache file by key
      * 
@@ -20,7 +35,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
     {
         $key = $this->generateKey($key);
         
-        if (!$this->exists($key)) {
+        if (!$this->fs->exists($key)) {
             return false;
         }
 
@@ -43,7 +58,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
         }
 
         $key = $this->generateKey($key);
-        $this->dumpFile($key, $value);
+        $this->fs->dumpFile($key, $value);
 
         return $original;
     }
@@ -55,7 +70,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
      */
     public function flush()
     {
-        $this->remove([cache_path()]);
+        $this->fs->remove([cache_path()]);
     }
 
     /**
@@ -67,7 +82,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
     public function delete($key)
     {
         $key = $this->generateKey($key);
-        $this->remove([$key]);
+        $this->fs->remove([$key]);
     }
 
     /**
@@ -81,6 +96,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
      */
     public function generateKey($key)
     {
-        return cache_path() . '/' . md5($key);
+
+        return cache_path() . '/' . $this->getNamespace() . md5($key);
     }
 }
