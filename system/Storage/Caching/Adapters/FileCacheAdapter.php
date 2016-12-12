@@ -64,7 +64,7 @@ class FileCacheAdapter extends Filesystem implements CacheAdapter
      * @param  string $key
      * @return void
      */
-    public function remove($key)
+    public function delete($key)
     {
         $key = $this->generateKey($key);
         $this->remove([$key]);

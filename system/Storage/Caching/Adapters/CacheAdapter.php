@@ -10,6 +10,6 @@ interface CacheAdapter
     public function get($key);
     public function set($key, $value);
     public function flush();
-    public function remove($key);
+    public function delete($key);
     public function generateKey($key);
 }
