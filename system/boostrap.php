@@ -13,17 +13,15 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'request'    => new Scaffold\Http\Request(),
     'response'   => new Scaffold\Http\Response(),
     'router'     => new Scaffold\Http\Router(),
-    'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
 
     // Optional Services which can be 
     // disabled or altered.
+    'cache'      => new Scaffold\Caching\Cache(new Scaffold\Caching\Adapters\FileCacheAdapter()),
     'database'   => new Illuminate\Database\Capsule\Manager(),
-    'logger'     => new Monolog\Logger('scaffold'),
-    'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
-    'cache'      => new Scaffold\Caching\Cache(
-        new Scaffold\Caching\Adapters\FileCacheAdapter()
-    ),
+    'logger'     => new Monolog\Logger('scaffold'),
+    'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
+    'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     
     // Your custom application services 
     // can go below here:

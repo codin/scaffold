@@ -50,7 +50,9 @@ class App
             $this->container->bind($name, $service);
         }
 
-        $this->container->get('stopwatch')->start('application');
+        if ($this->container->has('stopwatch')) { 
+            $this->container->get('stopwatch')->start('application');
+        }
 
         $this->container->get('config')->loadConfigurationFiles(
             $this->paths['config_path'],
@@ -164,10 +166,11 @@ class App
         
         $content = $response->getContent();
 
-        $this->profile = $this->container->get('stopwatch')->stop('application');
-
-        $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . ';time=' . $this->profile->getDuration() . 'ms;';
-        $response->headers->set('X-Scaffold-Profiling', $this->profile);
+        if ($this->container->has('stopwatch')) {
+            $this->profile = $this->container->get('stopwatch')->stop('application');
+            $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . ';time=' . $this->profile->getDuration() . 'ms;';
+            $response->headers->set('X-Scaffold-Profiling', $this->profile);
+        }
 
         $response->setContent($content)->send();
     }
