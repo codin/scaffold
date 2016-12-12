@@ -87,7 +87,7 @@ class Module
         if ($this->cacheable) {
             $output = $this->getCached($path);
         }
-
+        
         if (!$output) {
             $template = new Template($path, $this->arguments);
             $output = $this->setCached($path, $template->render());
