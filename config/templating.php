@@ -25,6 +25,12 @@ return [
     'view_path' => env('VIEW_PATH', '/views/%name%'),
 
     /**
+     * The path to the modules from view_path. This should be the folder
+     * with which modules are stored in.
+     */
+    'module_path' => env('MODULE_PATH', 'modules'),
+
+    /**
      * Name => Class mapping for our modules.
      */
     'modules' => [

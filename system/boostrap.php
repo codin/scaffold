@@ -16,6 +16,9 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
+    'cache'      => new Scaffold\Storage\Caching\Cache(
+        new Scaffold\Storage\Caching\Adapters\FileCacheAdapter()
+    ),
 ]);
 
 // Include our routes file

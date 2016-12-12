@@ -210,3 +210,24 @@ function module($name, $arguments = [])
 
     new $class($arguments);
 }
+
+/**
+ * Gain access to the caching system stored
+ * in the container service.
+ * 
+ * @return Scaffold\Storage\Caching\Cache
+ */
+function cache()
+{
+    return container('cache');
+}
+
+/**
+ * Get the cache path
+ * 
+ * @return string
+ */
+function cache_path()
+{
+    return paths('cache_path');
+}

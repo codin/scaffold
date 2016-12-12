@@ -46,4 +46,9 @@ return [
      */
     'log_file'  => env('LOG_FILE', '/logs/scaffold.log'),
 
+    /**
+     * The cache path from root
+     */
+    'cache_path'  => env('CACHE_PATH', '/cache'),
+
 ];

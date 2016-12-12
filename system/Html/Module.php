@@ -23,6 +23,13 @@ class Module
     protected $shouldRender = true;
 
     /**
+     * Is this module cacheable?
+     * 
+     * @var boolean
+     */
+    protected $cacheable = false;
+
+    /**
      * The arguments for this module to be passed
      * to the template.
      * 
@@ -75,9 +82,42 @@ class Module
      */
     private function render()
     {
-        $template = new Template('modules/' . $this->template, $this->arguments);
+        $path = module_path() . '/' . $this->template;
 
-        echo $template->render();
+        if ($this->cacheable) {
+            $output = $this->getCached($path);
+        }
+
+        if (!$output) {
+            $template = new Template($path, $this->arguments);
+            $output = $this->setCached($path, $template->render());
+        }
+
+        echo $output;
+    }
+
+    /**
+     * Get the cached module file based on the path
+     * 
+     * @param  string $path
+     * @return string|boolean
+     */
+    private function getCached($path)
+    {
+        return cache()->get($path);
+    }
+
+    /**
+     * Set the cached key for this modules
+     * path to be an output.
+     * 
+     * @param string $path
+     * @param string $output
+     */
+    private function setCached($path, $output)
+    {
+        cache()->set($path, $output);
+        return $output;
     }
 
 }

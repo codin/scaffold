@@ -44,6 +44,7 @@ class App
         $this->setupInitialPaths($root);
 
         $this->container = container();
+        $this->container->set('app', $this);
 
         foreach ($services as $name => $service) {
             $this->container->bind($name, $service);
@@ -121,8 +122,11 @@ class App
     private function setupConfigurablePaths($root)
     {
         $config = $this->container->get('config');
-        $this->paths['log_file']  = $root . $config->get('app.log_file');
-        $this->paths['view_path'] = $root . $config->get('templating.view_path');
+
+        $this->paths['log_file']    = $root . $config->get('app.log_file');
+        $this->paths['view_path']   = $root . $config->get('templating.view_path');
+        $this->paths['module_path'] = $config->get('templating.module_path');
+        $this->paths['cache_path']  = $root . $config->get('app.cache_path');
     }
 
     /**

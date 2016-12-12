@@ -16,4 +16,11 @@ class Header extends Module
      * @var string
      */
     protected $template = 'header.php';
+
+    /**
+     * Is this module cacheable?
+     * 
+     * @var boolean
+     */
+    protected $cacheable = true;
 }
