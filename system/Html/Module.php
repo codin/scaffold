@@ -83,6 +83,7 @@ class Module
     private function render()
     {
         $path = module_path() . '/' . $this->template;
+        $output = false;
 
         if ($this->cacheable) {
             $output = $this->getCached($path);

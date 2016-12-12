@@ -20,12 +20,13 @@ class PagesController extends Controller
     {
         // Dispatch example event to add "Welcome to" to the
         // title in the view.
-        dispatch(new \App\Events\MyEvent('Welcome to'));
+        // dispatch(new \App\Events\MyEvent('Welcome to'));
 
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
         return response()->view('index.php', [
-            'text' => 'Scaffold',
+            'text'    => 'Scaffold',
+            'message' => 'Welcome to',
         ]);
     }
 }

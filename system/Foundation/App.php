@@ -58,22 +58,28 @@ class App
         );
 
         $this->setupConfigurablePaths($root);
-        
-        $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
+            
+        if ($this->container->has('logger')) {        
+            $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
+        }
 
         $this->bindEventListeners();
 
-        $templater = $this->container->get('templater');
-        
-        $templater->addEngine(new PhpEngine(
-            new TemplateNameParser(), 
-            new FilesystemLoader($this->paths['view_path'])
-        ));
+        if ($this->container->has('templater')) {
+            $templater = $this->container->get('templater');
+            
+            $templater->addEngine(new PhpEngine(
+                new TemplateNameParser(), 
+                new FilesystemLoader($this->paths['view_path'])
+            ));
+        }
 
-        $database = $this->container->get('database');
-        $database->addConnection($this->container->get('config')->get('database.default'));
-        $database->setAsGlobal();
-        $database->bootEloquent();
+        if ($this->container->has('database')) {
+            $database = $this->container->get('database');
+            $database->addConnection($this->container->get('config')->get('database.default'));
+            $database->setAsGlobal();
+            $database->bootEloquent();
+        }
     }
 
     /**
@@ -84,6 +90,10 @@ class App
      */
     private function bindEventListeners()
     {
+        if (!$this->container->has('dispatcher')) {
+            return;
+        }
+
         $dispatcher = $this->container->get('dispatcher');
         $config = $this->container->get('config')->get('events');
 
@@ -156,10 +166,8 @@ class App
 
         $this->profile = $this->container->get('stopwatch')->stop('application');
 
-        $this->profile = [
-            'memory' => human_file_size($this->profile->getMemory(), 'MB'),
-            'time'   => $this->profile->getDuration() . 'ms',
-        ];
+        $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . ';time=' . $this->profile->getDuration() . 'ms;';
+        $response->headers->set('X-Scaffold-Profiling', $this->profile);
 
         $response->setContent($content)->send();
     }
