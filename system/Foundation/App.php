@@ -139,6 +139,7 @@ class App
         $this->paths['view_path']   = $root . $config->get('templating.view_path');
         $this->paths['module_path'] = $config->get('templating.module_path');
         $this->paths['cache_path']  = $root . $config->get('app.cache_path');
+        $this->paths['storage_path'] = $root . $config->get('app.storage_path');
     }
 
     /**

@@ -18,6 +18,8 @@ class PagesController extends Controller
      */
     public function home()
     {
+        storage()->write('test.json', json_encode(['foo' => 'bar']));
+        
         // Dispatch example event to add "Welcome to" to the
         // title in the view.
         // dispatch(new \App\Events\MyEvent('Welcome to'));

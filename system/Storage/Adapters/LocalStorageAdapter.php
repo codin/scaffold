@@ -38,6 +38,8 @@ class LocalStorageAdapter implements StorageAdapter
     /**
      * Construct this adapter with a new instance
      * of the filesystem class.
+     *
+     * @param  string $base_path
      */
     public function __construct($base_path = '/')
     {
@@ -62,7 +64,7 @@ class LocalStorageAdapter implements StorageAdapter
             $value = serialize($value);
         }
 
-        $this->fs->dumpFile($this->base_path . $key, $value);
+        $this->fs->dumpFile($this->path() . $key, $value);
 
         return $original;
     }
@@ -76,11 +78,11 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function read($key)
     {
-        if (!$this->fs->exists($this->base_path . $key)) {
+        if (!$this->fs->exists($this->path() . $key)) {
             return false;
         }
 
-        return file_get_contents($this->base_path . $key);
+        return file_get_contents($this->path() . $key);
     }
 
     /**
@@ -92,7 +94,7 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function delete($key)
     {
-        $this->fs->remove([$this->base_path . $key]);
+        $this->fs->remove([$this->path() . $key]);
     }
 
     /**
@@ -104,8 +106,8 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function copy($oldKey, $newKey)
     {
-        $value = $this->read($this->base_path . $oldKey);
-        $this->write($this->base_path . $newKey, $this->base_path . $value);
+        $value = $this->read($this->path() . $oldKey);
+        $this->write($this->path() . $newKey, $this->path() . $value);
     }
 
     /**
@@ -117,8 +119,8 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function move($oldKey, $newKey)
     {
-        $this->copy($this->base_path . $oldKey, $this->base_path . $newKey);
-        $this->delete($this->base_path . $oldKey);
+        $this->copy($this->path() . $oldKey, $this->path() . $newKey);
+        $this->delete($this->path() . $oldKey);
     }
 
     /**
@@ -142,5 +144,10 @@ class LocalStorageAdapter implements StorageAdapter
     public function filesystem()
     {
         return $this->fs;
+    }
+
+    private function path()
+    {
+        return storage_path() . $this->base_path;
     }
 }

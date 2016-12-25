@@ -133,6 +133,17 @@ function dispatch(Event $event)
 }
 
 /**
+ * Fetch our storage system from the
+ * container so we can interact with files.
+ * 
+ * @return Scaffold\Storage\Storage
+ */
+function storage()
+{
+    return container('storage');
+}
+
+/**
  * Get the app paths with an option to
  * pass in a specific key.
  * 
