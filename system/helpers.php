@@ -231,3 +231,14 @@ function cache_path()
 {
     return paths('cache_path');
 }
+    
+/**
+ * The main directory for storage of files in 
+ * the local file system.
+ * 
+ * @return string
+ */
+function storage_path()
+{
+    return paths('storage_path');
+}

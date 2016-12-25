@@ -49,6 +49,10 @@ return [
     /**
      * The cache path from root
      */
-    'cache_path'  => env('CACHE_PATH', '/cache'),
+    'storage_path'  => env('STORAGE_PATH', '/storage'),
 
+    /**
+     * The cache path from root
+     */
+    'cache_path'  => env('CACHE_PATH', '/cache'),
 ];

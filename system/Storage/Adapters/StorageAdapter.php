@@ -13,4 +13,5 @@ interface StorageAdapter
     public function read($key);
     public function delete($key);
     public function copy($oldKey, $newKey);
+    public function move($oldKey, $newKey);
 }

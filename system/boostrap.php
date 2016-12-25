@@ -22,6 +22,7 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'logger'     => new Monolog\Logger('scaffold'),
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
+    'storage'    => new Scaffold\Storage\Storage(new Scaffold\Storage\Adapters\LocalStorageAdapter()),
     
     // Your custom application services 
     // can go below here:

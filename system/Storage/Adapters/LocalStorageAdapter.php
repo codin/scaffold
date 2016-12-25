@@ -29,11 +29,19 @@ class LocalStorageAdapter implements StorageAdapter
     protected $finder;
 
     /**
+     * The base path for files.
+     * 
+     * @var string
+     */
+    protected $base_path;
+
+    /**
      * Construct this adapter with a new instance
      * of the filesystem class.
      */
-    public function __construct()
+    public function __construct($base_path = '/')
     {
+        $this->base_path = $base_path;
         $this->fs = new Filesystem;
         $this->finder = new Finder;
     }
@@ -48,7 +56,15 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function write($key, $value)
     {
+        $original = $value;
 
+        if (!is_string($value)) {
+            $value = serialize($value);
+        }
+
+        $this->fs->dumpFile($this->base_path . $key, $value);
+
+        return $original;
     }
 
     /**
@@ -60,7 +76,11 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function read($key)
     {
+        if (!$this->fs->exists($this->base_path . $key)) {
+            return false;
+        }
 
+        return file_get_contents($this->base_path . $key);
     }
 
     /**
@@ -72,7 +92,7 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function delete($key)
     {
-
+        $this->fs->remove([$this->base_path . $key]);
     }
 
     /**
@@ -84,7 +104,21 @@ class LocalStorageAdapter implements StorageAdapter
      */
     public function copy($oldKey, $newKey)
     {
+        $value = $this->read($this->base_path . $oldKey);
+        $this->write($this->base_path . $newKey, $this->base_path . $value);
+    }
 
+    /**
+     * Move a file from one key to another
+     * 
+     * @param  string $oldKey
+     * @param  string $newKey
+     * @return void
+     */
+    public function move($oldKey, $newKey)
+    {
+        $this->copy($this->base_path . $oldKey, $this->base_path . $newKey);
+        $this->delete($this->base_path . $oldKey);
     }
 
     /**
