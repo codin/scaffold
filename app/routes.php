@@ -13,10 +13,11 @@ $router->route('GET', '/', [
     'controller' => '\App\Controllers\PagesController@home',
 ]);
 
-// define a route with a parameter
+// Define a route with a parameter
 $router->route('GET', '/test/{slug}', [
     'name'       => 'test',
     'controller' => '\App\Controllers\PagesController@test',
 ]);
 
+// Define a resourceful read-only route.
 $router->resource('articles', ['read']);
