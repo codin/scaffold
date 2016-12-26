@@ -18,17 +18,21 @@ class PagesController extends Controller
      */
     public function home()
     {
-        storage()->write('test.json', json_encode(['foo' => 'bar']));
-        
+        // Example writing some json data to a file.
+        // storage()->write('test.json', json_encode(['foo' => 'bar']));
+
         // Dispatch example event to add "Welcome to" to the
         // title in the view.
         // dispatch(new \App\Events\MyEvent('Welcome to'));
 
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
-        return response()->view('index.php', [
-            'text'    => 'Scaffold',
-            'message' => 'Welcome to',
-        ]);
+        return response()
+            ->script('/js/app.js')
+            ->style('/css/main.css')
+            ->view('index.php', [
+                'text'    => 'Scaffold',
+                'message' => 'Welcome to',
+            ]);
     }
 }

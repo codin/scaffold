@@ -26,10 +26,49 @@ class Response extends SymfonyResponse
      * 
      * @param string $key
      * @param mixed $data
+     * @return Scaffold\Http\Response
      */
     public function addArgument($key, $data)
     {
         $this->arguments[$key] = $data;
+        return $this;
+    }
+
+    /**
+     * Add a new script to the arguments, so that we can 
+     * render it out on the view
+     * 
+     * @param  string  $path           
+     * @param  boolean $use_public_path
+     * @return Scaffold\Http\Response     
+     */
+    public function script($path, $use_public_path = true)
+    {
+        if (!isset($this->arguments['scripts']) || !is_array($this->arguments['scripts'])) {
+            $this->arguments['scripts'] = [];
+        }
+
+        $this->arguments['scripts'][] = ($use_public_path ? asset_path() : '') . $path;
+
+        return $this;
+    }
+
+    /**
+     * Add a new style to the arguments, so that we can 
+     * render it out on the view
+     * 
+     * @param  string  $path           
+     * @param  boolean $use_public_path
+     * @return Scaffold\Http\Response     
+     */
+    public function style($path, $use_public_path = true)
+    {
+        if (!isset($this->arguments['styles']) || !is_array($this->arguments['styles'])) {
+            $this->arguments['styles'] = [];
+        }
+
+        $this->arguments['styles'][] = ($use_public_path ? asset_path() : '') . $path;
+
         return $this;
     }
 
