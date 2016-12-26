@@ -19,7 +19,7 @@ class Request extends SymfonyRequest
         parent::__construct(
             $_GET,
             $_POST,
-            array(),
+            [],
             $_COOKIE,
             $_FILES,
             $_SERVER
