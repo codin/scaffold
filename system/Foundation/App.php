@@ -169,8 +169,12 @@ class App
 
         if ($this->container->has('stopwatch')) {
             $this->profile = $this->container->get('stopwatch')->stop('application');
-            $this->profile = 'memory=' . human_file_size($this->profile->getMemory(), 'MB') . '; time=' . $this->profile->getDuration() . 'ms;';
+            $memory = human_file_size($this->profile->getMemory(), 'MB');
+            $time = $this->profile->getDuration() . 'ms';
+            $this->profile = 'memory=' . $memory . '; time=' . $time . ';';
             $response->headers->set('X-Scaffold-Profiling', $this->profile);
+
+            $content = $content . '<script>var profile = ' . json_encode(compact('memory', 'time')) . '; // Profiling information </script>';
         }
 
         $response->setContent($content)->send();
