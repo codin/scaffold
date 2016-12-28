@@ -22,9 +22,7 @@ abstract class Middleware
      */
     public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
     {
-        $this->intercept($request, $response, $next);
-
-        return $response;
+        return $this->intercept($request, $response, $next);
     }
 
     /**

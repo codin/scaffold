@@ -81,30 +81,29 @@ class Resolver
 
         $params = $this->match;
 
-        $queue = $controller->middleware();
+        $psrFactory = new DiactorosFactory();
+        $httpFoundationFactory = new HttpFoundationFactory();
 
-        $queue[] = function (RequestInterface $request, ResponseInterface $response, callable $next) use ($controller, $method, $params) {
+        $queue = $controller->middleware();
+        $queue[] = function (RequestInterface $request, ResponseInterface $response, callable $next) use ($controller, $method, $params, $psrFactory) {
             $response = call_user_func_array([$controller, $method], $params); 
-        
+
             if (!($response instanceof Response)) {
                 throw new NotFoundException('Unable to determine response to return');
             }
 
-            return $response;
+            return $psrFactory->createResponse($response);
         };
 
         $relayBuilder = new RelayBuilder();
         $relay = $relayBuilder->newInstance($queue);
 
-        $psrFactory = new DiactorosFactory();
-        $httpFoundationFactory = new HttpFoundationFactory();
-
-        $response = $httpFoundationFactory->createResponse($relay(
+        $psrResponse = $relay(
             $psrFactory->createRequest(request()), 
             $psrFactory->createResponse(response())
-        ));
-
-        dd($response->getContent());
+        );
+        
+        $response = $httpFoundationFactory->createResponse($psrResponse);
 
         return $response;
     }
