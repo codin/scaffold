@@ -31,8 +31,8 @@ abstract class Controller
         return array_merge([
 
             // CSRF Middleware for all controller actions.
-            'csrf' => new VerifyCSRF,
-            
+            new VerifyCSRF,
+
         ], $this->middleware);
     }
 }
