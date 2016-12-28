@@ -27,7 +27,7 @@ class VerifyCSRF extends Middleware
     public function intercept(Request $request, Response $response, callable $next)
     {
         if ($request->getMethod() == 'POST') {
-            $id = session_id();
+            $id = session()->id();
             $body = $request->getParsedBody();
 
             $requested_token = false;
