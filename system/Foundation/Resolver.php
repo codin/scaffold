@@ -81,6 +81,21 @@ class Resolver
 
         $params = $this->match;
 
+        return $this->processMiddleware($controller, $method, $params);
+    }
+
+    /**
+     * Given the controller, method and it's parameters, we shall
+     * process our application middleware so that we can modify
+     * the request and return the correct response appropriately.
+     * 
+     * @param  App\Controllers\Controller $controller
+     * @param  string $method
+     * @param  array $params
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    private function processMiddleware($controller, $method, $params)
+    {
         $psrFactory = new DiactorosFactory();
         $httpFoundationFactory = new HttpFoundationFactory();
 
@@ -102,9 +117,7 @@ class Resolver
             $psrFactory->createRequest(request()), 
             $psrFactory->createResponse(response())
         );
-        
-        $response = $httpFoundationFactory->createResponse($psrResponse);
 
-        return $response;
+        return $httpFoundationFactory->createResponse($psrResponse);
     }
 }
