@@ -2,8 +2,8 @@
 
 namespace Scaffold\Http;
 
-use Psr\Http\Message\RequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Scaffold's simple middleware wrapper around the
@@ -20,7 +20,7 @@ abstract class Middleware
      * @param  callable $next
      * @return Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(Request $request, Response $response, callable $next)
+    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
     {
         $this->intercept($request, $response, $next);
 
@@ -36,5 +36,5 @@ abstract class Middleware
      * @param  callable $next
      * @return Psr\Http\Message\ResponseInterface
      */
-    public abstract function intercept(Request $request, Response $response, callable $next);
+    public abstract function intercept(RequestInterface $request, ResponseInterface $response, callable $next);
 }

@@ -26,6 +26,6 @@ class VerifyCSRF extends Middleware
      */
     public function intercept(Request $request, Response $response, callable $next)
     {
-        $response = $next($request);
+        $response = $next($request, $response);
     }
 }

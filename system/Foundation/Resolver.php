@@ -2,11 +2,16 @@
 
 namespace Scaffold\Foundation;
 
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Relay\RelayBuilder;
 use Scaffold\Exception\ControllerNotFoundException;
 use Scaffold\Exception\MethodNotFoundException;
 use Scaffold\Exception\NotFoundException;
 use Scaffold\Foundation\App;
 use Scaffold\Http\Response;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 /**
  * Resolve our routes from our URL matches,
@@ -53,9 +58,12 @@ class Resolver
     }
 
     /**
-     * Actually resolve them
+     * Given our controller and method, create a new instance. Fetch
+     * all middleware that this controller will be using and push
+     * middleware into our Relay instance, this will determine the
+     * response this resolution will provide.
      * 
-     * @return Scaffold\Http\Response
+     * @return Psr\Http\Message\ResponseInterface
      */
     public function resolve()
     {
@@ -73,11 +81,30 @@ class Resolver
 
         $params = $this->match;
 
-        $response = call_user_func_array([$controller, $method], $params);
+        $queue = $controller->middleware();
 
-        if (!($response instanceof Response)) {
-            throw new NotFoundException('Unable to determine response to return');
-        }
+        $queue[] = function (RequestInterface $request, ResponseInterface $response, callable $next) use ($controller, $method, $params) {
+            $response = call_user_func_array([$controller, $method], $params); 
+        
+            if (!($response instanceof Response)) {
+                throw new NotFoundException('Unable to determine response to return');
+            }
+
+            return $response;
+        };
+
+        $relayBuilder = new RelayBuilder();
+        $relay = $relayBuilder->newInstance($queue);
+
+        $psrFactory = new DiactorosFactory();
+        $httpFoundationFactory = new HttpFoundationFactory();
+
+        $response = $httpFoundationFactory->createResponse($relay(
+            $psrFactory->createRequest(request()), 
+            $psrFactory->createResponse(response())
+        ));
+
+        dd($response->getContent());
 
         return $response;
     }

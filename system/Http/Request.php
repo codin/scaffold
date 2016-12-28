@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  */
 class Request extends SymfonyRequest
 {
+
     /**
      * Construct our parent with all of the REQUEST
      * Super globals.
