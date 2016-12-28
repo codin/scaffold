@@ -23,6 +23,13 @@ class Session
     protected $adapter;
 
     /**
+     * The id of the session.
+     * 
+     * @var string
+     */
+    protected $id;
+
+    /**
      * Construct the session object and pass in
      * the adapter which we're going to be using.
      * 
@@ -30,12 +37,6 @@ class Session
      */
     public function __construct(SessionAdapter $adapter)
     {
-        $status = session_status();
-
-        if ($status != PHP_SESSION_ACTIVE) {
-            throw new SessionNotStartedException();
-        }
-
         $this->adapter = $adapter;
     }
 }

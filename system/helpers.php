@@ -93,6 +93,16 @@ function config()
 }
 
 /**
+ * Get the session instance
+ * 
+ * @return Scaffold\Session\Session
+ */
+function session()
+{
+    return container('session');
+}
+
+/**
  * Get the response instance
  * 
  * @return Scaffold\Http\Response

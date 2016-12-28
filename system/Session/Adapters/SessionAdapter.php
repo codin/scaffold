@@ -12,4 +12,6 @@ interface SessionAdapter
     public function flash($key, $value);
     public function has($key);
     public function get($key);
+    public function id();
+    public function start();
 }

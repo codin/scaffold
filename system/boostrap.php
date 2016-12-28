@@ -13,21 +13,28 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'request'    => new Scaffold\Http\Request(),
     'response'   => new Scaffold\Http\Response(),
     'router'     => new Scaffold\Http\Router(),
+    'session'    => new Scaffold\Session\Session(
+        new Scaffold\Session\Adapters\StandardSessionAdapter()
+    ),
 
     // Optional Services which can be 
     // disabled or altered.
     'cache'      => new Scaffold\Caching\Cache(new Scaffold\Caching\Adapters\FileCacheAdapter()),
+    'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(),
     'database'   => new Illuminate\Database\Capsule\Manager(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
     'logger'     => new Monolog\Logger('scaffold'),
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
-    'storage'    => new Scaffold\Storage\Storage(new Scaffold\Storage\Adapters\LocalStorageAdapter()),
-    'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(),
+    'storage'    => new Scaffold\Storage\Storage(
+        new Scaffold\Storage\Adapters\LocalStorageAdapter()
+    ),
     
     // Your custom application services 
     // can go below here:
 ]);
+
+session()->start();
 
 // Include our routes file
 include_once '../app/routes.php';

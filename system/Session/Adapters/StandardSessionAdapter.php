@@ -2,6 +2,7 @@
 
 namespace Scaffold\Session\Adapters;
 
+use Scaffold\Exception\SessionNotStartedException;
 use Scaffold\Session\Adapters\SessionAdapter;
 
 /**
@@ -18,6 +19,7 @@ class StandardSessionAdapter implements SessionAdapter
      */
     public function delete($key)
     {
+        $this->checkIsStarted();
         unset($_SESSION[$key]);
 
         return $this;
@@ -32,6 +34,7 @@ class StandardSessionAdapter implements SessionAdapter
      */
     public function put($key, $value)
     {
+        $this->checkIsStarted();
         return $_SESSION[$key] = $value;
     }
         
@@ -43,6 +46,7 @@ class StandardSessionAdapter implements SessionAdapter
      */
     public function has($key)
     {
+        $this->checkIsStarted();
         return isset($_SESSION[$key]);
     }
         
@@ -54,6 +58,7 @@ class StandardSessionAdapter implements SessionAdapter
      */
     public function get($key)
     {
+        $this->checkIsStarted();
         $value = $_SESSION[$key];
 
         if ($this->has('flash::' . $key)) {
@@ -73,9 +78,42 @@ class StandardSessionAdapter implements SessionAdapter
      */
     public function flash($key, $value)
     {
+        $this->checkIsStarted();
+
         $this->put($key, $value);
         $this->put('flash::' . $key, true);
 
         return $value;
+    }
+
+    /**
+     * Start the session
+     * 
+     * @return void
+     */
+    public function start()
+    {
+        session_start();
+
+        $this->id = session_id();
+    }
+
+    /**
+     * Get the session id
+     * 
+     * @return string
+     */
+    public function id()
+    {
+        return $this->id;
+    }
+
+    private function checkIsStarted()
+    {
+        $status = session_status();
+
+        if ($status != PHP_SESSION_ACTIVE) {
+            throw new SessionNotStartedException();
+        }
     }
 }
