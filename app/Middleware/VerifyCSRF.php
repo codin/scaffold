@@ -26,8 +26,21 @@ class VerifyCSRF extends Middleware
      */
     public function intercept(Request $request, Response $response, callable $next)
     {
-        $response = $next($request, $response);
+        if ($request->getMethod() == 'POST') {
+            $body = $request->getParsedBody();
 
-        return $response;
+            $requested_token = false;
+            $actual_token = 'testing';
+
+            if (isset($body['_token'])) {
+                $requested_token = $body['_token'];
+            }
+
+            if ($requested_token != $actual_token) {
+                return $response->withStatus(403, 'Invalid CSRF token, request is unauthorized.');
+            }
+        }
+
+        return $next($request, $response);
     }
 }
