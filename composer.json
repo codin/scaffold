@@ -25,7 +25,8 @@
         "vlucas/phpdotenv": "^2.4",
         "illuminate/database": "~5.1",
         "monolog/monolog": "^1.17",
-        "illuminate/config": "^5.3"
+        "illuminate/config": "^5.3",
+        "relay/relay": "^1.1"
     },
     "autoload": {
         "psr-4": {
