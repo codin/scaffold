@@ -34,7 +34,7 @@ class VerifyCSRF extends Middleware
             $actual_token = csrf()
                 ->getToken($id)
                 ->getValue();
-                
+
             if (isset($body['_token'])) {
                 $requested_token = $body['_token'];
             }
