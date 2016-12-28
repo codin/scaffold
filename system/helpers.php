@@ -84,7 +84,7 @@ function app()
 
 /**
  * Get the instance of our config loader
- * 
+ *
  * @return Scaffold\Foundation\Config
  */
 function config()
@@ -220,6 +220,16 @@ function module($name, $arguments = [])
     $class = $config['modules'][$name];
 
     new $class($arguments);
+}
+
+/**
+ * Gain access to the csrf manage
+ * 
+ * @return Symfony\Component\Security\Csrf\CsrfTokenManager
+ */
+function csrf()
+{
+    return container('csrf');
 }
 
 /**

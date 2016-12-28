@@ -23,6 +23,7 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'storage'    => new Scaffold\Storage\Storage(new Scaffold\Storage\Adapters\LocalStorageAdapter()),
+    'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(),
     
     // Your custom application services 
     // can go below here:

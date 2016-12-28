@@ -28,9 +28,13 @@ class VerifyCSRF extends Middleware
     {
         if ($request->getMethod() == 'POST') {
             $body = $request->getParsedBody();
+            
+            $id = config()->get('app.app_token');
 
             $requested_token = false;
-            $actual_token = 'testing';
+            $actual_token = csrf()
+                ->getToken($id . time())
+                ->getValue();
 
             if (isset($body['_token'])) {
                 $requested_token = $body['_token'];
