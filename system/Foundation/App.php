@@ -63,7 +63,9 @@ class App
         $this->setupConfigurablePaths($root);
             
         if ($this->container->has('logger')) {        
-            $this->container->get('logger')->pushHandler(new StreamHandler($this->paths['log_file'], Logger::WARNING));
+            $this->container->get('logger')->pushHandler(
+                new StreamHandler($this->paths['log_file'], Logger::WARNING)
+            );
         }
 
         $this->bindEventListeners();
@@ -82,6 +84,12 @@ class App
             $database->addConnection($this->container->get('config')->get('database.default'));
             $database->setAsGlobal();
             $database->bootEloquent();
+        }
+
+        if ($this->container->has('cookie')) {
+            $this->container->get('cookie')->setResponse(
+                $this->container->get('response')
+            );
         }
     }
 

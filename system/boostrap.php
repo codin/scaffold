@@ -20,6 +20,7 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     // Optional Services which can be 
     // disabled or altered.
     'cache'      => new Scaffold\Caching\Cache(new Scaffold\Caching\Adapters\FileCacheAdapter()),
+    'cookie'     => new Scaffold\Http\Cookie(),
     'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(),
     'database'   => new Illuminate\Database\Capsule\Manager(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),

@@ -243,6 +243,17 @@ function csrf()
 }
 
 /**
+ * Gain access to the cookie handler
+ * for the applications response.
+ * 
+ * @return Scaffold\Http\Cookie
+ */
+function cookie()
+{
+    return container('cookie');
+}
+
+/**
  * Gain access to the caching system stored
  * in the container service.
  * 
