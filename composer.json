@@ -36,6 +36,7 @@
         }
     },
     "scripts": {
-        "serve": "cd public/ && php -S localhost:8989"
+        "serve": "cd public/ && php -S localhost:8989",
+        "docker": "make"
     }
 }
