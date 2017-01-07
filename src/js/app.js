@@ -7,13 +7,9 @@
 var scaffold;
 
 function Scaffold() {
-    this.profile = {};
+    // Project code.
 }
 
 window.onload = function() {
     scaffold = new Scaffold();
-
-    if (profile) {
-        scaffold.profile = profile;
-    }
 };

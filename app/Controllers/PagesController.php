@@ -28,7 +28,7 @@ class PagesController extends Controller
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
         return response()
-            ->script('/js/app.js')
+            ->script('/js/main.min.js')
             ->style('/css/main.css')
             ->view('index.php', [
                 'text'    => 'Scaffold',
