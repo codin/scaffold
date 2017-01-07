@@ -4,6 +4,9 @@
 /_docker_config
 /src
 /docs
+/node_modules
+yarn.lock
+package.json
 composer.json
 composer.lock
 README.md

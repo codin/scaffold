@@ -1,0 +1,8 @@
+{
+  "name": "Scaffold",
+  "description": "Scaffold PHP Framework",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-boilerplate": "CraigChilds94/gulp-boilerplate"
+  }
+}
