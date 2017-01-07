@@ -1,0 +1,11 @@
+.git
+.phpintel
+.gitignore
+/_docker_config
+/src
+/docs
+composer.json
+composer.lock
+README.md
+Dockerfile
+Makefile
