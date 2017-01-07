@@ -1,7 +1,7 @@
 {
     "name": "Scaffold",
     "description": "A little framework for building webapps.",
-    "version": "2.0.0-alpha"
+    "version": "2.0.0-alpha",
     "type": "library",
     "homepage": "http://scaffold.im",
     "license": "WTFPL",
