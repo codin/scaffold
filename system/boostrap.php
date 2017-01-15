@@ -21,7 +21,9 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     // disabled or altered.
     'cache'      => new Scaffold\Caching\Cache(new Scaffold\Caching\Adapters\FileCacheAdapter()),
     'cookie'     => new Scaffold\Http\Cookie(),
-    'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(),
+    'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(
+        null, new Scaffold\Session\Security\CsrfTokenManagerAdapter()
+    ),
     'database'   => new Illuminate\Database\Capsule\Manager(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
     'logger'     => new Monolog\Logger('scaffold'),

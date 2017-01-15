@@ -29,10 +29,6 @@ class VerifyCSRF extends Middleware
         if ($request->getMethod() == 'POST') {
             $id = session()->id();
             $body = $request->getParsedBody();
-
-            // TODO: Make the CSRF module use a custom
-            // storage interface which uses the currently
-            // active session system.
             
             $requested_token = false;
             $actual_token = csrf()
