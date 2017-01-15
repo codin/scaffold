@@ -6,9 +6,9 @@ use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Scaffold\Foundation\Resolver;
-use Scaffold\Http\Response;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Component\Stopwatch\Stopwatch;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Stopwatch\StopwatchEvent;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
@@ -214,7 +214,10 @@ class App
      */
     public function getEnvironment()
     {
-        if (is_file($this->paths['env_file'])) {
+        // Only load our env path if we've not set the 
+        // environment before we load the application, this 
+        // means if we set it via our server, don't load the file.
+        if (!env('ENVIRONMENT') && is_file($this->paths['env_file'])) {
             $dotenv = new Dotenv($this->paths['env_file_path']);
             $dotenv->load();
         }
@@ -236,11 +239,11 @@ class App
      * Generate and append response headers for the 
      * application profiling information.
      * 
-     * @param  Stopwatch $profile
+     * @param  StopwatchEvent $profile
      * @param  Response  $response
      * @return Response
      */
-    private function generateProfileHeaders(Stopwatch $profile, Response $response)
+    private function generateProfileHeaders(StopwatchEvent $profile, Response $response)
     {
         $memory = human_file_size($profile->getMemory(), 'MB');
         $time = $profile->getDuration() . 'ms';

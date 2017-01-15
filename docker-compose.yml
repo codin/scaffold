@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+  application:
+    container_name: scaffold_application
+    build: .
+    volumes: 
+      - '.:/var/www'
+    ports: 
+      - 80:80
+    env_file:
+      - '.env.local'
+
