@@ -35,7 +35,7 @@ class Resolver
     private $method;
 
     /**
-     * Construc the resolver with the route match
+     * Construct the resolver with the route match
      * data. So we can set things on this instance.
      * 
      * @param array $match

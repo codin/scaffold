@@ -6,7 +6,9 @@ use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Scaffold\Foundation\Resolver;
+use Scaffold\Http\Response;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
@@ -69,22 +71,9 @@ class App
         }
 
         $this->bindEventListeners();
+        $this->bindTemplateEngines();
 
-        if ($this->container->has('templater')) {
-            $templater = $this->container->get('templater');
-            
-            $templater->addEngine(new PhpEngine(
-                new TemplateNameParser(), 
-                new FilesystemLoader($this->paths['view_path'])
-            ));
-        }
-
-        if ($this->container->has('database')) {
-            $database = $this->container->get('database');
-            $database->addConnection($this->container->get('config')->get('database.default'));
-            $database->setAsGlobal();
-            $database->bootEloquent();
-        }
+        $this->initDatabase();
 
         if ($this->container->has('cookie')) {
             $this->container->get('cookie')->setResponse(
@@ -118,6 +107,38 @@ class App
             }
 
             $this->listeners[] = $listener;
+        }
+    }
+
+    /**
+     * Add the templating engines to our templater 
+     *
+     * @return void
+     */
+    private function bindTemplateEngines()
+    {
+        if ($this->container->has('templater')) {
+            $templater = $this->container->get('templater');
+            
+            $templater->addEngine(new PhpEngine(
+                new TemplateNameParser(), 
+                new FilesystemLoader($this->paths['view_path'])
+            ));
+        }
+    }
+
+    /**
+     * Initialize the database connections.
+     * 
+     * @return void
+     */
+    private function initDatabase()
+    {
+        if ($this->container->has('database')) {
+            $database = $this->container->get('database');
+            $database->addConnection($this->container->get('config')->get('database.default'));
+            $database->setAsGlobal();
+            $database->bootEloquent();
         }
     }
 
@@ -180,10 +201,7 @@ class App
 
         if ($this->container->has('stopwatch')) {
             $this->profile = $this->container->get('stopwatch')->stop('application');
-            $memory = human_file_size($this->profile->getMemory(), 'MB');
-            $time = $this->profile->getDuration() . 'ms';
-            $this->profile = 'memory=' . $memory . '; time=' . $time . ';';
-            $response->headers->set('X-Scaffold-Profiling', $this->profile);
+            $response = $this->generateProfileHeaders($this->profile, $response);
         }
 
         $response->setContent($content)->send();
@@ -212,5 +230,23 @@ class App
     public function getPaths()
     {
         return $this->paths;
+    }
+
+    /**
+     * Generate and append response headers for the 
+     * application profiling information.
+     * 
+     * @param  Stopwatch $profile
+     * @param  Response  $response
+     * @return Response
+     */
+    private function generateProfileHeaders(Stopwatch $profile, Response $response)
+    {
+        $memory = human_file_size($profile->getMemory(), 'MB');
+        $time = $profile->getDuration() . 'ms';
+        $profile = 'memory=' . $memory . '; time=' . $time . ';';
+        $response->headers->set('X-Scaffold-Profiling', $profile);
+
+        return $response;
     }
 }
