@@ -21,7 +21,7 @@ class CsrfTokenManagerAdapter implements TokenStorageInterface
      */
     public function getToken($tokenId)
     {
-        return session()->get($tokenI);
+        return session()->get($tokenId);
     }
 
     /**
