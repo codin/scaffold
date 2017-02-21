@@ -26,6 +26,9 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     ),
     'database'   => new Illuminate\Database\Capsule\Manager(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
+    'mailer'     => new Scaffold\Mail\Mailer(
+        new Nette\Mail\SendmailMailer()
+    ),
     'logger'     => new Monolog\Logger('scaffold'),
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),

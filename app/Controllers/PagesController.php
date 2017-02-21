@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use Scaffold\Mail\Message;
 
 /**
  * Handle the static pages of our application, this 
@@ -18,13 +19,6 @@ class PagesController extends Controller
      */
     public function home()
     {
-        // Example writing some json data to a file.
-        // storage()->write('test.json', json_encode(['foo' => 'bar']));
-
-        // Dispatch example event to add "Welcome to" to the
-        // title in the view.
-        // dispatch(new \App\Events\MyEvent('Welcome to'));
-
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
         return response()

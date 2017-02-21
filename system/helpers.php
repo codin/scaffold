@@ -284,3 +284,14 @@ function storage_path()
 {
     return paths('storage_path');
 }
+    
+/**
+ * Grab ourselves the mailer instance for 
+ * this application.
+ * 
+ * @return Scaffold\Mail\Mailer
+ */
+function mailer()
+{
+    return container('mailer');
+}
