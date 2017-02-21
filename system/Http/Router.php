@@ -6,6 +6,7 @@ use Scaffold\Exception\NotFoundException;
 use Scaffold\Exception\UnsupportedMethodException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
@@ -17,6 +18,14 @@ use Symfony\Component\Routing\RouteCollection;
  */
 class Router extends RouteCollection
 {
+
+    /**
+     * Stores the request context for 
+     * this router.
+     * 
+     * @var Symfony\Component\Routing\RequestContext
+     */
+    protected $context;
 
     /**
      * The resource methods with matching names
@@ -105,7 +114,7 @@ class Router extends RouteCollection
      */
     public function match(SymfonyRequest $request)
     {
-        $context = new RequestContext('/');
+        $context = $this->context();
         $path = $request->getPathInfo();
 
         $matcher = new UrlMatcher($this, $context);
@@ -115,5 +124,41 @@ class Router extends RouteCollection
         } catch (ResourceNotFoundException $e) {
             throw new NotFoundException($path);
         }
+    }
+
+    /**
+     * Get the request context for this router.
+     *
+     * @return RequestContext
+     */
+    public function context()
+    {
+        if (!$this->context) {
+            $this->context = new RequestContext();
+            $this->context->fromRequest(
+                request()
+            );
+        }
+
+        return $this->context;
+    }
+
+    /**
+     * Get the path for a route by name.
+     * 
+     * @param  $name
+     * @return string
+     */
+    public function path($name, $requirements = [])
+    {
+        $route = $this->get($name);
+
+        if (!is_null($route)) {
+            $generator = new UrlGenerator($this, $this->context());
+            
+            return $generator->generate($name, $requirements);            
+        }
+
+        return '/';
     }
 }

@@ -295,3 +295,26 @@ function mailer()
 {
     return container('mailer');
 }
+
+/**
+ * Pull the router from the container.
+ * 
+ * @return Scaffold\Http\Router
+ */
+function router()
+{
+    return container('router');
+}
+
+/**
+ * Generate a url to a route by name, passing
+ * in the required url arguments.
+ * 
+ * @param  string $name
+ * @param  array  $requirements
+ * @return string
+ */
+function route_url($name, $requirements = [])
+{
+    return router()->path($name, $requirements);
+}
