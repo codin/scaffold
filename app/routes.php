@@ -12,8 +12,3 @@ $router->route('GET', '/', [
     'name'       => 'home',
     'controller' => '\App\Controllers\PagesController@home',
 ]);
-
-$router->route('GET', '/this-is-a-test/{param}', [
-    'name'       => 'test',
-    'controller' => '\App\Controllers\PagesController@home',
-]);
