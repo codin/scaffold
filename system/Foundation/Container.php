@@ -22,7 +22,7 @@ class Container extends ContainerBuilder
      * 
      * @return Container
      */
-    public static function getInstance()
+    public static function getInstance() : Container
     {
         if (!static::$instance) {
             static::$instance = new Container();
@@ -36,10 +36,12 @@ class Container extends ContainerBuilder
      * 
      * @param  string $service
      * @param  Object $instance
-     * @return Object
+     * @return Container
      */
-    public function bind($service, $instance)
+    public function bind($service, $instance) : Container
     {   
         $this->set($service, $instance);
+
+        return $this;
     }
 }
