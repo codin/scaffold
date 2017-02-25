@@ -29,7 +29,8 @@
         "relay/relay": "^1.1",
         "symfony/psr-http-message-bridge": "^1.0",
         "zendframework/zend-diactoros": "^1.3",
-        "nette/mail": "^2.4"
+        "nette/mail": "^2.4",
+        "filp/whoops": "^2.1"
     },
     "autoload": {
         "psr-4": {

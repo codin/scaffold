@@ -56,5 +56,6 @@ class Auth
         $this->session = is_null($session) ? session() : $session;
 
         $this->adapter->setConfig($this->config);
+        $this->adapter->setSession($this->session);
     }
 }

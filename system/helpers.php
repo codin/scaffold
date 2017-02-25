@@ -318,3 +318,25 @@ function route_url($name, $requirements = [])
 {
     return router()->path($name, $requirements);
 }
+
+/**
+ * Grab the authentication system from
+ * the container.
+ * 
+ * @return Scaffold\Auth\Auth
+ */
+function auth()
+{
+    return container('auth');
+}
+    
+/**
+ * Retrieve the database instance from
+ * the application container.
+ * 
+ * @return Illuminate\Database\Capsule\Manager
+ */
+function database()
+{
+    return container('database');
+}

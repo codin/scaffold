@@ -3,7 +3,9 @@
 namespace Scaffold\Auth\Adapters;
 
 use Scaffold\Auth\Adapters\AuthAdapter;
+use Scaffold\Auth\Authable;
 use Scaffold\Exception\NoAuthableLoggedInException;
+use Scaffold\Session\Session;
 
 /**
  * Implements system authentication via 
@@ -33,6 +35,13 @@ class SessionAuthAdapter implements AuthAdapter
     protected $logout_redirect = '';
 
     /**
+     * The session instance.
+     * 
+     * @var Scaffold\Session\Session
+     */
+    protected $session;
+
+    /**
      * Set the config on this adapter instance, we'll
      * just store it locally in this instance.
      * 
@@ -44,6 +53,41 @@ class SessionAuthAdapter implements AuthAdapter
 
         $this->setLoginRedirect($this->config['login_redirect']);
         $this->setLogoutRedirect($this->config['logout_redirect']);
+    }
+
+    /**
+     * Set the session instance on this adapter 
+     * so we can store the login state for the
+     * Authable instances.
+     *
+     * @param  Session $session
+     */
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+    }
+
+    /**
+     * Check the users credentials against the database.
+     * Login the Authable associated to them if they are
+     * correct.
+     * 
+     * @param  string $username
+     * @param  string $password
+     * @return Authable|boolean
+     */
+    public function attempt($username, $password)
+    {
+        $model = $this->config['authable_model'];
+
+        $user = $model::where('username', $username)
+            ->first();
+
+        if (is_null($user) || !password_verify($password, $user->password)) {
+            return false;
+        }
+
+        return $this->login($user);
     }
 
     /**
@@ -131,6 +175,8 @@ class SessionAuthAdapter implements AuthAdapter
             if (!($user instanceof Authable)) {
                 throw new NoAuthableLoggedInException;
             }
+            
+            $user = $user->fresh();
         } catch (\Exception $e) {
             throw new NoAuthableLoggedInException;
         }

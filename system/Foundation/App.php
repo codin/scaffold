@@ -12,6 +12,10 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
+use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run as Whoops;
+use Whoops\Util\Misc as WhoopsMisc;
 
 /**
  * The primary application class in Scaffold
@@ -45,6 +49,7 @@ class App
     public function __construct($root, $services = [])
     {
         $this->setupInitialPaths($root);
+        $this->initErrorHandlers();
 
         $this->container = container();
         $this->container->set('app', $this);
@@ -140,6 +145,36 @@ class App
             $database->setAsGlobal();
             $database->bootEloquent();
         }
+    }
+
+    /**
+     * Initialize the error handlers, these will
+     * display some pretty messages when an exception
+     * occurs in our application.
+     * 
+     * @return void
+     */
+    private function initErrorHandlers()
+    {
+        $whoops = new Whoops;
+        $prettyHandler = new PrettyPageHandler;
+
+        $paths = array_merge(
+            [__FILE__], 
+            array_values($this->getPaths())
+        );
+        
+        $prettyHandler->setApplicationPaths($paths);
+        $whoops->pushHandler($prettyHandler);
+
+        if (WhoopsMisc::isAjaxRequest()) {
+            $jsonHandler = new JsonResponseHandler;
+            $jsonHandler->addTraceToOutput(true);
+            $jsonHandler->setJsonApi(true);
+            $run->pushHandler($jsonHandler);
+        }
+
+        $whoops->register();
     }
 
     /**

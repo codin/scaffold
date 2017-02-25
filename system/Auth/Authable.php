@@ -3,10 +3,10 @@
 namespace Scaffold\Auth;
 
 /**
- * Should be extended by any authable model/class
+ * Should be implemented by any authable model/class
  * within the Scaffold application.
  */
-class Authable 
+interface Authable 
 {
 
 }

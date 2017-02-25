@@ -14,25 +14,33 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     'response'   => new Scaffold\Http\Response(),
     'router'     => new Scaffold\Http\Router(),
     'session'    => new Scaffold\Session\Session(
+        // By default we'll just use PHP sessions.
         new Scaffold\Session\Adapters\StandardSessionAdapter()
     ),
 
     // Optional Services which can be 
     // disabled or altered.
-    'cache'      => new Scaffold\Caching\Cache(new Scaffold\Caching\Adapters\FileCacheAdapter()),
+    'cache'      => new Scaffold\Caching\Cache(
+        // By default use file based caching
+        new Scaffold\Caching\Adapters\FileCacheAdapter()
+    ),
     'cookie'     => new Scaffold\Http\Cookie(),
     'csrf'       => new Symfony\Component\Security\Csrf\CsrfTokenManager(
+        // Make use of our custom manager with this CSRF component.
         null, new Scaffold\Session\Security\CsrfTokenManagerAdapter()
     ),
     'database'   => new Illuminate\Database\Capsule\Manager(),
     'dispatcher' => new Symfony\Component\EventDispatcher\EventDispatcher(),
     'mailer'     => new Scaffold\Mail\Mailer(
+        // Use the Nette mailer by default
         new Nette\Mail\SendmailMailer()
     ),
     'logger'     => new Monolog\Logger('scaffold'),
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
     'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'storage'    => new Scaffold\Storage\Storage(
+        // By default we're just going to store things
+        // locally in the filesystem.
         new Scaffold\Storage\Adapters\LocalStorageAdapter()
     ),
     
