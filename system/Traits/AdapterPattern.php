@@ -19,7 +19,7 @@ trait AdapterPattern
     public function __call($method, $arguments)
     {
         if (!method_exists($this->getAdapter(), $method)) {
-            throw new Exception('Method doesn\'t exist on adapter');
+            throw new \Exception('Method "' . $method . '" doesn\'t exist on adapter');
         }
         
         return $this->getAdapter()->$method(...$arguments);    

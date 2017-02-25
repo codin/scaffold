@@ -19,11 +19,6 @@ class PagesController extends Controller
      */
     public function home()
     {
-        $user = auth()->attempt('testing', '123');
-
-        dump($user);
-        die();
-
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
         return response()
