@@ -2,19 +2,25 @@
 
 namespace Scaffold\Auth;
 
+use Scaffold\Auth\Adapters\AuthAdapter;
 use Scaffold\Session\Adapters\SessionAdapter;
+use Scaffold\Session\Session;
+use Scaffold\Traits\AdapterPattern;
 
 /**
  * Handle authentication within the application.
  */
 class Auth
 {   
+
+    use AdapterPattern;
+
     /**
      * The session instance we're using
      * to keep track of whether the user
      * is logged in or not.
      * 
-     * @var Scaffold\Session\Adapters
+     * @var Scaffold\Session\Session
      */
     protected $session;
 
@@ -27,77 +33,28 @@ class Auth
     protected $config;
 
     /**
+     * The adapter we're using to store
+     * our authentication details. And how
+     * we're going to handle it.
+     * 
+     * @var Scaffold\Auth\Adapters\AuthAdapter
+     */
+    protected $adapter;
+
+    /**
      * Construct our authentication system. Allow
      * the session system to be injected if we wish
      * to use something else for it.
      *
-     * @param  Scaffold\Session\Adapters\SessionAdapter|null $session
+     * @param  Scaffold\Auth\Adapters\AuthAdapter $adapter
+     * @param  Scaffold\Session\Session|null $session
      */
-    public function __construct($session = null)
+    public function __construct(AuthAdapter $adapter, Session $session = null)
     {   
-        $this->session = session()->getAdapter();
-
-        if (!is_null($session) && $session instanceof SessionAdapter) {
-            $this->session = $session;
-        }
-
         $this->config = config()->get('auth');
-    }
-    
-    /**
-     * Login a user, force redirecting to the
-     * specified login redirect url.
-     * 
-     * @return void
-     */
-    public function login()
-    {
+        $this->adapter = $adapter;
+        $this->session = is_null($session) ? session() : $session;
 
-    }
-
-    /**
-     * Logout the current session. Forcing the
-     * appication to redirect the user to a 
-     * specified logout url.
-     * 
-     * @return void
-     */
-    public function logout()
-    {
-
-    }
-
-    /**
-     * Check to see if we have a session.
-     * 
-     * @return boolean
-     */
-    public function loggedIn()
-    {
-        return $this->session->has($this->config['session_key']);
-    }
-
-    /**
-     * Set the redirect for when we login.
-     * 
-     * @param string $path
-     */
-    public function setLoginRedirect($path)
-    {
-        $this->login_redirect = $path;
-
-        return $this;
-    }
-
-    /**
-     * Set the redirect for when we logout.
-     * 
-     * @param string $path
-     */
-    public function setLogoutRedirect($path)
-    {
-        $this->logout_redirect = $path;
-
-        return $this;
+        $this->adapter->setConfig($this->config);
     }
 }

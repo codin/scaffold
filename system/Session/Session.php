@@ -39,4 +39,26 @@ class Session
     {
         $this->adapter = $adapter;
     }
+
+    /**
+     * Serialize some data.
+     * 
+     * @param  mixed $data
+     * @return string
+     */
+    public function serialize($data)
+    {
+        return serialize($data);
+    }
+
+    /**
+     * Unserialize some data.
+     * 
+     * @param  string $text
+     * @return mixed
+     */
+    public function unserialize($text)
+    {
+        return unserialize($text);
+    }
 }

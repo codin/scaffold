@@ -10,4 +10,8 @@ return [
     // under in your chosen session provider.
     'session_key' => env('SESSION_KEY', 'auth'),
     
+    // Set our auth redirects for when we login
+    // and for when we logout of our application.
+    'login_redirect'  => env('LOGIN_REDIRECT', '/'),
+    'logout_redirect' => env('LOGOUT_REDIRECT', '/'),
 ];

@@ -40,7 +40,14 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
     // can go below here:
 ]);
 
+// Start our session.
 session()->start();
+
+// Setup some auth, remove this line if you don't
+// wish to use any authentication within your app.
+container()->bind('auth', new Scaffold\Auth\Auth(
+    new Scaffold\Auth\Adapters\SessionAuthAdapter()
+));
 
 // Include our routes file
 include_once '../app/routes.php';

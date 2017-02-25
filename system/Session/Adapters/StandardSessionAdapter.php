@@ -108,6 +108,16 @@ class StandardSessionAdapter implements SessionAdapter
         return $this->id;
     }
 
+    /**
+     * Refresh the currently active session.
+     * 
+     * @return void
+     */
+    public function refresh()
+    {
+        session_regenerate_id();
+    }
+
     private function checkIsStarted()
     {
         $status = session_status();
