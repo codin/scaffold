@@ -165,7 +165,7 @@ class SessionAuthAdapter implements AuthAdapter
         return $this->retrieveUser();
     }
 
-    private function retrieveUser() : Authable 
+    private function retrieveUser() : Authable
     {
         $data = $this->session->get($this->config['session_key']);
 
@@ -175,7 +175,7 @@ class SessionAuthAdapter implements AuthAdapter
             if (!($user instanceof Authable)) {
                 throw new NoAuthableLoggedInException;
             }
-            
+
             $user = $user->fresh();
         } catch (\Exception $e) {
             throw new NoAuthableLoggedInException;
