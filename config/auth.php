@@ -17,5 +17,5 @@ return [
 
     // The classname for the model which implements the
     // Authable interface and uses the Authable trait.
-    'authable_model'  => 'App\Models\UserModel',
+    'authable_model'  => 'App\Models\User',
 ];

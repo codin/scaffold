@@ -9,7 +9,7 @@ use Scaffold\Auth\AuthableTrait;
 /**
  * Represent the users of our application
  */
-class UserModel extends Model implements Authable
+class User extends Model implements Authable
 {
     use AuthableTrait;
 
