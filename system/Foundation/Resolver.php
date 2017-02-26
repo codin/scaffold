@@ -2,6 +2,7 @@
 
 namespace Scaffold\Foundation;
 
+use App\Controllers\Controller;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Relay\RelayBuilder;
@@ -10,8 +11,7 @@ use Scaffold\Exception\MethodNotFoundException;
 use Scaffold\Exception\NotFoundException;
 use Scaffold\Foundation\App;
 use Scaffold\Http\Response;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
  * Resolve our routes from our URL matches,
@@ -94,30 +94,78 @@ class Resolver
      * @param  array $params
      * @return Psr\Http\Message\ResponseInterface
      */
-    private function processMiddleware($controller, $method, $params)
+    private function processMiddleware(Controller $controller, $method, $params)
     {
-        $psrFactory = new DiactorosFactory();
-        $httpFoundationFactory = new HttpFoundationFactory();
 
-        $queue = $controller->middleware();
-        $queue[] = function (RequestInterface $request, ResponseInterface $response, callable $next) use ($controller, $method, $params, $psrFactory) {
+        // Grab the controller middleware to 
+        // start the queue off.
+        $queue = $this->createQueueFromMiddleware(
+            $controller,
+            $method
+        );
+
+        // Create a middlware to wrap processing
+        // the action for the controller.
+        $queue[] = function (RequestInterface $request, ResponseInterface $response, callable $next) use ($controller, $method, $params) {
             $response = call_user_func_array([$controller, $method], $params); 
 
-            if (!($response instanceof Response)) {
+            if (!($response instanceof SymfonyResponse)) {
                 throw new NotFoundException('Unable to determine response to return');
             }
 
-            return $psrFactory->createResponse($response);
+            if ($response instanceof Response) {            
+                return $response->asPsr();
+            }
+
+            return Response::toPsr($response);
         };
 
+        // Setup the Relay middleware builder,
+        // pass it our queue.
         $relayBuilder = new RelayBuilder();
         $relay = $relayBuilder->newInstance($queue);
 
-        $psrResponse = $relay(
-            $psrFactory->createRequest(request()), 
-            $psrFactory->createResponse(response())
+        // Call relay with our PSR supporting request
+        // and response instances.
+        $generatedResponse = $relay(
+            request()->asPsr(), 
+            response()->asPsr()
         );
 
-        return $httpFoundationFactory->createResponse($psrResponse);
+        if (!($generatedResponse instanceof SymfonyResponse)) {        
+            return Response::fromPsr($generatedResponse);
+        }
+
+        return $generatedResponse;
+    }
+
+    /**
+     * Extract the middleware from the controller
+     * and create a queue which we can pass onto
+     * our relay instance.
+     * 
+     * @param  Controller $controller
+     * @param  string     $method
+     * @return array
+     */
+    private function createQueueFromMiddleware(Controller $controller, $method) : array
+    {   
+        $queue = [];
+        $middleware = $controller->middleware();
+
+        foreach ($middleware as $scope => $classes) {
+            if (!is_array($classes)) {
+                $classes = [$classes];
+                $scope = '*';
+            }
+
+            if ($scope == '*' || $scope == $method) {
+                foreach ($classes as $class) {
+                    $queue[] = new $class;
+                }
+            }
+        }
+
+        return $queue;
     }
 }

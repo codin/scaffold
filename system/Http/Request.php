@@ -2,6 +2,8 @@
 
 namespace Scaffold\Http;
 
+use Psr\Http\Message\RequestInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
@@ -25,5 +27,27 @@ class Request extends SymfonyRequest
             $_FILES,
             $_SERVER
         );
+    }
+
+    /**
+     * Convert this request to a Psr one.
+     * 
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function asPsr() : RequestInterface
+    {
+        return static::toPsr($this);
+    }
+
+    /**
+     * Convert a symfony request to Psr
+     * 
+     * @param  Symfony\Component\HttpFoundation\Request $request
+     * @return Psr\Http\Message\RequestInterface
+     */
+    public static function toPsr(SymfonyRequest $request) : RequestInterface
+    {
+        $psrFactory = new DiactorosFactory();
+        return $psrFactory->createRequest($request);
     }
 }

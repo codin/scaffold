@@ -8,5 +8,5 @@ namespace Scaffold\Auth;
  */
 interface Authable 
 {
-
+    public function serialize() : \stdClass;
 }

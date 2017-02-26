@@ -12,8 +12,8 @@ return [
     
     // Set our auth redirects for when we login
     // and for when we logout of our application.
-    'login_redirect'  => env('LOGIN_REDIRECT', '/'),
-    'logout_redirect' => env('LOGOUT_REDIRECT', '/'),
+    'login_redirect'  => env('LOGIN_REDIRECT', '/dashboard'),
+    'logout_redirect' => env('LOGOUT_REDIRECT', '/login'),
 
     // The classname for the model which implements the
     // Authable interface and uses the Authable trait.

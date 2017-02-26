@@ -70,7 +70,9 @@ class FileCacheAdapter extends CacheAdapter
      */
     public function flush()
     {
-        $this->fs->remove([cache_path()]);
+        $this->fs->remove([
+            cache_path()
+        ]);
     }
 
     /**
@@ -82,7 +84,9 @@ class FileCacheAdapter extends CacheAdapter
     public function delete($key)
     {
         $key = $this->generateKey($key);
-        $this->fs->remove([$key]);
+        $this->fs->remove([
+            $key
+        ]);
     }
 
     /**
@@ -96,7 +100,6 @@ class FileCacheAdapter extends CacheAdapter
      */
     public function generateKey($key)
     {
-
         return cache_path() . '/' . $this->getNamespace() . md5($key);
     }
 }

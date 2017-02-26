@@ -21,20 +21,6 @@ class SessionAuthAdapter implements AuthAdapter
     protected $config = [];
 
     /**
-     * The login redirect url string
-     * 
-     * @var string
-     */
-    protected $login_redirect = '';
-
-    /**
-     * The logout redirect url string
-     * 
-     * @var string
-     */
-    protected $logout_redirect = '';
-
-    /**
      * The session instance.
      * 
      * @var Scaffold\Session\Session
@@ -50,9 +36,6 @@ class SessionAuthAdapter implements AuthAdapter
     public function setConfig(array $config)
     {
         $this->config = $config;
-
-        $this->setLoginRedirect($this->config['login_redirect']);
-        $this->setLogoutRedirect($this->config['logout_redirect']);
     }
 
     /**
@@ -105,7 +88,7 @@ class SessionAuthAdapter implements AuthAdapter
             return $this->retrieveUser();
         }
 
-        $data = $this->session->serialize($authable);
+        $data = $this->session->serialize($authable->serialize());
 
         $this->session->put($this->config['session_key'], $data);
 
@@ -166,47 +149,38 @@ class SessionAuthAdapter implements AuthAdapter
         return $this->retrieveUser();
     }
 
+    /**
+     * Does this adapter redirect on login/logout?
+     * 
+     * @return bool
+     */
+    public function redirects() : bool
+    {
+        return true;
+    }
+
     private function retrieveUser() : Authable
     {
         $data = $this->session->get($this->config['session_key']);
 
         try {
-            $user = $this->session->unserialize($data);
+            $unserialized = $this->session->unserialize($data);
 
-            if (!($user instanceof Authable)) {
-                throw new NoAuthableLoggedInException;
+            if (!isset($unserialized->id)) {
+                throw new \Exception;
             }
 
-            $user = $user->fresh();
+            $model = $this->config['authable_model'];
+
+            $user = $model::where('id', $unserialized->id)->first();
+
+            if (!($user instanceof Authable)) {
+                throw new \Exception;
+            }
         } catch (\Exception $e) {
             throw new NoAuthableLoggedInException;
         }
 
         return $user;
-    }
-
-
-    /**
-     * Set the redirect for when we login.
-     * 
-     * @param string $path
-     */
-    public function setLoginRedirect($path)
-    {
-        $this->login_redirect = $path;
-
-        return $this;
-    }
-
-    /**
-     * Set the redirect for when we logout.
-     * 
-     * @param string $path
-     */
-    public function setLogoutRedirect($path)
-    {
-        $this->logout_redirect = $path;
-
-        return $this;
     }
 }

@@ -22,3 +22,9 @@ services:
       MYSQL_DATABASE: "database"
       MYSQL_USER: "username"
       MYSQL_PASSWORD: "password"
+
+  redis:
+        image: redis:alpine
+        container_name: redis
+        ports:
+         - 6379:6379

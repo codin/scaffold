@@ -203,8 +203,8 @@ class App
         $this->paths['log_file']     = $root . $config->get('app.log_file');
         $this->paths['view_path']    = $root . $config->get('templating.view_path');
         $this->paths['module_path']  = $config->get('templating.module_path');
-        $this->paths['cache_path']   = $root . $config->get('app.cache_path');
-        $this->paths['storage_path'] = $root . $config->get('app.storage_path');
+        $this->paths['cache_path']   = $root . $config->get('cache.path');
+        $this->paths['storage_path'] = $root . $config->get('storage.path');
         $this->paths['asset_path']   = $config->get('templating.asset_path');
         $this->paths['public_path']  = $config->get('templating.public_path');
     }

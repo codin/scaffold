@@ -19,4 +19,5 @@ interface AuthAdapter
     public function refresh() : Authable;
     public function loggedIn() : bool;
     public function user() : Authable;
+    public function redirects() : bool;
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\Controller;
+use App\Models\User;
 use Scaffold\Mail\Message;
 
 /**
@@ -18,7 +19,7 @@ class PagesController extends Controller
      * @return Scaffold\Http\Response
      */
     public function home()
-    {
+    {   
         // Return our view with the text "Scaffold" to be
         // displayed in the title.
         return response()

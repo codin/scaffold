@@ -2,7 +2,11 @@
 
 namespace Scaffold\Http;
 
+use Psr\Http\Message\ResponseInterface;
 use Scaffold\Html\Template;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /**
@@ -79,8 +83,12 @@ class Response extends SymfonyResponse
      * @param  array  $arguments
      * @return Scaffold\Http\Response
      */
-    public function view($name, array $arguments)
+    public function view($name, $arguments = [])
     {
+        if (!is_array($arguments)) {
+            throw new \Exception('Arguments passed to view in response must be an array.');
+        }
+
         $this->arguments = array_merge($this->arguments, $arguments);
         $template = new Template($name, $this->arguments);
 
@@ -99,5 +107,52 @@ class Response extends SymfonyResponse
         $this->headers->set('Content-Type', 'application/json');
 
         return $this->setContent($json);
+    }
+
+    /**
+     * Create a redirect response, to a
+     * provided url.
+     * 
+     * @param  string $url
+     * @return Scaffold\Http\Response
+     */
+    public function redirect($url)
+    {
+        return new RedirectResponse($url);
+    }
+
+    /**
+     * Convert the response to a Psr
+     * supporting interface.
+     * 
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public function asPsr() : ResponseInterface
+    {
+        return static::toPsr($this);
+    }
+
+    /**
+     * Convert a symfony response to Psr
+     * 
+     * @param  SymfonyResponse $response
+     * @return Psr\Http\Message\ResponseInterface
+     */
+    public static function toPsr(SymfonyResponse $response) : ResponseInterface
+    {
+        $psrFactory = new DiactorosFactory();
+        return $psrFactory->createResponse($response);
+    }
+
+    /**
+     * Create a new HTTP Response from Psr
+     *
+     * @param  Psr\Http\Message\ResponseInterface $response
+     * @return Scaffold\Http\Response
+     */
+    public static function fromPsr(ResponseInterface $response)
+    {
+        $httpFoundationFactory = new HttpFoundationFactory();
+        return $httpFoundationFactory->createResponse($response);
     }
 }

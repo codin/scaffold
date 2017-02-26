@@ -42,6 +42,20 @@ class Auth
     protected $adapter;
 
     /**
+     * The login redirect url string
+     * 
+     * @var string
+     */
+    protected $login_redirect = '';
+
+    /**
+     * The logout redirect url string
+     * 
+     * @var string
+     */
+    protected $logout_redirect = '';
+
+    /**
      * Construct our authentication system. Allow
      * the session system to be injected if we wish
      * to use something else for it.
@@ -57,5 +71,52 @@ class Auth
 
         $this->adapter->setConfig($this->config);
         $this->adapter->setSession($this->session);
+
+        $this->setLoginRedirect($this->config['login_redirect']);
+        $this->setLogoutRedirect($this->config['logout_redirect']);
+    }
+
+    /**
+     * Set the redirect for when we login.
+     * 
+     * @param string $path
+     */
+    public function setLoginRedirect($path)
+    {
+        $this->login_redirect = $path;
+
+        return $this;
+    }
+
+    /**
+     * Set the redirect for when we logout.
+     * 
+     * @param string $path
+     */
+    public function setLogoutRedirect($path)
+    {
+        $this->logout_redirect = $path;
+
+        return $this;
+    }   
+
+    /**
+     * Gets the The login redirect url string.
+     *
+     * @return string
+     */
+    public function getLoginRedirect()
+    {
+        return $this->login_redirect;
+    }
+
+    /**
+     * Gets the The logout redirect url string.
+     *
+     * @return string
+     */
+    public function getLogoutRedirect()
+    {
+        return $this->logout_redirect;
     }
 }

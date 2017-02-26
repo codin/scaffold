@@ -340,3 +340,14 @@ function database()
 {
     return container('database');
 }
+
+/**
+ * Create a redirect response.
+ * 
+ * @param  string $url
+ * @return Symfony\Component\HttpFoundation\RedirectResponse
+ */
+function redirect($url)
+{
+    return response()->redirect($url);
+}

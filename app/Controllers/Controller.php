@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Middleware\VerifyCSRF;
-
 /**
  * This class must be extended by your application controllers,
  * you should add any functionality here in which you wish to be
@@ -29,9 +27,21 @@ abstract class Controller
     public function middleware()
     {
         return array_merge([
-
             // CSRF Middleware for all controller actions.
-            new VerifyCSRF,
+            '*' => [
+                'App\Middleware\VerifyCSRF',
+            ],
+
+            // Example middleware for method name
+            // restrictions.
+            // 
+            // 'login' => [
+            //     'App\Middleware\NotAuthed',
+            // ],
+
+            // 'dashboard' => [
+            //     'App\Middleware\Authed',
+            // ],
 
         ], $this->middleware);
     }

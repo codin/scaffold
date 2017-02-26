@@ -45,14 +45,4 @@ return [
      * of the application.
      */
     'log_file'  => env('LOG_FILE', '/logs/scaffold.log'),
-
-    /**
-     * The cache path from root
-     */
-    'storage_path'  => env('STORAGE_PATH', '/storage'),
-
-    /**
-     * The cache path from root
-     */
-    'cache_path'  => env('CACHE_PATH', '/cache'),
 ];
