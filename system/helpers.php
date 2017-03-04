@@ -351,3 +351,41 @@ function redirect($url)
 {
     return response()->redirect($url);
 }
+
+/**
+ * Grab the queue instance from the
+ * container.
+ *
+ * @return Scaffold\Queue\Queue;
+ */
+function queue()
+{
+    return container('queue');
+}
+
+/**
+ * Get the root path.
+ * 
+ * @return string
+ */
+function root_path()
+{
+    return paths('root_path');
+}
+
+/**
+ * Load in an SVG file.
+ * 
+ * @param  string $filename
+ * @return string
+ */
+function svg($filename)
+{
+    $path = root_path() . public_path() . asset_path() . '/img/' . str_replace('.svg', '', $filename) . '.svg';
+
+    if (!file_exists($path)) {
+        return false;
+    }
+
+    return file_get_contents($path);
+}

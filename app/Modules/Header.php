@@ -22,5 +22,5 @@ class Header extends Module
      * 
      * @var boolean
      */
-    protected $cacheable = true;
+    protected $cacheable = false;
 }

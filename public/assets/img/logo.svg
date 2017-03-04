@@ -1,0 +1,23 @@
+<svg id="logo" xmlns="http://www.w3.org/2000/svg" width="309" height="309" viewBox="0 0 309 309">
+  <defs>
+    <style>
+      .a {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: 24px;
+      }
+
+      .b {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <title>scaffold_logo</title>
+  <g>
+    <rect class="a" x="12" y="12" width="285" height="285" rx="2" ry="2"/>
+    <rect class="b" x="98.5" y="159.06" width="301" height="32" transform="translate(-141.53 3.69) rotate(-20.87)"/>
+    <rect class="b" x="101.9" y="307.06" width="301" height="32" transform="translate(-194.03 14.61) rotate(-20.87)"/>
+    <rect class="b" x="4" y="137" width="301" height="32"/>
+  </g>
+</svg>

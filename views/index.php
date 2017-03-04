@@ -9,7 +9,12 @@
         <?php endforeach; endif; ?>
     </head>
     <body>
-        <?php module('header', ['name' => $message . ' ' . $text]); ?>
+        <?php 
+            module('header', [
+                'name' => $message . ' ' . $text,
+                'logo' => svg('logo'),
+            ]); 
+        ?>
     </body>
 
     <?php if (isset($scripts)) : foreach ($scripts as $script) : ?>

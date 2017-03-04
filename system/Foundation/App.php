@@ -185,6 +185,7 @@ class App
      */
     private function setupInitialPaths($root)
     {
+        $this->paths['root_path'] = $root;
         $this->paths['env_file_path'] = $root;
         $this->paths['env_file']      = $this->paths['env_file_path'].'.env';
         $this->paths['config_path']   = $root . '/config';

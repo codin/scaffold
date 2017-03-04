@@ -36,13 +36,16 @@ $app = new Scaffold\Foundation\App(__DIR__ . '/../', [
         new Nette\Mail\SendmailMailer()
     ),
     'logger'     => new Monolog\Logger('scaffold'),
+    'queue'      => new Scaffold\Queue\Queue(
+        new Scaffold\Queue\Adapters\DatabaseQueueAdapter()
+    ),
     'stopwatch'  => new Symfony\Component\Stopwatch\Stopwatch(),
-    'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     'storage'    => new Scaffold\Storage\Storage(
         // By default we're just going to store things
         // locally in the filesystem.
         new Scaffold\Storage\Adapters\LocalStorageAdapter()
     ),
+    'templater'  => new Symfony\Component\Templating\DelegatingEngine(),
     
     // Your custom application services 
     // can go below here:
