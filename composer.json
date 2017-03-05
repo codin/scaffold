@@ -4,13 +4,11 @@
     "type": "framework",
     "version": "3.0.0",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Craig Childs",
-            "email": "childscraig17@gmail.com",
-            "homepage": "http://craigchilds.me"
-        }
-    ],
+    "authors": [{
+        "name": "Craig Childs",
+        "email": "childscraig17@gmail.com",
+        "homepage": "http://craigchilds.me"
+    }],
     "require": {
         "php": ">=5.6.4",
         "symfony/asset": "^3.1",
@@ -30,7 +28,8 @@
         "symfony/psr-http-message-bridge": "^1.0",
         "zendframework/zend-diactoros": "^1.3",
         "nette/mail": "^2.4",
-        "filp/whoops": "^2.1"
+        "filp/whoops": "^2.1",
+        "symfony/console": "^3.2"
     },
     "autoload": {
         "psr-4": {

@@ -44,5 +44,15 @@ return [
      * The path to the log file from the root
      * of the application.
      */
-    'log_file'  => env('LOG_FILE', '/logs/scaffold.log'),
+    'log_file' => env('LOG_FILE', '/logs/scaffold.log'),
+
+    /**
+     * Should we turn errors on?
+     */
+    'errors' => env('ERRORS', true),
+
+    /**
+     * What level errors do we show?
+     */
+    'error_level' => E_ALL,
 ];

@@ -13,6 +13,7 @@ use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\TemplateNameParser;
 use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run as Whoops;
 use Whoops\Util\Misc as WhoopsMisc;
@@ -44,10 +45,19 @@ class App
     private $paths = [];
 
     /**
+     * Is this in a console app?
+     * 
+     * @var boolean
+     */
+    protected $isConsoleApp = false;
+
+    /**
      * Do stuff when we boot the app up.
      */
-    public function __construct($root, $services = [])
+    public function __construct($root, $services = [], $isConsole = false)
     {
+        $this->isConsoleApp = $isConsole;
+        
         $this->setupInitialPaths($root);
         $this->initErrorHandlers();
 
@@ -66,6 +76,8 @@ class App
             $this->paths['config_path'],
             $this->getEnvironment()
         );
+
+        $this->setErrorState();
 
         $this->setupConfigurablePaths($root);
             
@@ -171,7 +183,12 @@ class App
             $jsonHandler = new JsonResponseHandler;
             $jsonHandler->addTraceToOutput(true);
             $jsonHandler->setJsonApi(true);
-            $run->pushHandler($jsonHandler);
+            $whoops->pushHandler($jsonHandler);
+        }
+
+        if ($this->isConsoleApp) {
+            $textHandler = new PlainTextHandler;
+            $whoops->pushHandler($textHandler);
         }
 
         $whoops->register();
@@ -287,5 +304,31 @@ class App
         $response->headers->set('X-Scaffold-Profiling', $profile);
 
         return $response;
+    }
+
+    /**
+     * Setup how we're handling errors.
+     *
+     * @return void
+     */
+    private function setErrorState()
+    {
+        if (!isset($this->config['errors'])) {
+            return;
+        }
+
+        $errors = (bool)$this->config['errors'];
+
+        if (!$errors) {
+            error_reporting(0);
+        }
+
+        $level = E_ALL;
+
+        if (isset($this->config['error_level'])) {        
+            $level = $this->config['error_level'];
+        }
+
+        error_reporting($level);
     }
 }
