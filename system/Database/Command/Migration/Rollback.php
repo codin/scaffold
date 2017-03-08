@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class Rollback extends Command
 {   
-    protected $name = 'migration:rollback';
+    protected $name = 'migrate:rollback';
 
     protected $description = 'Rollback a migration';
 
@@ -29,5 +29,7 @@ class Rollback extends Command
         // Get latest migration
         // Pull in the class
         // Run the `down()` method.
+        // 
+        // php scaffold migrate:rollback
     }
 }

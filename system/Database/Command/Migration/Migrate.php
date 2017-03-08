@@ -9,7 +9,7 @@ use Scaffold\Console\Command;
  */
 class Migrate extends Command
 {
-    protected $name = 'migration:migrate';
+    protected $name = 'migrate:run';
 
     protected $description = 'Run migrations to update the database to the latest.';
 
@@ -28,5 +28,7 @@ class Migrate extends Command
         // been run yet.
         // Pull in the classes
         // Run the `up()` method on them.
+        // 
+        // php scaffold migrate:run
     }
 }
