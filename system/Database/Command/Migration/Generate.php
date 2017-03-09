@@ -5,6 +5,8 @@ namespace Scaffold\Database\Command\Migration;
 use Carbon\Carbon;
 use Scaffold\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * The command to generate a migration file.
@@ -28,7 +30,7 @@ class Generate extends Command
     {
         $name = $this->formatClassname($input->getArgument('name'));
 
-        
+        container()->get('migrator')->putMigration($name);
 
         // Using command parameters to create a new
         // migration file.
@@ -57,7 +59,7 @@ class Generate extends Command
      */
     private function formatClassname($name)
     {
-        $time = Carbon::now()->format('YMDHis');
-        return $time . '_' . camel_case($name);
+        $time = Carbon::now()->format('YmdHis');
+        return $time . '_' . ucfirst(camel_case($name));
     }
 }

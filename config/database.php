@@ -22,5 +22,17 @@ return [
         'collation' => env('DB_COLLATION', 'utf8_unicode_ci'),
         'prefix'    => env('DB_PREFIX', ''),
     ],
+
+    /**
+     * The path where the migrations files are
+     * kept, from the root.
+     */
+    'migrations_path' => env('MIGRATIONS_PATH', '/migrations'),
+
+    /**
+     * Define the path to the migration template file,
+     * from the root of the app.
+     */
+    'migration_template' => '/storage/migration_template.txt',
     
 ];

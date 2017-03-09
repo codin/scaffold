@@ -1,0 +1,16 @@
+<?php 
+
+use Scaffold\Database\Migration;
+
+class {class_name} extends Migration 
+{
+    public function up()
+    {
+        // Define what changes you want to make here.
+    }
+
+    public function down()
+    {
+        // Define how we rollback those changes here.
+    }
+}

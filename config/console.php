@@ -10,8 +10,9 @@ return [
     'commands' => [
 
         // Database migration commands
-        // Scaffold\Database\Migration\Migrate::class,
-        // Scaffold\Database\Migration\Rollback::class,
+        Scaffold\Database\Command\Migration\Generate::class,
+        Scaffold\Database\Command\Migration\Rollback::class,
+        Scaffold\Database\Command\Migration\Rollback::class,
 
         // Your custom commands below here...
         App\Console\ExampleCommand::class,

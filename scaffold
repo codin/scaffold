@@ -7,11 +7,18 @@ require __DIR__.'/system/helpers.php';
 
 use Illuminate\Database\Capsule\Manager;
 use Scaffold\Console\Application;
+use Scaffold\Database\Migrator;
 use Scaffold\Foundation\Config;
 
+// Kickstart our console app, passing in the instances.
 $application = new Application(__DIR__, [
-    'config'     => new Config(),
-    'database'   => new Manager(),
+    'config'   => new Config(),
+    'database' => new Manager(),
 ]);
 
+// These instances rely on the app & container being
+// pre-populated with dependencies.
+container()->bind('migrator', new Migrator());
+
+// Run the console app.
 $application->run();

@@ -389,20 +389,3 @@ function svg($filename)
 
     return file_get_contents($path);
 }
-
-/**
- * Camel case a string
- * 
- * @param  string $str
- * @return string
- */
-function camel_case($str)
-{
-    $str = preg_replace('/[^a-z0-9]+/i', ' ', $str);
-    $str = trim($str);
-    $str = ucwords($str);
-    $str = str_replace(" ", "", $str);
-    $str = lcfirst($str);
-
-    return $str;
-}
