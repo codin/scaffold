@@ -3,6 +3,7 @@
 namespace Scaffold\Database;
 
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Handles the migration system.
@@ -25,6 +26,7 @@ class Migrator
     {
         $this->config = config()->get('database');
         $this->filesystem = new Filesystem;
+        $this->finder = new Finder;
 
         $this->path = root_path() . $this->config['migrations_path'] . '/';
     }
@@ -43,6 +45,43 @@ class Migrator
         $fullPath = $this->path . $name . '.php';
 
         $this->filesystem->dumpFile($fullPath, $code);
+    }
+
+    /**
+     * Get all of the migrations.
+     * 
+     * @return array<Migration>
+     */
+    public function getAllMigrations()
+    {
+        $this->finder->files()
+            ->in($this->path)
+            ->name('*.php')
+            ->contains('extends Migration')
+            ->sortByName();
+
+        $migrations = [];
+
+        foreach ($this->finder as $file) {
+            include_once($file->getRealPath());
+
+            $classname = str_replace('.php', '', $file->getFilename());
+
+            $parts = explode('_', $classname);
+
+            end($parts);
+
+            $classname = current($parts);
+            
+            if (!class_exists($classname)) {
+                throw new \Exception('Migration ' . $file->getFilename() . ' has an invalid classname.');
+            }
+
+            $instance = new $classname;
+            $migrations[$file->getFilename()] = $instance;
+        } 
+
+        return $migrations;
     }
 
     /**

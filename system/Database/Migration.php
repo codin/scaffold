@@ -8,6 +8,23 @@ namespace Scaffold\Database;
  */
 abstract class Migration
 {
+
+    /**
+     * The schema builder.
+     * 
+     * @var \Illuminate\Database\Schema\Builder
+     */
+    protected $schema;
+
+    /**
+     * Grab the schema builder and attach it to
+     * the migration instance.
+     */
+    public function __construct()
+    {
+        $this->schema =  database()->schema();
+    }
+
     /**
      * Will be called when running a 
      * migration.
