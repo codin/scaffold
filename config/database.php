@@ -33,6 +33,10 @@ return [
      * Define the path to the migration template file,
      * from the root of the app.
      */
-    'migration_template' => '/storage/migration_template.txt',
-    
+    'migrations_template' => '/storage/migration_template.txt',
+        
+    /**
+     * The name of the migrations table.
+     */
+    'migrations_table' => 'migrations',
 ];

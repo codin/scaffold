@@ -27,25 +27,25 @@ class Migrate extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Get all migrations which haven't
-        // been run yet.
-        // Pull in the classes
-        // Run the `up()` method on them.
-        // 
-        // php scaffold migrate:run
-        
+        $migrator = container()->get('migrator');
+
         $table = new Table($output);
         
         $rows = [];
         $headers = ['Migration', 'Status', 'Error'];
 
-        $migrations = container()->get('migrator')->getAllMigrations();
+        $migrations = $migrator->getAllMigrations();
 
         foreach ($migrations as $filename => $migration) {
+            if ($migrator->checkDatabaseForMigration($filename)) {
+                continue;
+            }
+
             $error = '';
 
             try {
                 $migration->up();
+                $migrator->addMigrationToDatabase($filename);
             } catch (\Exception $e) {
                 $error = $e->getMessage();
             }
@@ -57,6 +57,10 @@ class Migrate extends Command
             ];
         }
 
-        $table->setHeaders($headers)->setRows($rows)->render();
+        if (!empty($rows)) {        
+            $table->setHeaders($headers)->setRows($rows)->render();
+        }
+
+        $output->writeln('No migrations to run.');
     }
 }

@@ -18,6 +18,14 @@ class Migrator
     private $config;
 
     /**
+     * The name of the table we use to
+     * keep track of the migrations.
+     * 
+     * @var string
+     */
+    private $tableName;
+
+    /**
      * Pull in the database config so that
      * we know where we're looking to find
      * the migrations files.
@@ -29,6 +37,8 @@ class Migrator
         $this->finder = new Finder;
 
         $this->path = root_path() . $this->config['migrations_path'] . '/';
+
+        $this->tableName = $this->config['migrations_table'];
     }
 
     /**
@@ -39,7 +49,7 @@ class Migrator
      */
     public function putMigration($name)
     {
-        $code = file_get_contents(root_path() . $this->config['migration_template']);
+        $code = file_get_contents(root_path() . $this->config['migrations_template']);
         $code = str_replace('{class_name}', $this->extractClassname($name), $code);
         
         $fullPath = $this->path . $name . '.php';
@@ -79,9 +89,52 @@ class Migrator
 
             $instance = new $classname;
             $migrations[$file->getFilename()] = $instance;
-        } 
+        }
 
         return $migrations;
+    }
+
+    /**
+     * Does a row for a specified migration already exist?
+     * 
+     * @param  string $migration
+     * @return boolean
+     */
+    public function checkDatabaseForMigration($migration)
+    {
+        if (!database()->schema()->hasTable($this->tableName)) {
+            return false;
+        }
+
+        return database()->table($this->tableName)
+            ->where('migration', $migration)
+            ->exists();
+    }
+
+    /**
+     * Add a new migration to the database.
+     * 
+     * @param  string $migration
+     * @return void
+     */
+    public function addMigrationToDatabase($migration)
+    {
+        return database()->table($this->tableName)->insert([
+            'migration' => $migration,
+        ]);
+    }
+
+    /**
+     * Remove a migration from the database.
+     *
+     * @param  string $migration
+     * @return void
+     */
+    public function removeMigrationFromDatabase($migration)
+    {
+        return database()->table($this->tableName)
+            ->where('migration', $migration)
+            ->delete();
     }
 
     /**
@@ -92,7 +145,7 @@ class Migrator
      * @return string
      */
     private function extractClassname($name)
-    {   
+    {
         $classname = explode('_', $name);
         end($classname);
         return current($classname);
