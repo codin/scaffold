@@ -38,14 +38,24 @@ class Migrator
     public function putMigration($name)
     {
         $code = file_get_contents(root_path() . $this->config['migration_template']);
-        
-        $classname = explode('_', $name);
-        end($classname);
-
-        $code = str_replace('{class_name}', current($classname), $code);
+        $code = str_replace('{class_name}', $this->extractClassname($name), $code);
         
         $fullPath = $this->path . $name . '.php';
 
         $this->filesystem->dumpFile($fullPath, $code);
+    }
+
+    /**
+     * Extract the classname from the name
+     * of the file.
+     * 
+     * @param  string $name
+     * @return string
+     */
+    private function extractClassname($name)
+    {   
+        $classname = explode('_', $name);
+        end($classname);
+        return current($classname);
     }
 }
